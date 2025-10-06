@@ -144,7 +144,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   range: 10
   fireRate: 1
-  bulletPrefab: {fileID: 3883555139581836608, guid: c183a671ae8c3ee4d9af1e09a8e3c65d, type: 3}
+  bulletPrefab: {fileID: 8165817430203650693, guid: 36d14bb67b23cc24e82443a3fc793c21, type: 3}
   firePoint: {fileID: 5858263255072148002}
   partToRotate: {fileID: 2271131456899928639}
 --- !u!1 &2548064472559773192

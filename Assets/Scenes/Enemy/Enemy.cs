@@ -44,7 +44,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 posXZ = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 targetXZ = new Vector3(target.position.x, 0, target.position.z);
-        return Vector3.Distance(posXZ, targetXZ) < 0.2f; // margem ajustável
+        return Vector3.Distance(posXZ, targetXZ) < 0.2f; 
     }
 
     void GetNextWaypoint()
