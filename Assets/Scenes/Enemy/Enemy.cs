@@ -8,7 +8,6 @@ public class Enemy : MonoBehaviour
     private int waypointIndex = 0;
     private float startY;
 
-    // Guardamos a referência da base uma única vez
     private static BaseHealth baseHealth;
 
     void Start()
