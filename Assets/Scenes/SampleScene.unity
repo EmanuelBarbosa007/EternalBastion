@@ -4880,6 +4880,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 1962177786879868133, guid: 933b09ee93c5ca847aac88279caa40a4, type: 3}
+  firstEnemyPrefab: {fileID: 5219282202488026003, guid: 056df1d06af23744caf87df5c028d485, type: 3}
+  lastEnemyPrefab: {fileID: 4014698134111782940, guid: 87a607fce10288947a1ad9b7bdddeee9, type: 3}
   spawnPoint: {fileID: 690546271}
   timeBetweenWaves: 20
   enemiesPerWave: 5
