@@ -67,10 +67,9 @@ public class TowerPlacementUI : MonoBehaviour
         if (CurrencySystem.Money >= cost)
         {
             CurrencySystem.SpendMoney(cost);
-            GameObject newTower = Instantiate(towerPrefab, currentSpot.transform.position, Quaternion.identity);
+            Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f); // levanta 0.5 no eixo Y
+            GameObject newTower = Instantiate(towerPrefab, spawnPos, Quaternion.identity);
 
-            // aumenta a escala da torre
-            newTower.transform.localScale *= 1.2f;
 
             currentSpot.isOccupied = true;
         }
