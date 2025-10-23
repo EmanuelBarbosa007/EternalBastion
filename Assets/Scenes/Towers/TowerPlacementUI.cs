@@ -11,17 +11,13 @@ public class TowerPlacementUI : MonoBehaviour
     public Button basicTowerButton;
     public Button fireTowerButton;
     public Button piercingTowerButton;
-    public Button closeButton; 
+    public Button closeButton;
 
     [Header("Prefabs das torres")]
     public GameObject basicTowerPrefab;
     public GameObject fireTowerPrefab;
     public GameObject piercingTowerPrefab;
 
-    [Header("Custos das torres")]
-    public int basicTowerCost = 50;
-    public int fireTowerCost = 100;
-    public int piercingTowerCost = 150;
 
     private TowerSpot currentSpot;
 
@@ -30,9 +26,10 @@ public class TowerPlacementUI : MonoBehaviour
         Instance = this;
         panel.SetActive(false);
 
-        basicTowerButton.onClick.AddListener(() => BuildTower(basicTowerPrefab, basicTowerCost));
-        fireTowerButton.onClick.AddListener(() => BuildTower(fireTowerPrefab, fireTowerCost));
-        piercingTowerButton.onClick.AddListener(() => BuildTower(piercingTowerPrefab, piercingTowerCost));
+        // A função BuildTower vai buscar o custo ao prefab
+        basicTowerButton.onClick.AddListener(() => BuildTower(basicTowerPrefab));
+        fireTowerButton.onClick.AddListener(() => BuildTower(fireTowerPrefab));
+        piercingTowerButton.onClick.AddListener(() => BuildTower(piercingTowerPrefab));
         closeButton.onClick.AddListener(ClosePanel);
     }
 
@@ -46,13 +43,11 @@ public class TowerPlacementUI : MonoBehaviour
         StartCoroutine(OpenPanelNextFrame());
     }
 
-
     private IEnumerator OpenPanelNextFrame()
     {
         yield return null; // espera 1 frame
         panel.SetActive(true);
     }
-
 
     public void ClosePanel()
     {
@@ -60,18 +55,43 @@ public class TowerPlacementUI : MonoBehaviour
         currentSpot = null;
     }
 
-    void BuildTower(GameObject towerPrefab, int cost)
+    void BuildTower(GameObject towerPrefab)
     {
-        if (currentSpot == null) return;
+        if (currentSpot == null || towerPrefab == null) return;
 
+        // 1. Vai buscar o script 'Tower' ao prefab para saber o custo
+        Tower towerComponent = towerPrefab.GetComponent<Tower>();
+        if (towerComponent == null)
+        {
+            Debug.LogError("O prefab da torre não tem o script 'Tower'!");
+            ClosePanel();
+            return;
+        }
+
+        // 2. Obtém o custo de Nível 1 definido no prefab
+        int cost = towerComponent.costLevel1;
+
+        // 3. Verifica se tem dinheiro
         if (CurrencySystem.Money >= cost)
         {
             CurrencySystem.SpendMoney(cost);
-            Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f); // levanta 0.5 no eixo Y
-            GameObject newTower = Instantiate(towerPrefab, spawnPos, Quaternion.identity);
+
+            // Posição de spawn 
+            Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f);
 
 
+            GameObject newTowerGO = Instantiate(towerPrefab, spawnPos, Quaternion.identity);
+
+
+            Tower newTower = newTowerGO.GetComponent<Tower>();
+
+            // Liga o spot à torre
             currentSpot.isOccupied = true;
+            currentSpot.currentTower = newTower;
+
+            // Liga a torre ao spot e define o investimento inicial
+            newTower.myTowerSpot = currentSpot;
+            newTower.totalInvested = cost;
         }
         else
         {

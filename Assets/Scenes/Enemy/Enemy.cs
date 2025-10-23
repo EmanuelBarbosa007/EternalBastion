@@ -3,6 +3,7 @@ using UnityEngine;
 public class Enemy : MonoBehaviour
 {
     public float speed = 3f;
+    public float rotateSpeed = 10f;
 
     private Transform target;
     private int waypointIndex = 0;
@@ -28,6 +29,17 @@ public class Enemy : MonoBehaviour
         Vector3 dir = target.position - transform.position;
         dir.y = 0;
 
+        
+        if (dir != Vector3.zero)
+        {
+            // Calcula a rotação necessária para olhar na direção do movimento
+            Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
+
+            // Suaviza a rotação para não ser instantânea
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
+        }
+
+        // Move o inimigo
         transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
 
         // Mantém sempre a mesma altura
@@ -43,7 +55,7 @@ public class Enemy : MonoBehaviour
     {
         Vector3 posXZ = new Vector3(transform.position.x, 0, transform.position.z);
         Vector3 targetXZ = new Vector3(target.position.x, 0, target.position.z);
-        return Vector3.Distance(posXZ, targetXZ) < 0.2f; 
+        return Vector3.Distance(posXZ, targetXZ) < 0.2f;
     }
 
     void GetNextWaypoint()
@@ -55,6 +67,12 @@ public class Enemy : MonoBehaviour
         {
             if (baseHealth != null)
                 baseHealth.TakeDamage(1); // tira 1 de vida da base
+
+
+            // Avisa o spawner que este inimigo chegou à base
+            if (EnemySpawner.EnemiesAlive > 0)
+                EnemySpawner.EnemiesAlive--;
+            // --- FIM DA LINHA ---
 
             Destroy(gameObject); // inimigo desaparece
             return;

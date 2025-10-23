@@ -14,9 +14,64 @@ public class Tower : MonoBehaviour
     [Header("Parts")]
     public Transform partToRotate;
 
-    // proteções para que subclasses possam aceder
+    // --- NOVAS VARIÁVEIS DE MELHORIA ---
+    [Header("Upgrade Stats")]
+    public string towerName = "Archer Tower"; // Nome para o UI
+    public int level = 1;
+
+    [Tooltip("Custo para comprar esta torre (Nível 1)")]
+    public int costLevel1 = 100;
+    public int upgradeCostLevel2 = 75;
+    public int upgradeCostLevel3 = 150;
+
+    [HideInInspector] public int totalInvested; // Total gasto (compra + melhorias)
+    [HideInInspector] public TowerSpot myTowerSpot; // Referência ao spot onde está
+
+    // Stats Base (para calcular melhorias)
+    protected float baseRange;
+    protected int baseBulletDamage;
+    protected float baseBulletSpeed;
+    // --- FIM DAS NOVAS VARIÁVEIS ---
+
+
     protected Transform target;
     protected float fireCountdown = 0f;
+
+
+    // --- NOVO MÉTODO: Start ---
+    // (Se já tinhas um, adiciona isto lá)
+    protected virtual void Start()
+    {
+        // Guarda os stats base (definidos no Inspector)
+        baseRange = range;
+        StoreBaseBulletStats();
+
+        // IMPORTANTE: Isto é um fallback.
+        // O teu script 'TowerPlacementUI' deve definir o 'totalInvested'
+        // quando a torre é comprada.
+        if (totalInvested == 0)
+        {
+            totalInvested = costLevel1;
+        }
+    }
+
+    // --- NOVO MÉTODO: StoreBaseBulletStats ---
+    /// <summary>
+    /// Guarda os stats base do projétil (para calcular melhoria Nível 3)
+    /// </summary>
+    protected virtual void StoreBaseBulletStats()
+    {
+        if (bulletPrefab != null)
+        {
+            Bullet b = bulletPrefab.GetComponent<Bullet>();
+            if (b != null)
+            {
+                baseBulletDamage = b.damage;
+                baseBulletSpeed = b.speed;
+            }
+        }
+    }
+
 
     protected virtual void Update()
     {
@@ -38,9 +93,9 @@ public class Tower : MonoBehaviour
         fireCountdown -= Time.deltaTime;
     }
 
-    // procura o inimigo mais perto dentro do range
     protected virtual void UpdateTarget()
     {
+        // ... (código existente sem alterações) ...
         Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         float shortestDistance = Mathf.Infinity;
         Enemy nearest = null;
@@ -63,17 +118,17 @@ public class Tower : MonoBehaviour
 
     protected virtual void RotateToTarget()
     {
+        // ... (código existente sem alterações) ...
         if (partToRotate == null || target == null) return;
-
         Vector3 dir = target.position - partToRotate.position;
-        dir.y = 0f; // impede rotação vertical
-
+        dir.y = 0f;
         Quaternion lookRotation = Quaternion.LookRotation(dir);
-        lookRotation *= Quaternion.Euler(0f, 180f, 0f); 
+        lookRotation *= Quaternion.Euler(0f, 180f, 0f);
         partToRotate.rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
 
+    // --- MÉTODO 'Shoot' MODIFICADO ---
     protected virtual void Shoot()
     {
         if (bulletPrefab == null || firePoint == null || target == null) return;
@@ -82,7 +137,70 @@ public class Tower : MonoBehaviour
         Bullet bullet = bulletGO.GetComponent<Bullet>();
 
         if (bullet != null)
+        {
+            // Aplica melhorias de Nível 3
+            if (level == 3)
+            {
+                bullet.damage = (int)(baseBulletDamage * 1.5f); // +50% Dano
+                bullet.speed = baseBulletSpeed * 1.5f;       // +50% Velocidade
+            }
+            // (Se for Nível 1 ou 2, usa os stats padrão do prefab)
+
             bullet.Seek(target);
+        }
+    }
+
+    // --- NOVOS MÉTODOS: UpgradeTower e SellTower ---
+
+    /// <summary>
+    /// Tenta melhorar a torre para o próximo nível
+    /// </summary>
+    public virtual void UpgradeTower()
+    {
+        if (level == 1) // Tentar ir para Nível 2
+        {
+            if (CurrencySystem.SpendMoney(upgradeCostLevel2))
+            {
+                totalInvested += upgradeCostLevel2;
+                level = 2;
+
+                // Aplicar melhoria Nível 2: +50% Alcance
+                range = baseRange * 1.5f;
+
+                Debug.Log("Torre melhorada para Nível 2!");
+            }
+        }
+        else if (level == 2) // Tentar ir para Nível 3
+        {
+            if (CurrencySystem.SpendMoney(upgradeCostLevel3))
+            {
+                totalInvested += upgradeCostLevel3;
+                level = 3;
+
+                // Melhorias de Nível 3 (Dano e Velocidade) são aplicadas no 'Shoot()'
+
+                Debug.Log("Torre melhorada para Nível 3!");
+            }
+        }
+    }
+
+    /// <summary>
+    /// Vende a torre por 50% do valor total investido
+    /// </summary>
+    public virtual void SellTower()
+    {
+        int sellAmount = totalInvested / 2;
+        CurrencySystem.AddMoney(sellAmount);
+
+        // Liberta o TowerSpot
+        if (myTowerSpot != null)
+        {
+            myTowerSpot.isOccupied = false;
+            myTowerSpot.currentTower = null;
+        }
+
+        // Destrói a torre
+        Destroy(gameObject);
     }
 
     // (opcional) desenhar o alcance no editor

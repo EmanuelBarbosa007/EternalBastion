@@ -27,6 +27,10 @@ public class EnemyHealth : MonoBehaviour
         // dá moedas ao jogador
         CurrencySystem.AddMoney(reward);
 
+        // Avisa o spawner que este inimigo morreu
+        if (EnemySpawner.EnemiesAlive > 0)
+            EnemySpawner.EnemiesAlive--;
+
         Destroy(gameObject);
     }
 }

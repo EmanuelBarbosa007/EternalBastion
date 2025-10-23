@@ -4,6 +4,7 @@ using UnityEngine.EventSystems;
 public class TowerSpot : MonoBehaviour
 {
     [HideInInspector] public bool isOccupied = false;
+    [HideInInspector] public Tower currentTower;
 
     private void OnMouseDown()
     {
@@ -13,13 +14,35 @@ public class TowerSpot : MonoBehaviour
 
         if (isOccupied)
         {
-            Debug.Log("Spot já ocupado!");
-            return;
-        }
+            // Clicámos numa torre que JÁ ESTÁ OCUPADA
 
-        if (TowerPlacementUI.Instance != null)
+            // 1. Se o painel de CONSTRUÇÃO estiver aberto, fecha-o.
+            if (TowerPlacementUI.Instance != null && TowerPlacementUI.Instance.panel.activeSelf)
+            {
+                TowerPlacementUI.Instance.ClosePanel();
+            }
+
+            // 2. Abre o painel de MELHORIA para esta torre
+            if (currentTower != null && TowerUpgradeUI.Instance != null)
+            {
+                TowerUpgradeUI.Instance.OpenPanel(currentTower);
+            }
+        }
+        else
         {
-            TowerPlacementUI.Instance.OpenPanel(this);
+            // Clicámos num spot que ESTÁ VAZIO
+
+            // 1. Se o painel de MELHORIA estiver aberto, fecha-o.
+            if (TowerUpgradeUI.Instance != null && TowerUpgradeUI.Instance.uiPanel.activeInHierarchy)
+            {
+                TowerUpgradeUI.Instance.ClosePanel();
+            }
+
+            // 2. Abre o painel de CONSTRUÇÃO
+            if (TowerPlacementUI.Instance != null)
+            {
+                TowerPlacementUI.Instance.OpenPanel(this);
+            }
         }
     }
 }
