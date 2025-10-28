@@ -12,6 +12,12 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
+
+    public void MultiplayerGame()
+    {
+        SceneManager.LoadScene("MultiplayerScene");
+    }
+
     public void OpenOptions()
     {
         mainMenu.SetActive(false);
