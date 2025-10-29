@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
-using Unity.Netcode; // Precisa disto
+using Unity.Netcode; 
 
 public class TowerPlacementUIMP : MonoBehaviour
 {

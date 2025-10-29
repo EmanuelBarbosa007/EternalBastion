@@ -43,7 +43,6 @@ public class TowerMP : NetworkBehaviour
 
     protected virtual void Start()
     {
-        // A lógica de guardar os stats base é igual à do single-player
         baseRange = range.Value; // Lê o valor inicial da NetworkVariable
         StoreBaseBulletStats();
 

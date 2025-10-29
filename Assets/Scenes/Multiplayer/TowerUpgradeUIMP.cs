@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Unity.Netcode; // Precisa disto
+using Unity.Netcode;
 
 public class TowerUpgradeUIMP : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class TowerUpgradeUIMP : MonoBehaviour
     public Button sellButton;
     public Button closeButton;
 
-    // (Referências ao seu UI, como textos de custo, etc.)
+
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
 
@@ -60,7 +60,7 @@ public class TowerUpgradeUIMP : MonoBehaviour
         currentSpot = null;
     }
 
-    // (Função para atualizar os botões)
+    // Função para atualizar os botões
     void UpdateUI()
     {
         if (currentTower == null) return;
@@ -86,7 +86,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
             upgradeButton.interactable = false;
         }
 
-        // (Pode adicionar lógica para verificar se o jogador tem dinheiro)
     }
 
 

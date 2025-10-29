@@ -8,7 +8,7 @@ public class EnemyHealthMP : NetworkBehaviour
     public int maxHealth = 10;
     public int moneyOnDeath = 5;
 
-    public Slider healthBar; // (Opcional) UI da barra de vida
+    public Slider healthBar; 
 
     // Sincroniza a vida do Server para os Clientes
     private NetworkVariable<int> currentHealth = new NetworkVariable<int>();
