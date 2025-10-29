@@ -4498,7 +4498,6 @@ GameObject:
   - component: {fileID: 638465912}
   - component: {fileID: 638465915}
   - component: {fileID: 638465914}
-  - component: {fileID: 638465913}
   m_Layer: 5
   m_Name: UpgradePanel
   m_TagString: Untagged
@@ -4529,24 +4528,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: -312.5}
   m_SizeDelta: {x: -800, y: -775}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &638465913
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 638465911}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58d148d7b7975334fb976b50eca2622f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  uiPanel: {fileID: 638465911}
-  upgradeButton: {fileID: 1098147551}
-  sellButton: {fileID: 822823985}
-  closeButton: {fileID: 1115224537}
-  upgradeCostText: {fileID: 1153927637}
-  sellValueText: {fileID: 1719484745}
 --- !u!114 &638465914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4704,7 +4685,6 @@ GameObject:
   - component: {fileID: 699952172}
   - component: {fileID: 699952175}
   - component: {fileID: 699952174}
-  - component: {fileID: 699952173}
   m_Layer: 5
   m_Name: TowerSelection
   m_TagString: Untagged
@@ -4735,20 +4715,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -800, y: -600}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &699952173
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 699952171}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca726080784d534893a7ac6674dd867, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  panel: {fileID: 699952171}
-  closeButton: {fileID: 2033580452}
 --- !u!114 &699952174
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6041,6 +6007,8 @@ GameObject:
   m_Component:
   - component: {fileID: 875167858}
   - component: {fileID: 875167857}
+  - component: {fileID: 875167859}
+  - component: {fileID: 875167860}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -6078,6 +6046,47 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &875167859
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875167856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca726080784d534893a7ac6674dd867, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 699952171}
+  closeButton: {fileID: 2033580452}
+  buildNormalTowerButton: {fileID: 539801716}
+  normalTowerPrefabId: 2
+  normalTowerCost: 50
+  buildFireTowerButton: {fileID: 93593949}
+  fireTowerPrefabId: 3
+  fireTowerCost: 100
+  buildPiercingTowerButton: {fileID: 2007163297}
+  piercingTowerPrefabId: 4
+  piercingTowerCost: 150
+--- !u!114 &875167860
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 875167856}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58d148d7b7975334fb976b50eca2622f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiPanel: {fileID: 638465911}
+  upgradeButton: {fileID: 1098147551}
+  sellButton: {fileID: 822823985}
+  closeButton: {fileID: 1115224537}
+  upgradeCostText: {fileID: 1153927637}
+  sellValueText: {fileID: 1719484745}
 --- !u!1 &876356957
 GameObject:
   m_ObjectHideFlags: 0
@@ -6418,8 +6427,6 @@ MonoBehaviour:
     PlayerPrefab: {fileID: 1448851403}
     Prefabs:
       NetworkPrefabsLists:
-      - {fileID: 11400000, guid: d830b9e765e28df4b9af14cf4ca4a0ce, type: 2}
-      - {fileID: 11400000, guid: d830b9e765e28df4b9af14cf4ca4a0ce, type: 2}
       - {fileID: 11400000, guid: d830b9e765e28df4b9af14cf4ca4a0ce, type: 2}
     TickRate: 30
     ClientConnectionBufferTimeout: 10
@@ -10453,8 +10460,8 @@ MonoBehaviour:
   panLimitMin: {x: -30, y: -15}
   panLimitMax: {x: 30, y: 30}
   scrollSpeed: 200
-  minY: 10
-  maxY: 25
+  minY: 1
+  maxY: 3
 --- !u!1 &1452181297
 GameObject:
   m_ObjectHideFlags: 0

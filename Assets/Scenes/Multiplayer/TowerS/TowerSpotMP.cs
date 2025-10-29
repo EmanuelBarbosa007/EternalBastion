@@ -70,8 +70,8 @@ public class TowerSpotMP : NetworkBehaviour
                 if (TowerPlacementUIMP.Instance != null)
                     TowerPlacementUIMP.Instance.ClosePanel();
 
-                // TowerUpgradeUIMP.Instance.OpenPanel(cachedTower, this);
-                Debug.Log("Abrir painel de Upgrade para a torre: " + cachedTower.name);
+                // <<< CORRIGIDO! Esta linha estava comentada. >>>
+                TowerUpgradeUIMP.Instance.OpenPanel(cachedTower, this);
             }
         }
         else
@@ -88,8 +88,9 @@ public class TowerSpotMP : NetworkBehaviour
                 // Passa 'this' (este próprio script) para o painel de UI
                 // O UI precisa de saber o NetworkObjectId deste spot
                 // para o enviar no ServerRpc de construção
-                // TowerPlacementUIMP.Instance.OpenPanel(this);
-                Debug.Log("Abrir painel de Construção para este spot.");
+
+                // <<< CORRIGIDO! Esta linha estava comentada. >>>
+                TowerPlacementUIMP.Instance.OpenPanel(this);
             }
         }
     }
