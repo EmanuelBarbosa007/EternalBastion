@@ -23,8 +23,11 @@ public class TowerSpotMP : NetworkBehaviour
     /// </summary>
     private void OnMouseDown()
     {
+
+        Debug.Log("OnMouseDown FOI ATIVADO no spot: " + gameObject.name);
+        
+
         // 1. Impede clique se o rato estiver sobre o UI
-        // (Igual ao seu script original)
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 

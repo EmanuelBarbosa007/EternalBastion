@@ -57,7 +57,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a2d9b130e8e9a64bbef04937ce8ec47, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.6
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5a2d9b130e8e9a64bbef04937ce8ec47, type: 3}
       propertyPath: m_LocalPosition.z
@@ -93,7 +93,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 5a2d9b130e8e9a64bbef04937ce8ec47, type: 3}
       propertyPath: m_Name
-      value: torre3_1 (1)
+      value: torre3_1 MP
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -131,7 +131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 2615127083
+  GlobalObjectIdHash: 1577862522
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -167,7 +167,7 @@ MonoBehaviour:
   firePoint: {fileID: 667881536385855376}
   partToRotate: {fileID: 2729925031852729124}
   towerName: Piercing Tower
-  costLevel1: 100
+  costLevel1: 150
   upgradeCostLevel2: 75
   upgradeCostLevel3: 150
   totalInvested: 0

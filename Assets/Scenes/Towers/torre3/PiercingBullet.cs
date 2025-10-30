@@ -11,7 +11,12 @@ public class PiercingBullet : MonoBehaviour
 
     public void Seek(Transform target)
     {
-        direction = (target.position - transform.position).normalized;
+        Vector3 rawDirection = (target.position - transform.position);
+
+        //  Ignora a altura do alvo e da torre.
+        rawDirection.y = 0f;
+
+        direction = rawDirection.normalized;
     }
 
     void Update()

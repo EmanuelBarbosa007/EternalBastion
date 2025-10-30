@@ -139,3 +139,10 @@ MonoBehaviour:
   bulletPrefab: {fileID: 7721633748168539548, guid: 5c31cb9067cc3a547ae4447c0615d931, type: 3}
   firePoint: {fileID: 8690216413614937665}
   partToRotate: {fileID: 5003460152200750534}
+  towerName: Archer Tower
+  level: 1
+  costLevel1: 150
+  upgradeCostLevel2: 75
+  upgradeCostLevel3: 150
+  totalInvested: 0
+  myTowerSpot: {fileID: 0}

@@ -9,30 +9,20 @@ public class TowerPlacementUIMP : MonoBehaviour
     public GameObject panel;
     public Button closeButton;
 
-    // --- NOVO: LIGA OS TEUS BOTÕES E DEFINE OS VALORES NO INSPECTOR ---
-
     [Header("Torre Normal")]
     public Button buildNormalTowerButton;
-    // Define o ID da lista de NetworkPrefabs (ex: 0)
     public int normalTowerPrefabId;
-    // Define o custo (ex: 100)
     public int normalTowerCost;
 
     [Header("Torre de Fogo")]
     public Button buildFireTowerButton;
-    // Define o ID da lista de NetworkPrefabs (ex: 1)
     public int fireTowerPrefabId;
-    // Define o custo (ex: 150)
     public int fireTowerCost;
 
     [Header("Torre Perfurante (Piercing)")]
     public Button buildPiercingTowerButton;
-    // Define o ID da lista de NetworkPrefabs (ex: 2)
     public int piercingTowerPrefabId;
-    // Define o custo (ex: 200)
     public int piercingTowerCost;
-
-    // --- Fim das novas variáveis ---
 
     private TowerSpotMP currentSpot;
 
@@ -52,7 +42,6 @@ public class TowerPlacementUIMP : MonoBehaviour
         if (closeButton != null)
             closeButton.onClick.AddListener(ClosePanel);
 
-        // --- NOVO: Ligar os botões de construção ---
         if (buildNormalTowerButton != null)
         {
             buildNormalTowerButton.onClick.AddListener(() => {
@@ -73,7 +62,6 @@ public class TowerPlacementUIMP : MonoBehaviour
                 BuildTower(piercingTowerPrefabId, piercingTowerCost);
             });
         }
-        // --- Fim da nova lógica de Start ---
     }
 
     public void OpenPanel(TowerSpotMP spot)
@@ -88,18 +76,22 @@ public class TowerPlacementUIMP : MonoBehaviour
         panel.SetActive(false);
     }
 
-    // Chamado pelos seus botões de construir
+    // --- FUNÇÃO MODIFICADA ---
     public void BuildTower(int towerPrefabId, int cost)
     {
         if (currentSpot == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
 
+        // Define a posição de spawn com o offset
+        Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f);
+
+
         // 1. Pede ao servidor para construir a torre
         PlayerNetwork.LocalInstance.RequestBuildTowerServerRpc(
             towerPrefabId,
             cost,
-            currentSpot.transform.position,     // Posição onde construir
-            currentSpot.NetworkObjectId         // ID do spot a ocupar
+            spawnPos, // <<< Passa a nova posição com offset
+            currentSpot.NetworkObjectId
         );
 
         // 2. Fecha o painel

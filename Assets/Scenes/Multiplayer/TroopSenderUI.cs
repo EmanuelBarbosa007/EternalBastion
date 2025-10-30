@@ -2,15 +2,16 @@ using UnityEngine;
 
 public class TroopSenderUI : MonoBehaviour
 {
-    // Custo e ID do Prefab (o ID é a ordem
-    // na lista de Prefabs do NetworkManager)
-    public int custoTropaNormal = 50;
-    public int prefabIdTropaNormal = 0; // TEM DE CONFIGURAR ISTO
+    public int custoTropaNormal = 20;
+    public int prefabIdTropaNormal = 0;
 
-    public int custoTropaTanque = 100;
-    public int prefabIdTropaTanque = 1; // TEM DE CONFIGURAR ISTO
+    public int custoTropaTanque = 35;
+    public int prefabIdTropaTanque = 1;
 
-    // Liga este botão no Inspector
+    public int custoCavalo = 25;
+    public int prefabIdCavalo = 8;
+
+    // Ligar botões no Inspector
     public void OnClick_ComprarTropaNormal()
     {
         if (PlayerNetwork.LocalInstance != null)
@@ -22,7 +23,7 @@ public class TroopSenderUI : MonoBehaviour
         }
     }
 
-    // Liga este botão no Inspector
+
     public void OnClick_ComprarTropaTanque()
     {
         if (PlayerNetwork.LocalInstance != null)
@@ -30,6 +31,17 @@ public class TroopSenderUI : MonoBehaviour
             PlayerNetwork.LocalInstance.RequestSpawnTroopServerRpc(
                 prefabIdTropaTanque,
                 custoTropaTanque
+            );
+        }
+    }
+
+    public void OnClick_ComprarCavalo()
+    {
+        if (PlayerNetwork.LocalInstance != null)
+        {
+            PlayerNetwork.LocalInstance.RequestSpawnTroopServerRpc(
+                prefabIdCavalo,
+                custoCavalo
             );
         }
     }
