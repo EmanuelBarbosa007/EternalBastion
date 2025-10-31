@@ -11,8 +11,6 @@ public class EscMenuManager : MonoBehaviour
     [SerializeField] private string mainMenuSceneName = "MenuScene";
 
     private bool isPaused = false;
-
-    // Propriedade estática para que outros scripts saibam se o jogo está pausado
     public static bool IsGamePaused { get; private set; }
 
     void Start()
@@ -69,7 +67,6 @@ public class EscMenuManager : MonoBehaviour
             optionsPanel.SetActive(true);  // Mostra o de opções
     }
 
-    //botão "Back" (Voltar) DENTRO do painel de opções.
  
     public void CloseOptions()
     {
@@ -80,7 +77,6 @@ public class EscMenuManager : MonoBehaviour
             pauseMenuPanel.SetActive(true);  // Mostra o de pausa
     }
 
-    // Esta é para o botão "Go to Main Menu".
     public void GoToMainMenu()
     {
         //despausar o jogo antes de sair da cena

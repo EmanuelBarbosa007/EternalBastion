@@ -12,7 +12,7 @@ public class TowerUpgradeUI : MonoBehaviour
     public Button upgradeButton;
     public Button sellButton;
 
-    // Recomendo usar TextMeshPro nos botões para mostrar os custos
+
     public TextMeshProUGUI upgradeButtonText;
     public TextMeshProUGUI sellButtonText;
 
@@ -31,16 +31,15 @@ public class TowerUpgradeUI : MonoBehaviour
 
     void Update()
     {
-        // Lógica para fechar o painel se clicar fora
+        // fechar o painel se clicar fora
         if (uiPanel.activeInHierarchy && Input.GetMouseButtonDown(0))
         {
-            // Estamos sobre o UI? (botões, etc)
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
-                return; // Não faz nada, deixa o botão tratar do clique
+                return; 
             }
 
-            // Estamos a clicar na torre selecionada?
+
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out hit, 100f))
@@ -51,15 +50,13 @@ public class TowerUpgradeUI : MonoBehaviour
                 }
             }
 
-            // Se chegamos aqui, clicámos noutro sítio. Fecha o painel.
+            // Fecha o painel
             ClosePanel();
         }
     }
 
 
-    /// <summary>
-    /// Abre o painel para uma torre específica
-    /// </summary>
+    //Abre o painel para uma torre específica
     public void OpenPanel(Tower tower)
     {
         selectedTower = tower;
@@ -67,18 +64,17 @@ public class TowerUpgradeUI : MonoBehaviour
         UpdateUI();
     }
 
-    /// <summary>
-    /// Fecha o painel
-    /// </summary>
+
+
+    // Fecha o painel
     public void ClosePanel()
     {
         selectedTower = null;
         uiPanel.SetActive(false);
     }
 
-    /// <summary>
-    /// Atualiza toda a informação no painel (textos, botões)
-    /// </summary>
+
+    // Atualiza toda a informação no painel (textos, botões)
     void UpdateUI()
     {
         if (selectedTower == null) return;
@@ -109,9 +105,8 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Chamado quando o dinheiro do jogador muda (para atualizar os botões)
-    /// </summary>
+
+    // Chamado quando o dinheiro do jogador muda 
     public void OnMoneyChanged()
     {
         if (uiPanel.activeInHierarchy && selectedTower != null)
@@ -120,7 +115,7 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-    // --- Funções para ligar aos botões no Inspector ---
+
 
     public void OnUpgradePressed()
     {

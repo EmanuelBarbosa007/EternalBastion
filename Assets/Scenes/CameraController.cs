@@ -20,7 +20,7 @@ public class CameraController : MonoBehaviour
     {
         cam = Camera.main;
 
-        // Ajusta posição inicial (mais baixa e com ângulo)
+        // Ajusta posição inicial 
         transform.position = new Vector3( -27.5f, 20f, 20f);
         transform.rotation = Quaternion.Euler(60f, 180f, 0f);
     }

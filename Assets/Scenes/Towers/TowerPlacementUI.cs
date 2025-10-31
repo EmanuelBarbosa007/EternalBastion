@@ -59,7 +59,7 @@ public class TowerPlacementUI : MonoBehaviour
     {
         if (currentSpot == null || towerPrefab == null) return;
 
-        // 1. Vai buscar o script 'Tower' ao prefab para saber o custo
+        // Vai buscar o script 'Tower' ao prefab para saber o custo
         Tower towerComponent = towerPrefab.GetComponent<Tower>();
         if (towerComponent == null)
         {

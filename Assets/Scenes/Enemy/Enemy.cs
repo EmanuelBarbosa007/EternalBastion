@@ -1,83 +1,80 @@
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour
 {
     public float speed = 3f;
-    public float rotateSpeed = 10f;
 
-    private Transform target;
-    private int waypointIndex = 0;
-    private float startY;
 
+    private Transform baseTarget;  
+    private NavMeshAgent agent;    //componente de navegação
+    private float startY;          // manter a altura
+
+
+    // 3. Manter a referência estática para a vida da base
     private static BaseHealth baseHealth;
 
     void Start()
     {
-        target = WaypointPath.points[0];
+
         startY = transform.position.y;
 
-        // Cache da base (evita chamar Find a cada inimigo)
+        // Obtem o componente NavMeshAgent
+        agent = GetComponent<NavMeshAgent>();
+        if (agent == null)
+        {
+            Debug.LogError("NavMeshAgent não encontrado no inimigo!", this);
+            return;
+        }
+
+        // Encontra a base pela Tag "Base" 
+        GameObject baseObject = GameObject.FindGameObjectWithTag("Base");
+        if (baseObject != null)
+        {
+            baseTarget = baseObject.transform;
+
+
+            agent.speed = speed;
+            agent.SetDestination(baseTarget.position);
+        }
+        else
+        {
+            Debug.LogError("Não foi possível encontrar a Base! Verifica se o teu objeto 'Base' tem a Tag 'Base'.", this);
+        }
+
+        // Cache da vida da base 
         if (baseHealth == null)
             baseHealth = Object.FindFirstObjectByType<BaseHealth>();
     }
 
     void Update()
     {
-        if (target == null) return;
-
-        // Direção até ao próximo waypoint (ignora eixo Y)
-        Vector3 dir = target.position - transform.position;
-        dir.y = 0;
-
-        
-        if (dir != Vector3.zero)
+        if (agent != null && !agent.pathPending)
         {
-            // Calcula a rotação necessária para olhar na direção do movimento
-            Quaternion lookRotation = Quaternion.LookRotation(dir.normalized);
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
 
-            // Suaviza a rotação para não ser instantânea
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
-        }
-
-        // Move o inimigo
-        transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
-
-        // Mantém sempre a mesma altura
-        transform.position = new Vector3(transform.position.x, startY, transform.position.z);
-
-        if (HasReachedTarget())
-        {
-            GetNextWaypoint();
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    ReachBase(); // Chegou à base
+                }
+            }
         }
     }
 
-    bool HasReachedTarget()
+    void ReachBase()
     {
-        Vector3 posXZ = new Vector3(transform.position.x, 0, transform.position.z);
-        Vector3 targetXZ = new Vector3(target.position.x, 0, target.position.z);
-        return Vector3.Distance(posXZ, targetXZ) < 0.2f;
+        if (baseHealth != null)
+            baseHealth.TakeDamage(1); // tira 1 de vida da base
+        else
+            Debug.LogWarning("Não foi possível encontrar BaseHealth para dar dano.");
+
+
+        if (EnemySpawner.EnemiesAlive > 0)
+            EnemySpawner.EnemiesAlive--;
+
+        // Destroi o inimigo
+        Destroy(gameObject);
     }
 
-    void GetNextWaypoint()
-    {
-        waypointIndex++;
-
-        // Se chegou ao fim (a base)
-        if (waypointIndex >= WaypointPath.points.Length)
-        {
-            if (baseHealth != null)
-                baseHealth.TakeDamage(1); // tira 1 de vida da base
-
-
-            // Avisa o spawner que este inimigo chegou à base
-            if (EnemySpawner.EnemiesAlive > 0)
-                EnemySpawner.EnemiesAlive--;
-            // --- FIM DA LINHA ---
-
-            Destroy(gameObject); // inimigo desaparece
-            return;
-        }
-
-        target = WaypointPath.points[waypointIndex];
-    }
 }

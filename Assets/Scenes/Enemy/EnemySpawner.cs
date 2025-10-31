@@ -1,6 +1,6 @@
 using System.Collections;
 using UnityEngine;
-using TMPro; // Precisamos disto para os textos
+using TMPro;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -61,18 +61,18 @@ public class EnemySpawner : MonoBehaviour
 
     private void Update()
     {
-        // 1. Se estamos a ESPERAR que o jogador mate os inimigos
+        // espera que o jogador mate os inimigos
         if (state == SpawnState.WAITING)
         {
             if (EnemiesAlive <= 0)
             {
-                // Todos mortos! Começa a contagem para a próxima wave
+                // Começa a contagem para a próxima wave
                 StartWaveCountdown();
             }
             return; // Continua a esperar
         }
 
-        // 2. Se estamos em CONTAGEM REGRESSIVA
+        //
         if (state == SpawnState.COUNTDOWN)
         {
             countdown -= Time.deltaTime;
@@ -81,7 +81,7 @@ public class EnemySpawner : MonoBehaviour
 
             if (countdown <= 0f)
             {
-                // Acabou a contagem! Começa a spawnar
+                // Acaba a contagem e começa a spawnar
                 state = SpawnState.SPAWNING;
                 countdownText.text = "Ataque!";
                 StartCoroutine(SpawnWave());
@@ -93,7 +93,7 @@ public class EnemySpawner : MonoBehaviour
     {
         state = SpawnState.COUNTDOWN;
 
-        // --- APLICA A DIFICULDADE PROGRESSIVA ---
+        // dificuldade progressiva
         enemiesPerWave += enemiesPerWaveIncrease;
         spawnInterval = Mathf.Max(minSpawnInterval, spawnInterval - spawnIntervalDecrease);
         timeBetweenWaves = Mathf.Max(minTimeBetweenWaves, timeBetweenWaves - timeBetweenWavesDecrease);
@@ -111,8 +111,6 @@ public class EnemySpawner : MonoBehaviour
             waveText.text = "Wave " + waveNumber;
     }
 
-    // A Coroutine que faz o spawn
-    // A Coroutine que faz o spawn
     IEnumerator SpawnWave()
     {
         EnemiesAlive = 0; // Zera o contador no início da wave
@@ -146,7 +144,7 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        state = SpawnState.WAITING; // Acabou de spawnar, agora espera
+        state = SpawnState.WAITING; 
     }
 
     void SpawnEnemy(GameObject enemyPrefab)

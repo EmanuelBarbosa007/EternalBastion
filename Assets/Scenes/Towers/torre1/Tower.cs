@@ -14,7 +14,7 @@ public class Tower : MonoBehaviour
     [Header("Parts")]
     public Transform partToRotate;
 
-    // --- NOVAS VARIÁVEIS DE MELHORIA ---
+
     [Header("Upgrade Stats")]
     public string towerName = "Archer Tower"; // Nome para o UI
     public int level = 1;
@@ -31,34 +31,26 @@ public class Tower : MonoBehaviour
     protected float baseRange;
     protected int baseBulletDamage;
     protected float baseBulletSpeed;
-    // --- FIM DAS NOVAS VARIÁVEIS ---
+
 
 
     protected Transform target;
     protected float fireCountdown = 0f;
 
 
-    // --- NOVO MÉTODO: Start ---
-    // (Se já tinhas um, adiciona isto lá)
     protected virtual void Start()
     {
-        // Guarda os stats base (definidos no Inspector)
+        // Guarda os stats base 
         baseRange = range;
         StoreBaseBulletStats();
 
-        // IMPORTANTE: Isto é um fallback.
-        // O teu script 'TowerPlacementUI' deve definir o 'totalInvested'
-        // quando a torre é comprada.
         if (totalInvested == 0)
         {
             totalInvested = costLevel1;
         }
     }
 
-    // --- NOVO MÉTODO: StoreBaseBulletStats ---
-    /// <summary>
-    /// Guarda os stats base do projétil (para calcular melhoria Nível 3)
-    /// </summary>
+
     protected virtual void StoreBaseBulletStats()
     {
         if (bulletPrefab != null)
@@ -95,7 +87,6 @@ public class Tower : MonoBehaviour
 
     protected virtual void UpdateTarget()
     {
-        // ... (código existente sem alterações) ...
         Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
         float shortestDistance = Mathf.Infinity;
         Enemy nearest = null;
@@ -118,7 +109,6 @@ public class Tower : MonoBehaviour
 
     protected virtual void RotateToTarget()
     {
-        // ... (código existente sem alterações) ...
         if (partToRotate == null || target == null) return;
         Vector3 dir = target.position - partToRotate.position;
         dir.y = 0f;
@@ -128,7 +118,6 @@ public class Tower : MonoBehaviour
     }
 
 
-    // --- MÉTODO 'Shoot' MODIFICADO ---
     protected virtual void Shoot()
     {
         if (bulletPrefab == null || firePoint == null || target == null) return;
@@ -150,11 +139,7 @@ public class Tower : MonoBehaviour
         }
     }
 
-    // --- NOVOS MÉTODOS: UpgradeTower e SellTower ---
 
-    /// <summary>
-    /// Tenta melhorar a torre para o próximo nível
-    /// </summary>
     public virtual void UpgradeTower()
     {
         if (level == 1) // Tentar ir para Nível 2
@@ -184,9 +169,9 @@ public class Tower : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Vende a torre por 50% do valor total investido
-    /// </summary>
+ 
+    // Vende a torre por 50% do valor total investido
+
     public virtual void SellTower()
     {
         int sellAmount = totalInvested / 2;
@@ -203,7 +188,6 @@ public class Tower : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // (opcional) desenhar o alcance no editor
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

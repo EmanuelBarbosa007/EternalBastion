@@ -14,15 +14,14 @@ public class TowerSpot : MonoBehaviour
 
         if (isOccupied)
         {
-            // Clicámos numa torre que JÁ ESTÁ OCUPADA
 
-            // 1. Se o painel de CONSTRUÇÃO estiver aberto, fecha-o.
+            // Se o painel de CONSTRUÇÃO estiver aberto, fecha-o
             if (TowerPlacementUI.Instance != null && TowerPlacementUI.Instance.panel.activeSelf)
             {
                 TowerPlacementUI.Instance.ClosePanel();
             }
 
-            // 2. Abre o painel de MELHORIA para esta torre
+            // Abre o painel de MELHORIA para esta torre
             if (currentTower != null && TowerUpgradeUI.Instance != null)
             {
                 TowerUpgradeUI.Instance.OpenPanel(currentTower);
@@ -30,15 +29,14 @@ public class TowerSpot : MonoBehaviour
         }
         else
         {
-            // Clicámos num spot que ESTÁ VAZIO
-
-            // 1. Se o painel de MELHORIA estiver aberto, fecha-o.
+            // Clicámos num spot que esta vazio
+            // Se o painel de MELHORIA estiver aberto, fecha-o.
             if (TowerUpgradeUI.Instance != null && TowerUpgradeUI.Instance.uiPanel.activeInHierarchy)
             {
                 TowerUpgradeUI.Instance.ClosePanel();
             }
 
-            // 2. Abre o painel de CONSTRUÇÃO
+            // abre o painel de CONSTRUÇÃO
             if (TowerPlacementUI.Instance != null)
             {
                 TowerPlacementUI.Instance.OpenPanel(this);

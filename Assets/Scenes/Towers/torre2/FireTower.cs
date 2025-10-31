@@ -2,14 +2,14 @@ using UnityEngine;
 
 public class FireTower : Tower
 {
-    // Override Start para definir o nome e guardar stats
+
     protected override void Start()
     {
-        base.Start(); // Chama o Start() da Tower (que chama StoreBaseBulletStats)
+        base.Start(); // Chama o Start() da Tower
         towerName = "Fire Tower";
     }
 
-    // Override para guardar os stats da Fireball
+    //guarda os stats da Fireball
     protected override void StoreBaseBulletStats()
     {
         if (bulletPrefab != null)
@@ -23,7 +23,7 @@ public class FireTower : Tower
         }
     }
 
-    // Override Shoot para aplicar stats à Fireball
+    // aplica stats à Fireball
     protected override void Shoot()
     {
         if (bulletPrefab == null || firePoint == null || target == null) return;

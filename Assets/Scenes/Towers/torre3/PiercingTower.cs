@@ -2,14 +2,13 @@ using UnityEngine;
 
 public class PiercingTower : Tower
 {
-    // Override Start para definir o nome e guardar stats
     protected override void Start()
     {
-        base.Start(); // Chama o Start() da Tower (que chama StoreBaseBulletStats)
+        base.Start(); // Chama o Start() da Tower
         towerName = "Piercing Tower";
     }
 
-    // Override para guardar os stats da PiercingBullet
+    // guarda os stats da PiercingBullet
     protected override void StoreBaseBulletStats()
     {
         if (bulletPrefab != null)
@@ -23,7 +22,7 @@ public class PiercingTower : Tower
         }
     }
 
-    // Override Shoot para aplicar stats à PiercingBullet
+    // aplica stats à PiercingBullet
     protected override void Shoot()
     {
         if (bulletPrefab == null || firePoint == null || target == null) return;
