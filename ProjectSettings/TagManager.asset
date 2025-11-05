@@ -5,11 +5,12 @@ TagManager:
   serializedVersion: 3
   tags:
   - Base
+  - Path
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - path
   - Water
   - UI
   - 

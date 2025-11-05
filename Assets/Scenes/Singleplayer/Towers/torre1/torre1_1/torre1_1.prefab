@@ -1,0 +1,158 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &170313495132006480
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1261001067946851591}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1261001067946851591
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 170313495132006480}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.11, y: 2.21, z: -5.68}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2411847039233238762}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &2806344447198904577
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -29.402401
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -27.39
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      propertyPath: m_Name
+      value: torre1_1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1261001067946851591}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3562958873129936986}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 318542878944311897}
+  m_SourcePrefab: {fileID: 100100000, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+--- !u!4 &2411847039233238762 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+  m_PrefabInstance: {fileID: 2806344447198904577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3040856319228869712 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 58da4066d49f3ea42950b838db080ad9, type: 3}
+  m_PrefabInstance: {fileID: 2806344447198904577}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3562958873129936986
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3040856319228869712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f3892117002cdc4bbbbf7e02693e4ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  range: 15
+  fireRate: 1
+  rotationSpeed: 10
+  bulletPrefab: {fileID: 8165817430203650693, guid: 36d14bb67b23cc24e82443a3fc793c21, type: 3}
+  firePoint: {fileID: 1261001067946851591}
+  partToRotate: {fileID: 2411847039233238762}
+  towerName: Archer Tower
+  level: 1
+  costLevel1: 50
+  upgradeCostLevel2: 75
+  upgradeCostLevel3: 150
+  totalInvested: 0
+  myTowerSpot: {fileID: 0}
+--- !u!114 &318542878944311897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3040856319228869712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b7f76b9ad95dcf64db89676dffd7413e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

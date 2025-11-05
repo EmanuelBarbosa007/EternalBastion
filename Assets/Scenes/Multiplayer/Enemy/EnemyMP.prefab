@@ -183,7 +183,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 10
+  maxHealth: 5
   moneyOnDeath: 15
   healthBar: {fileID: 0}
 --- !u!136 &-3436906012900958142

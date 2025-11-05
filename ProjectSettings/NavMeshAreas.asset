@@ -11,6 +11,12 @@ NavMeshProjectSettings:
     cost: 1
   - name: Jump
     cost: 2
+  - name: DangerLevel1
+    cost: 50
+  - name: DangerLevel2
+    cost: 100
+  - name: DangerLevel3
+    cost: 200
   - name: 
     cost: 1
   - name: 
@@ -63,13 +69,7 @@ NavMeshProjectSettings:
     cost: 1
   - name: 
     cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  - name: 
-    cost: 1
-  m_LastAgentTypeID: -1372625422
+  m_LastAgentTypeID: 1479372276
   m_Settings:
   - serializedVersion: 3
     agentTypeID: 0
