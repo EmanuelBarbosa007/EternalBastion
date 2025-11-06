@@ -31,6 +31,18 @@ public class EnemyHealth : MonoBehaviour
         if (EnemySpawner.EnemiesAlive > 0)
             EnemySpawner.EnemiesAlive--;
 
+
+        // Tenta encontrar o script do boss neste objeto
+        TrojanHorseBoss boss = GetComponent<TrojanHorseBoss>(); 
+
+        // 2. Se for o boss chama a função de spawn
+        if (boss != null)
+        {
+            boss.SpawnTroops(); 
+        }
+
+
+        // 3. Destrói o inimigo
         Destroy(gameObject);
     }
 }

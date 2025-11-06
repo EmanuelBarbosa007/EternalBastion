@@ -88,13 +88,20 @@ public class Tower : MonoBehaviour
 
     protected virtual void UpdateTarget()
     {
-        Enemy[] enemies = Object.FindObjectsByType<Enemy>(FindObjectsSortMode.None);
-        float shortestDistance = Mathf.Infinity;
-        Enemy nearest = null;
 
-        foreach (Enemy e in enemies)
+        EnemyHealth[] allEnemies = Object.FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
+
+        float shortestDistance = Mathf.Infinity;
+
+
+        EnemyHealth nearest = null;
+
+
+        foreach (EnemyHealth e in allEnemies)
         {
             float d = Vector3.Distance(transform.position, e.transform.position);
+
+
             if (d < shortestDistance && d <= range)
             {
                 shortestDistance = d;
@@ -103,7 +110,7 @@ public class Tower : MonoBehaviour
         }
 
         if (nearest != null)
-            target = nearest.transform;
+            target = nearest.transform; // Continua a guardar o Transform do alvo
         else
             target = null;
     }
