@@ -11,10 +11,6 @@ public class NetworkConnectUI : MonoBehaviour
 
     void Start()
     {
-        // Garante que o painel está visível no início
-        if (connectionPanel != null)
-            connectionPanel.SetActive(true);
-
         if (hostButton != null) hostButton.onClick.AddListener(OnHostClicked);
         if (clientButton != null) clientButton.onClick.AddListener(OnClientClicked);
     }

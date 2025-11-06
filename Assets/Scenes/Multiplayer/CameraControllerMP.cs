@@ -1,21 +1,23 @@
 using UnityEngine;
 using Unity.Netcode;
 
-
 public class CameraControllerMP : NetworkBehaviour
 {
-    // --- Copie TODAS as variáveis do seu CameraController.cs original para aqui ---
+    // --- Variáveis de Movimento e Zoom ---
+    [Header("Movement Settings")]
     public float panSpeed = 20f;
-    public float panBorderThickness = 10f;
-    public Vector2 panLimitMin; // Defina limites X e Z mínimos no Inspector
-    public Vector2 panLimitMax; // Defina limites X e Z máximos no Inspector
     public float scrollSpeed = 20f;
-    public float minY = 15f; // NOVO: Valor mais baixo para mais zoom
-    public float maxY = 80f; // NOVO: Valor mais baixo para menos zoom
+    public float minY = 15f;
+    public float maxY = 80f;
 
-    // --- Lógica de Controlo de Rede ---
+    [Header("Map Limits")]
+    public Vector2 panLimitMin;
+    public Vector2 panLimitMax;
+
+
     public override void OnNetworkSpawn()
     {
+        // Ativa a câmara e o audio listener APENAS para o jogador local
         if (IsOwner)
         {
             gameObject.name = $"CameraController - Local - ID {OwnerClientId}";
@@ -24,9 +26,10 @@ public class CameraControllerMP : NetworkBehaviour
             AudioListener listener = GetComponentInChildren<AudioListener>();
             if (listener != null) listener.enabled = true;
 
-            // NOVO: Define a posição inicial com uma altura média, não a máxima
+            // Define a posição inicial com uma altura média
             float startY = (minY + maxY) / 2.0f;
 
+            // Define posições de spawn diferentes para Host e Cliente
             if (OwnerClientId == NetworkManager.ServerClientId) // Host (Jogador A)
             {
                 transform.position = new Vector3(panLimitMin.x + 10, startY, panLimitMin.y + 10);
@@ -36,6 +39,7 @@ public class CameraControllerMP : NetworkBehaviour
                 transform.position = new Vector3(panLimitMax.x - 10, startY, panLimitMax.y - 10);
             }
         }
+        // Desativa a câmara e o audio listener para jogadores remotos
         else
         {
             gameObject.name = $"CameraController - Remote - ID {OwnerClientId}";
@@ -49,45 +53,41 @@ public class CameraControllerMP : NetworkBehaviour
 
     void Update()
     {
+        // Só executa o movimento se esta câmara pertencer ao jogador local
         if (!IsOwner)
         {
             return;
         }
 
-        Vector3 pos = transform.position;
+        // Lógica de Movimento
 
-    
+        float xInput = 0f;
+        float zInput = 0f;
 
-        // Movimento com Teclado ou Rato na Borda
-        if (Input.GetKey("w"))
-        {
-            pos.z -= panSpeed * Time.deltaTime;
-        }
-        if (Input.GetKey("s") )
-        {
-            pos.z += panSpeed * Time.deltaTime;
-        }
+        // 1. Obter Input
+        if (Input.GetKey(KeyCode.W)) zInput -= 1f;
+        if (Input.GetKey(KeyCode.S)) zInput += 1f;
+        if (Input.GetKey(KeyCode.A)) xInput += 1f;
+        if (Input.GetKey(KeyCode.D)) xInput -= 1f;
 
-        if (Input.GetKey("d") )
-        {
-            pos.x -= panSpeed * Time.deltaTime; 
-        }
-        if (Input.GetKey("a") )
-        {
-            pos.x += panSpeed * Time.deltaTime; 
-        }
+        // 2. Normalizar o vetor de direção 
+        Vector3 dir = new Vector3(xInput, 0, zInput).normalized;
+        Vector3 move = dir * panSpeed * Time.deltaTime;
+
+        // 3. Obter Posição Atual e Aplicar Movimento
+        Vector3 newPos = transform.position;
+        newPos += move;
 
 
-        // Zoom com Scroll do Rato
         float scroll = Input.GetAxis("Mouse ScrollWheel");
-        pos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
+        newPos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
 
-        // Aplica Limites
-        pos.x = Mathf.Clamp(pos.x, panLimitMin.x, panLimitMax.x);
-        pos.y = Mathf.Clamp(pos.y, minY, maxY);
-        pos.z = Mathf.Clamp(pos.z, panLimitMin.y, panLimitMax.y);
+        //Aplicar Limites
+        newPos.x = Mathf.Clamp(newPos.x, panLimitMin.x, panLimitMax.x);
+        newPos.y = Mathf.Clamp(newPos.y, minY, maxY); // Limites de zoom
+        newPos.z = Mathf.Clamp(newPos.z, panLimitMin.y, panLimitMax.y); // Limites de movimento Z
 
-        // Atualiza a posição da câmara
-        transform.position = pos;
+
+        transform.position = newPos;
     }
 }

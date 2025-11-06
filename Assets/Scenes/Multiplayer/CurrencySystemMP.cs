@@ -10,15 +10,14 @@ public class CurrencySystemMP : NetworkBehaviour
 
     public int startingMoney = 150;
 
-    // Referências aos textos de UI de cada jogador (opcional, só para debug)
+    // Referências aos textos de UI de cada jogador
     public TextMeshProUGUI moneyTextA;
     public TextMeshProUGUI moneyTextB;
 
-    // Sincroniza o dinheiro.
-    // É mais fácil ter duas variáveis do que um NetworkList/Dictionary
-    // para este caso 1v1.
     private NetworkVariable<int> moneyJogadorA = new NetworkVariable<int>(); // Host (ID 0)
     private NetworkVariable<int> moneyJogadorB = new NetworkVariable<int>(); // Client (ID 1+)
+
+    public int MoneyJogadorB => moneyJogadorB.Value;
 
     void Awake()
     {
@@ -81,12 +80,10 @@ public class CurrencySystemMP : NetworkBehaviour
         return false; // Não tem dinheiro
     }
 
-    // --- UI (Corre em todos os Clientes) ---
 
+    //UI
     void UpdateUI()
     {
-        // Esta lógica de UI pode ser melhorada para que cada jogador
-        // só veja o seu próprio dinheiro, mas para já serve.
         if (moneyTextA != null)
             moneyTextA.text = "Moedas A: " + moneyJogadorA.Value;
 

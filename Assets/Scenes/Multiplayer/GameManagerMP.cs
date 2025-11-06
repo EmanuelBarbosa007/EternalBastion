@@ -10,6 +10,11 @@ public class GameManagerMP : NetworkBehaviour
 {
     public static GameManagerMP Instance;
 
+    // --- NOVA VARIÁVEL ---
+    [Header("Modo de Jogo")]
+    [Tooltip("Se for 'true', o jogo inicia no modo PvE contra a IA (clientId 1)")]
+    public bool modoPvE = false;
+
     [Header("Referências de Jogo")]
     // Arraste as bases de JogadorA e JogadorB aqui
     public BaseHealthMP baseJogadorA;
@@ -37,21 +42,38 @@ public class GameManagerMP : NetworkBehaviour
             Instance = this;
     }
 
-    // --- Lógica de Conexão (só funciona no Host/Server) ---
 
     public override void OnNetworkSpawn()
     {
-        if (IsHost)
+        if (IsHost) // IsHost é o mesmo que (IsServer && IsClient)
         {
-            // O Host (Jogador A) conecta-se
-            NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
-            // Configura a sua própria base
+
+            // O Host (Jogador A) configura sempre a sua própria base
             baseJogadorA.donoDaBaseClientId = NetworkManager.Singleton.LocalClientId; // 0
+
+            if (modoPvE)
+            {
+                // MODO PVE
+                Debug.Log("GameManager: Modo PvE detetado. A iniciar jogo com IA.");
+
+                // Atribui a Base B à IA 
+                baseJogadorB.donoDaBaseClientId = 1;
+
+                // Inicia o jogo imediatamente
+                jogoIniciado.Value = true;
+            }
+            else
+            {
+                Debug.Log("GameManager: Modo PvP detetado. A esperar por segundo jogador.");
+
+                // O Host (Jogador A) conecta-se e espera pelo Jogador B
+                NetworkManager.Singleton.OnClientConnectedCallback += HandleClientConnected;
+            }
         }
 
         if (IsClient)
         {
-            // Todos os clientes (incluindo o Host) observam esta variável
+            // Todos os clientes observam esta variável
             jogoIniciado.OnValueChanged += HandleJogoIniciado;
             HandleJogoIniciado(false, jogoIniciado.Value); // Verifica o estado inicial
         }
@@ -69,6 +91,9 @@ public class GameManagerMP : NetworkBehaviour
         // Esta função SÓ CORRE NO SERVER
         if (!IsServer) return;
 
+        // Se o modoPvE for true, esta função não deve ser chamada
+        if (modoPvE) return;
+
         Debug.Log($"Cliente {clientId} conectado. Total: {NetworkManager.Singleton.ConnectedClients.Count}");
 
         // Se o Jogador B (clientId != 0) se conectou
@@ -84,7 +109,7 @@ public class GameManagerMP : NetworkBehaviour
         }
     }
 
-    // --- Lógica de UI (só corre nos Clientes) ---
+
 
     private void HandleJogoIniciado(bool anterior, bool novo)
     {
@@ -103,7 +128,7 @@ public class GameManagerMP : NetworkBehaviour
         }
     }
 
-    // --- Lógica de Fim de Jogo (só corre no Server) ---
+
 
     public void BaseDestruida(ulong clientIdDoJogadorQuePerdeu)
     {
@@ -115,7 +140,22 @@ public class GameManagerMP : NetworkBehaviour
             ? baseJogadorB.donoDaBaseClientId
             : baseJogadorA.donoDaBaseClientId;
 
-        string nomeVencedor = (vencedorClientId == 0) ? "Jogador A (Host)" : $"Jogador B (Client {vencedorClientId})";
+        string nomeVencedor;
+
+
+        if (modoPvE && vencedorClientId == 1)
+        {
+            nomeVencedor = "IA";
+        }
+        else if (modoPvE && vencedorClientId == 0)
+        {
+            nomeVencedor = "Jogador A (Host)";
+        }
+        else
+        {
+            nomeVencedor = (vencedorClientId == 0) ? "Jogador A (Host)" : $"Jogador B (Client {vencedorClientId})";
+        }
+
 
         // Como o UI está na cena do server, podemos ativá-lo diretamente
         if (fimDeJogoPanel != null)
@@ -136,7 +176,7 @@ public class GameManagerMP : NetworkBehaviour
         Debug.Log($"Fim de Jogo! Vencedor: {nomeVencedor}");
         Time.timeScale = 0f; // Pausa o jogo para todos
 
-        // Se o Host/Server tiver o seu próprio UI, ele não o deve mostrar aqui
+
         if (IsServer) return;
 
         // Clientes puros mostram o seu UI
@@ -157,7 +197,6 @@ public class GameManagerMP : NetworkBehaviour
         Time.timeScale = 1f;
 
         // Recarrega a cena para todos
-        // NOTA: O SceneManager do Netcode é um pouco diferente
         NetworkManager.Singleton.SceneManager.LoadScene(
             SceneManager.GetActiveScene().name,
             UnityEngine.SceneManagement.LoadSceneMode.Single);

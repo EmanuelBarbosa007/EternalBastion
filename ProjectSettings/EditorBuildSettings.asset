@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/MultiplayerScene.unity
     guid: 9cf5c7b20eed09b448a72b439969e1be
+  - enabled: 1
+    path: Assets/Scenes/PvEScene.unity
+    guid: 9a7f356bcb24d1e43903ffe07d47a52f
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
