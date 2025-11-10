@@ -18,6 +18,11 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("MultiplayerScene");
     }
 
+    public void PveGame()
+    {
+        SceneManager.LoadScene("PvEScene");
+    }
+
     public void OpenOptions()
     {
         mainMenu.SetActive(false);
