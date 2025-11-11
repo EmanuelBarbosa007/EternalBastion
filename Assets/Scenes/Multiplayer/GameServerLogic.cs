@@ -53,7 +53,7 @@ public class GameServerLogic : NetworkBehaviour
     public bool TryBuildTower(ulong clientId, int torrePrefabID, int custo, Vector3 posicao, ulong spotNetworkId)
     {
         if (!IsServer) return false;
-        // ... (resto da função como estava)
+
         if (CurrencySystemMP.Instance.SpendMoney(clientId, custo))
         {
             GameObject prefabTorre = NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs[torrePrefabID].Prefab;

@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Unity.Netcode;
 
 public class EscMenuManager : MonoBehaviour
 {
@@ -83,6 +84,12 @@ public class EscMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         IsGamePaused = false;
+
+        if (NetworkManager.Singleton != null)
+        {
+            NetworkManager.Singleton.Shutdown();
+            Debug.Log("NetworkManager foi desligado.");
+        }
 
         // Carrega a cena do menu
         SceneManager.LoadScene(mainMenuSceneName);

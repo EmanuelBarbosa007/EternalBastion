@@ -752,6 +752,10 @@ PrefabInstance:
       value: MineSpot (1)
       objectReference: {fileID: 0}
     - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
+      propertyPath: buildCost
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
       propertyPath: goldMinePrefab
       value: 
       objectReference: {fileID: 7995893847160752216, guid: b806753ec41b2214ea72267db7cfc485, type: 3}
@@ -8985,6 +8989,10 @@ PrefabInstance:
       value: MineSpot (2)
       objectReference: {fileID: 0}
     - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
+      propertyPath: buildCost
+      value: 75
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
       propertyPath: goldMinePrefab
       value: 
       objectReference: {fileID: 7995893847160752216, guid: b806753ec41b2214ea72267db7cfc485, type: 3}
@@ -14392,6 +14400,10 @@ PrefabInstance:
     - target: {fileID: 840211842114594808, guid: 41be40930953e10408179fb0039fb55e, type: 3}
       propertyPath: m_Name
       value: MineSpot
+      objectReference: {fileID: 0}
+    - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
+      propertyPath: buildCost
+      value: 75
       objectReference: {fileID: 0}
     - target: {fileID: 6289822647134082657, guid: 41be40930953e10408179fb0039fb55e, type: 3}
       propertyPath: goldMinePrefab

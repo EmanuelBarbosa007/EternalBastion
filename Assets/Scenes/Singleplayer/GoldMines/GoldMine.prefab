@@ -159,7 +159,7 @@ MonoBehaviour:
   currentLevel: 1
   maxLevel: 3
   levelStats:
-  - upgradeCost: 75
+  - upgradeCost: 5000
     coinsPerInterval: 10
     generationInterval: 10
     visualPrefab: {fileID: 249953576375126662, guid: 6235fe3f92255094fa9bb275179b97f8, type: 3}

@@ -7882,9 +7882,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5d1b1bdbc472d64aa43c1aec6caa0e6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  connectionPanel: {fileID: 1697683825}
-  hostButton: {fileID: 417658874}
-  clientButton: {fileID: 1293930407}
+  selectionPanel: {fileID: 0}
+  hostPanel: {fileID: 0}
+  clientPanel: {fileID: 0}
+  selectHostButton: {fileID: 0}
+  selectClientButton: {fileID: 0}
+  hostInfoText: {fileID: 0}
+  ipAddressField: {fileID: 0}
+  connectButton: {fileID: 0}
 --- !u!114 &941627344
 MonoBehaviour:
   m_ObjectHideFlags: 0
