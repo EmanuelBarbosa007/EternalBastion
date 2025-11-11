@@ -1,5 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
+using UnityEngine.EventSystems;
 
 // NOTA: A sua torre base (e as outras, como FireTower)
 // devem herdar de TowerMP em vez de Tower
@@ -196,7 +197,56 @@ public class TowerMP : NetworkBehaviour
         }
         // Se já for nível 3, não faz nada.
     }
-    // Os métodos de Upgrade/Sell serão chamados
-    // pelo seu UI de upgrade (TowerUpgradeUIMP)
-    // O UI é que deve enviar o ServerRpc para o PlayerNetwork
+
+
+
+    private void OnMouseDown()
+    {
+        // 1. Impede clique se o rato estiver sobre o UI
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            return;
+
+        // 2. Verifica se o jogador local (quem está a jogar neste PC)
+        // é o dono deste spot.
+        if (PlayerNetwork.LocalInstance == null)
+        {
+            Debug.LogError("Não consigo encontrar o PlayerNetwork.LocalInstance!");
+            return;
+        }
+
+        // Descobre se este jogador é o JogadorA ou JogadorB
+        PlayerID localPlayerId = (PlayerNetwork.LocalInstance.OwnerClientId == 0)
+                                 ? PlayerID.JogadorA
+                                 : PlayerID.JogadorB;
+
+        // A torre usa a referência 'myTowerSpot' (que já tens) para
+        // verificar se o spot pertence ao jogador que clicou.
+        if (myTowerSpot == null)
+        {
+            Debug.LogError("A Torre " + gameObject.name + " não tem referência ao seu TowerSpotMP!");
+            return;
+        }
+
+        if (myTowerSpot.donoDoSpot != localPlayerId)
+        {
+            Debug.Log("Este spot não é seu!");
+            return; // Sai da função
+        }
+
+        // 3. Abre o painel de Upgrade
+        // (Como estamos a clicar na torre, sabemos que o spot está ocupado)
+        if (TowerUpgradeUIMP.Instance != null)
+        {
+            // Fecha o painel de construção se estiver aberto
+            if (TowerPlacementUIMP.Instance != null)
+                TowerPlacementUIMP.Instance.ClosePanel();
+
+            // Abre o painel. 'this' é este script TowerMP.
+            TowerUpgradeUIMP.Instance.OpenPanel(this, myTowerSpot);
+        }
+        else
+        {
+            Debug.LogError("FALHA CRÍTICA: TowerUpgradeUIMP.Instance está NULO!");
+        }
+    }
 }

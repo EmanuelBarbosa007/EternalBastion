@@ -7431,8 +7431,8 @@ GameObject:
   m_Component:
   - component: {fileID: 875167858}
   - component: {fileID: 875167857}
-  - component: {fileID: 875167859}
   - component: {fileID: 875167860}
+  - component: {fileID: 875167859}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -7512,6 +7512,7 @@ MonoBehaviour:
   closeButton: {fileID: 1115224537}
   upgradeCostText: {fileID: 1153927637}
   sellValueText: {fileID: 1719484745}
+  towerNameText: {fileID: 1292857551}
 --- !u!1 &876356957
 GameObject:
   m_ObjectHideFlags: 0

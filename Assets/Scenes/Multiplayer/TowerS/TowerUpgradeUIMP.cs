@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
+using UnityEngine.EventSystems; // Importa o EventSystems
 
 public class TowerUpgradeUIMP : MonoBehaviour
 {
@@ -12,9 +13,12 @@ public class TowerUpgradeUIMP : MonoBehaviour
     public Button sellButton;
     public Button closeButton;
 
-
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
+
+    // <<< LIGA ISTO NO INSPECTOR >>>
+    // (O script que tu colaste na tua mensagem não tinha esta linha)
+    public TextMeshProUGUI towerNameText;
 
     private TowerMP currentTower;
     private TowerSpotMP currentSpot;
@@ -43,6 +47,45 @@ public class TowerUpgradeUIMP : MonoBehaviour
             closeButton.onClick.AddListener(ClosePanel);
     }
 
+    // <<< CORREÇÃO: Lógica de fechar ao clicar fora >>>
+    private void Update()
+    {
+        // Se o painel não está ativo ou não há torre selecionada, não faz nada
+        if (!uiPanel.activeInHierarchy || currentTower == null)
+            return;
+
+        // Se o jogador clicar com o botão esquerdo
+        if (Input.GetMouseButtonDown(0))
+        {
+            // Verifica se o clique foi em cima de um elemento de UI (o painel, um botão, etc.)
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                // Foi num UI, por isso não fecha
+                return;
+            }
+
+            // NOVO: Raycast para ver se clicámos na torre que está selecionada
+            RaycastHit hit;
+            // Dispara um raio da câmara para a posição do rato
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+            // Se o raio acertar em alguma coisa
+            if (Physics.Raycast(ray, out hit, 100f))
+            {
+                // Se o objeto em que acertámos é o GameObject da torre atual...
+                if (hit.collider.gameObject == currentTower.gameObject)
+                {
+                    // ...ignora o clique (foi o clique que abriu o painel).
+                    return;
+                }
+            }
+
+            // Se chegou aqui, clicou fora do UI e fora da torre selecionada. Fecha o painel.
+            ClosePanel();
+        }
+    }
+
+
     public void OpenPanel(TowerMP tower, TowerSpotMP spot)
     {
         currentTower = tower;
@@ -65,6 +108,19 @@ public class TowerUpgradeUIMP : MonoBehaviour
     {
         if (currentTower == null) return;
 
+        // <<< NOVO: Atualiza o texto do nome e nível da torre >>>
+        // (O script que tu colaste na tua mensagem não tinha isto)
+        if (towerNameText != null)
+        {
+            towerNameText.text = $"{currentTower.towerName} (Level {currentTower.level.Value})";
+        }
+        else
+        {
+            // Aviso caso te tenhas esquecido de ligar no Inspector
+            Debug.LogWarning("TowerNameText não está ligado no Inspector do TowerUpgradeUIMP!");
+        }
+
+
         // Lógica de Venda
         int sellAmount = currentTower.totalInvested / 2;
         sellValueText.text = $"Vender\n{sellAmount} Moedas";
@@ -85,7 +141,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
             upgradeCostText.text = "NÍVEL MÁXIMO";
             upgradeButton.interactable = false;
         }
-
     }
 
 

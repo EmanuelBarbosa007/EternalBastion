@@ -52,18 +52,6 @@ public class GameServerLogic : NetworkBehaviour
         return false;
     }
 
-    // --- REMOVIDO ---
-    // A função 'TryUpgradeTroop' foi removida daqui porque
-    // a lógica agora vive no PlayerNetwork.cs
-    /*
-    public void TryUpgradeTroop(ulong clientId, int tropaPrefabID, int custoUpgrade)
-    {
-        // ... CÓDIGO APAGADO ...
-    }
-    */
-
-
-    // ... (O resto do script: TryBuildTower, TryUpgradeTower, TrySellTower - tudo igual) ...
 
     public bool TryBuildTower(ulong clientId, int torrePrefabID, int custo, Vector3 posicao, ulong spotNetworkId)
     {
