@@ -121,4 +121,102 @@ public class GameServerLogic : NetworkBehaviour
         towerNetworkObject.Despawn();
         return true;
     }
+
+
+    public bool TryBuildMine(ulong clientId, int minePrefabID, int custo, Vector3 posicao, ulong spotNetworkId)
+    {
+        if (!IsServer) return false;
+
+        // --- LÓGICA ATUALIZADA ---
+
+        // 1. Encontra o spot PRIMEIRO para ler os seus offsets
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(spotNetworkId, out NetworkObject spotNetworkObject))
+        {
+            Debug.LogError($"[Server] TryBuildMine: Não foi possível encontrar o DebrisSpotMP com ID {spotNetworkId}");
+            return false;
+        }
+        DebrisSpotMP spot = spotNetworkObject.GetComponent<DebrisSpotMP>();
+        if (spot == null) return false;
+
+
+        // 2. Tenta gastar o dinheiro
+        if (CurrencySystemMP.Instance.SpendMoney(clientId, custo))
+        {
+            // 3. Encontra o prefab da mina
+            GameObject prefabMina = NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs[minePrefabID].Prefab;
+
+            // 4. Calcula a posição e rotação corretas (USANDO OS OFFSETS DO SPOT)
+            Vector3 spawnPos = spot.transform.position + (Vector3.up * spot.spawnHeightOffset);
+            Quaternion spawnRot = spot.transform.rotation * Quaternion.Euler(0, spot.spawnYRotation, 0);
+
+            // 5. Instancia a mina
+            GameObject go = Instantiate(prefabMina, spawnPos, spawnRot);
+
+            // 6. Configura a mina
+            GoldMineMP mine = go.GetComponent<GoldMineMP>();
+            mine.donoDaMinaClientId = clientId;
+            mine.totalInvested = custo;
+            mine.myDebrisSpot = spot; // Dá à mina a referência do spot
+
+            // 7. Atualiza o spot
+            spot.SetOcupado(mine);
+
+            // 8. Faz spawn da mina na rede
+            go.GetComponent<NetworkObject>().Spawn();
+            return true;
+        }
+        return false;
+    }
+
+    public bool TryUpgradeMine(ulong clientId, ulong mineNetworkId)
+    {
+        if (!IsServer) return false;
+
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(mineNetworkId, out NetworkObject mineNetworkObject))
+        {
+            Debug.LogError($"GameServerLogic: Não foi possível encontrar a mina {mineNetworkId} para upgrade.");
+            return false;
+        }
+
+        GoldMineMP mine = mineNetworkObject.GetComponent<GoldMineMP>();
+        if (mine == null) return false;
+
+        // A própria mina trata da lógica de custo e dono
+        mine.TryUpgrade(clientId);
+        return true;
+    }
+
+    public bool TrySellMine(ulong clientId, ulong mineNetworkId, ulong spotNetworkId)
+    {
+        if (!IsServer) return false;
+
+        // 1. Encontra a mina
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(mineNetworkId, out NetworkObject mineNetworkObject))
+            return false;
+
+        GoldMineMP mine = mineNetworkObject.GetComponent<GoldMineMP>();
+        if (mine == null) return false;
+
+        // 2. Verifica se o dono está a vender
+        if (mine.donoDaMinaClientId != clientId)
+            return false;
+
+        // 3. Encontra o spot
+        if (!NetworkManager.Singleton.SpawnManager.SpawnedObjects.TryGetValue(spotNetworkId, out NetworkObject spotNetworkObject))
+            return false;
+
+        DebrisSpotMP spot = spotNetworkObject.GetComponent<DebrisSpotMP>();
+        if (spot == null) return false;
+
+        // 4. Paga ao jogador
+        int sellAmount = mine.GetSellValue();
+        CurrencySystemMP.Instance.AddMoney(clientId, sellAmount);
+
+        // 5. Liberta o spot (mostra os destroços)
+        spot.SetVazio();
+
+        // 6. Destrói a mina na rede
+        mineNetworkObject.Despawn();
+        return true;
+    }
 }

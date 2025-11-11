@@ -96,4 +96,22 @@ public class PlayerNetwork : NetworkBehaviour
     {
         GameServerLogic.Instance.TrySellTower(OwnerClientId, towerNetworkId, spotNetworkId);
     }
+
+    [ServerRpc]
+    public void RequestBuildMineServerRpc(int minePrefabID, int custo, Vector3 posicao, ulong spotNetworkId)
+    {
+        GameServerLogic.Instance.TryBuildMine(OwnerClientId, minePrefabID, custo, posicao, spotNetworkId);
+    }
+
+    [ServerRpc]
+    public void RequestUpgradeMineServerRpc(ulong mineNetworkId)
+    {
+        GameServerLogic.Instance.TryUpgradeMine(OwnerClientId, mineNetworkId);
+    }
+
+    [ServerRpc]
+    public void RequestSellMineServerRpc(ulong mineNetworkId, ulong spotNetworkId)
+    {
+        GameServerLogic.Instance.TrySellMine(OwnerClientId, mineNetworkId, spotNetworkId);
+    }
 }

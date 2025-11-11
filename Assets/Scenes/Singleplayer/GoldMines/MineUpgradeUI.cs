@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems; // <--- ADICIONADO
+using UnityEngine.EventSystems; 
 
 public class MineUpgradeUI : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class MineUpgradeUI : MonoBehaviour
     public GameObject panel;
     public Button upgradeButton;
     public Button sellButton;
-    // public Button closeButton; // <--- REMOVIDO (ou pode deixar, se quiser)
 
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
@@ -32,16 +31,13 @@ public class MineUpgradeUI : MonoBehaviour
 
         upgradeButton.onClick.AddListener(OnUpgradeClicked);
         sellButton.onClick.AddListener(OnSellClicked);
-        // closeButton.onClick.AddListener(OnCloseClicked); // <--- REMOVIDO
     }
 
-    // ADICIONADO O MÉTODO UPDATE
+
     void Update()
     {
-        // Lógica copiada do seu TowerUpgradeUI.cs para fechar ao clicar fora
         if (panel.activeSelf && Input.GetMouseButtonDown(0))
         {
-            // Verifica se o clique foi num elemento de UI (o próprio painel, um botão, etc.)
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
                 return; // Se foi, não faz nada
@@ -61,7 +57,7 @@ public class MineUpgradeUI : MonoBehaviour
                 }
             }
 
-            // Se clicou fora de tudo (UI e a própria mina), fecha o painel
+            // Se clicou fora de tudo  fecha o painel
             ClosePanel();
         }
     }

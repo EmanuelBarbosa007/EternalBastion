@@ -10,11 +10,9 @@ public class MinePlacementUI : MonoBehaviour
     public TextMeshProUGUI costText;
 
     private DebrisSpot currentDebrisSpot;
-    // private CurrencySystem currencySystem; // Removido
 
     void Start()
     {
-        // currencySystem = FindObjectOfType<CurrencySystem>(); // Removido
         panel.SetActive(false);
 
         yesButton.onClick.AddListener(OnYesClicked);

@@ -148,14 +148,3 @@ public class GoldMine : MonoBehaviour
         return Mathf.RoundToInt(totalCostSpent * 0.7f);
     }
 }
-
-// (A struct MineLevelStats permanece igual)
-[System.Serializable]
-public class MineLevelStats
-{
-    [Tooltip("Custo para fazer upgrade PARA este nível")]
-    public int upgradeCost;
-    public int coinsPerInterval;
-    public float generationInterval = 10f;
-    public GameObject visualPrefab; // <-- O prefab do modelo 3D
-}

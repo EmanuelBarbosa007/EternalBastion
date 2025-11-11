@@ -81,6 +81,19 @@ public class CurrencySystemMP : NetworkBehaviour
     }
 
 
+    public int GetMoney(ulong clientId)
+    {
+        if (clientId == 0) // Jogador A
+        {
+            return moneyJogadorA.Value;
+        }
+        else // Jogador B
+        {
+            return moneyJogadorB.Value;
+        }
+    }
+
+
     //UI
     void UpdateUI()
     {
