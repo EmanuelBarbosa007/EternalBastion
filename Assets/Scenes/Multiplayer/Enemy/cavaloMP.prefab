@@ -130,8 +130,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 7
+  baseHealth: 4
   moneyOnDeath: 5
+  healthMultiplierLvl2: 1.5
   healthBar: {fileID: 0}
 --- !u!114 &6318428020761406428
 MonoBehaviour:
@@ -146,8 +147,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  speed: 7
+  baseSpeed: 7
   rotateSpeed: 10
+  speedMultiplierLvl2: 1.2
 --- !u!136 &4998306752641821123
 CapsuleCollider:
   m_ObjectHideFlags: 0

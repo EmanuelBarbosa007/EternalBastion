@@ -11,6 +11,10 @@ public class EscMenuManager : MonoBehaviour
     [Header("Cena do Menu")]
     [SerializeField] private string mainMenuSceneName = "MenuScene";
 
+
+    [Header("Referências Externas")]
+    [SerializeField] private GameSpeedManager gameSpeedManager; // Referência ao script de velocidade
+
     private bool isPaused = false;
     public static bool IsGamePaused { get; private set; }
 
@@ -54,9 +58,19 @@ public class EscMenuManager : MonoBehaviour
         if (optionsPanel != null)
             optionsPanel.SetActive(false); // Garante que as opções também fecham
 
-        Time.timeScale = 1f; // Faz o tempo do jogo voltar ao normal
         isPaused = false;
         IsGamePaused = false;
+
+
+        // Diz ao GameSpeedManager para aplicar a velocidade correta (1x ou 2x)
+        if (gameSpeedManager != null)
+        {
+            gameSpeedManager.ApplyCurrentSpeed();
+        }
+        else
+        {
+            Time.timeScale = 1f;
+        }
     }
 
     public void OpenOptions()
@@ -68,7 +82,7 @@ public class EscMenuManager : MonoBehaviour
             optionsPanel.SetActive(true);  // Mostra o de opções
     }
 
- 
+
     public void CloseOptions()
     {
         if (optionsPanel != null)
@@ -84,6 +98,7 @@ public class EscMenuManager : MonoBehaviour
         Time.timeScale = 1f;
         isPaused = false;
         IsGamePaused = false;
+
 
         if (NetworkManager.Singleton != null)
         {

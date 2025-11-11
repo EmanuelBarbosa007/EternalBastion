@@ -5,26 +5,58 @@ using Unity.Netcode;
 [RequireComponent(typeof(NetworkObject))]
 public class EnemyHealthMP : NetworkBehaviour
 {
-    public int maxHealth = 10;
+    [Header("Stats Base (Nível 1)")]
+    public int baseHealth = 10; // RENOMEADO
     public int moneyOnDeath = 5;
 
-    public Slider healthBar; 
+    [Header("Multiplicadores Nível 2")]
+    public float healthMultiplierLvl2 = 1.5f; // Bónus de 50%
 
-    // Sincroniza a vida do Server para os Clientes
+    public Slider healthBar;
+
+    // --- MODIFICADO: Sincroniza a vida MÁXIMA e ATUAL ---
+    private NetworkVariable<int> currentMaxHealth = new NetworkVariable<int>();
     private NetworkVariable<int> currentHealth = new NetworkVariable<int>();
+
+
+    // --- NOVO: Função chamada pelo EnemyMP.Setup ---
+    public void SetNivelServer(int nivel)
+    {
+        if (!IsServer) return; // Só o servidor decide isto
+
+        int calculatedMaxHealth;
+        if (nivel >= 2)
+        {
+            // Calcula a vida de Nível 2
+            calculatedMaxHealth = (int)(baseHealth * healthMultiplierLvl2);
+        }
+        else
+        {
+            // Vida de Nível 1
+            calculatedMaxHealth = baseHealth;
+        }
+
+        // Define os valores sincronizados
+        // Isto é feito ANTES do OnNetworkSpawn nos clientes
+        currentMaxHealth.Value = calculatedMaxHealth;
+        currentHealth.Value = calculatedMaxHealth; // Nasce com vida cheia
+    }
+
 
     public override void OnNetworkSpawn()
     {
-        if (IsServer)
-        {
-            // Só o server define a vida inicial
-            currentHealth.Value = maxHealth;
-        }
+        // --- MODIFICADO ---
+        // A lógica de definir a vida inicial foi movida para SetNivelServer,
+        // que é chamado pelo GameServerLogic ANTES dos clientes receberem o spawn.
 
         // Todos os clientes (incluindo o server)
         // atualizam o UI quando a vida muda
         currentHealth.OnValueChanged += OnHealthChanged;
-        // Atualiza o UI pela primeira vez
+
+        // --- NOVO: Atualiza o UI se o MaxHealth mudar ---
+        currentMaxHealth.OnValueChanged += (prev, next) => OnHealthChanged(0, currentHealth.Value);
+
+        // Atualiza o UI pela primeira vez com os valores corretos (Nv 1 ou Nv 2)
         OnHealthChanged(0, currentHealth.Value);
     }
 
@@ -33,7 +65,8 @@ public class EnemyHealthMP : NetworkBehaviour
         // Esta função corre em TODOS os clientes
         if (healthBar != null)
         {
-            healthBar.maxValue = maxHealth;
+            // --- MODIFICADO: Usa a MaxHealth sincronizada ---
+            healthBar.maxValue = currentMaxHealth.Value;
             healthBar.value = newValue;
         }
     }
@@ -45,15 +78,14 @@ public class EnemyHealthMP : NetworkBehaviour
         if (currentHealth.Value <= 0) return; // Já está morto
 
         currentHealth.Value -= amount;
-        currentHealth.Value = Mathf.Clamp(currentHealth.Value, 0, maxHealth);
+
+        // --- MODIFICADO: Usa a MaxHealth sincronizada ---
+        currentHealth.Value = Mathf.Clamp(currentHealth.Value, 0, currentMaxHealth.Value);
 
         if (currentHealth.Value <= 0)
         {
             // Dá o dinheiro ao jogador que deu o tiro final
             CurrencySystemMP.Instance.AddMoney(killerClientId, moneyOnDeath);
-
-            // Não precisamos mais disto:
-            // EnemySpawner.EnemiesAlive--; 
 
             // Destrói o inimigo em todos os clientes
             NetworkObject.Despawn();

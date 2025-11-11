@@ -7,10 +7,15 @@ using Unity.Netcode.Components;
 [RequireComponent(typeof(NetworkTransform))]
 public class EnemyMP : NetworkBehaviour
 {
-    public float speed = 3f;
+    [Header("Stats Base (Nível 1)")]
+    public float baseSpeed = 3f; // RENOMEADO
     public float rotateSpeed = 10f;
 
-    // Estas variáveis são configuradas PELO SERVER
+    [Header("Multiplicadores Nível 2")]
+    public float speedMultiplierLvl2 = 1.2f; // Bónus de 20%
+
+    // --- Variáveis internas ---
+    private float speed; // Esta é a velocidade final, calculada no Setup
     private ulong donoDaTropa;
     private Transform[] meuCaminho;
     private BaseHealthMP baseAlvo;
@@ -19,13 +24,33 @@ public class EnemyMP : NetworkBehaviour
     private float startY;
     private Transform target;
 
-    // Chamado pelo Server no PlayerNetwork.cs
-    public void Setup(ulong dono, Transform[] caminho, BaseHealthMP alvo)
+    // --- MODIFICADO: Aceita o Nível ---
+    // Chamado pelo Server no GameServerLogic.cs
+    public void Setup(ulong dono, Transform[] caminho, BaseHealthMP alvo, int nivel)
     {
+        // Esta função SÓ corre no Servidor
+        if (!IsServer) return;
+
         donoDaTropa = dono;
         meuCaminho = caminho;
         baseAlvo = alvo;
 
+        // --- NOVO: Aplica Stats de Nível (Velocidade) ---
+        if (nivel >= 2)
+        {
+            speed = baseSpeed * speedMultiplierLvl2;
+        }
+        else
+        {
+            speed = baseSpeed;
+        }
+
+        // --- NOVO: Chama o setup da vida ---
+        // Passa o nível para o script de vida
+        GetComponent<EnemyHealthMP>().SetNivelServer(nivel);
+
+
+        // --- Resto da lógica de setup (igual à tua) ---
         if (meuCaminho == null || meuCaminho.Length == 0)
         {
             Debug.LogError("Tropa spawnada sem caminho!");
@@ -45,8 +70,6 @@ public class EnemyMP : NetworkBehaviour
             return;
         }
 
-        // --- Lógica de movimento (igual à sua, mas só no server) ---
-
         if (target == null) return;
 
         Vector3 dir = target.position - transform.position;
@@ -58,6 +81,7 @@ public class EnemyMP : NetworkBehaviour
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * rotateSpeed);
         }
 
+        // --- MODIFICADO: Usa a variável 'speed' calculada ---
         transform.Translate(dir.normalized * speed * Time.deltaTime, Space.World);
         transform.position = new Vector3(transform.position.x, startY, transform.position.z);
 

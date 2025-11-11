@@ -5,7 +5,7 @@ public class GameServerLogic : NetworkBehaviour
 {
     public static GameServerLogic Instance;
 
-    // --- REFERÊNCIAS PARA AMBOS OS LADOS (Ligar no Inspector) ---
+    // ... (Referências de SpawnPointA, caminhoA, etc. - tudo igual) ...
     [Header("Jogador A (Host)")]
     public Transform spawnPointA;
     public WaypointPathMP caminhoA;
@@ -28,8 +28,8 @@ public class GameServerLogic : NetworkBehaviour
         }
     }
 
-
-    public bool TrySpawnTroop(ulong clientId, int tropaPrefabID, int custo)
+    // TrySpawnTroop (Está correto, aceita o 'nivel')
+    public bool TrySpawnTroop(ulong clientId, int tropaPrefabID, int custo, int nivel)
     {
         if (!IsServer) return false;
         if (CurrencySystemMP.Instance.SpendMoney(clientId, custo))
@@ -41,14 +41,29 @@ public class GameServerLogic : NetworkBehaviour
             GameObject prefabTropa = NetworkManager.Singleton.NetworkConfig.Prefabs.Prefabs[tropaPrefabID].Prefab;
             GameObject go = Instantiate(prefabTropa, spawnPoint.position, spawnPoint.rotation);
 
-            EnemyMP tropa = go.GetComponent<EnemyMP>();
-            tropa.Setup(clientId, caminho.points, baseInimiga);
-
             go.GetComponent<NetworkObject>().Spawn();
+
+            EnemyMP tropa = go.GetComponent<EnemyMP>();
+
+            tropa.Setup(clientId, caminho.points, baseInimiga, nivel);
+
             return true;
         }
         return false;
     }
+
+    // --- REMOVIDO ---
+    // A função 'TryUpgradeTroop' foi removida daqui porque
+    // a lógica agora vive no PlayerNetwork.cs
+    /*
+    public void TryUpgradeTroop(ulong clientId, int tropaPrefabID, int custoUpgrade)
+    {
+        // ... CÓDIGO APAGADO ...
+    }
+    */
+
+
+    // ... (O resto do script: TryBuildTower, TryUpgradeTower, TrySellTower - tudo igual) ...
 
     public bool TryBuildTower(ulong clientId, int torrePrefabID, int custo, Vector3 posicao, ulong spotNetworkId)
     {
@@ -91,8 +106,8 @@ public class GameServerLogic : NetworkBehaviour
             return false;
         }
 
-        torre.TryUpgrade(clientId); 
-        return true; 
+        torre.TryUpgrade(clientId);
+        return true;
     }
 
     public bool TrySellTower(ulong clientId, ulong towerNetworkId, ulong spotNetworkId)

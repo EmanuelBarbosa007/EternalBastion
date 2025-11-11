@@ -170,7 +170,7 @@ public class AIController : MonoBehaviour
 
     private NodeState TrySend(int prefabId, int cost)
     {
-        bool success = GameServerLogic.Instance.TrySpawnTroop(aiClientId, prefabId, cost);
+        bool success = GameServerLogic.Instance.TrySpawnTroop(aiClientId, prefabId, cost, 1);
         return success ? NodeState.SUCCESS : NodeState.FAILURE;
     }
     private NodeState TryBuild(int prefabId, int cost, Vector3 pos, ulong spotId)
