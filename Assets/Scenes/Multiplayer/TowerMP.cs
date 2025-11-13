@@ -2,12 +2,9 @@ using UnityEngine;
 using Unity.Netcode;
 using UnityEngine.EventSystems;
 
-// NOTA: A sua torre base (e as outras, como FireTower)
-// devem herdar de TowerMP em vez de Tower
 public class TowerMP : NetworkBehaviour
 {
     [Header("Stats")]
-    // Sincroniza o alcance e o nível para todos os jogadores
     public NetworkVariable<float> range = new NetworkVariable<float>(5f);
     public NetworkVariable<int> level = new NetworkVariable<int>(1);
 
@@ -15,12 +12,18 @@ public class TowerMP : NetworkBehaviour
     public float rotationSpeed = 10f;
 
     [Header("Prefabs")]
-    public GameObject bulletPrefab; // IMPORTANTE: O seu prefab da bala (Bullet)
-                                    // também tem de ter um NetworkObject
+    public GameObject bulletPrefab;
     public Transform firePoint;
 
     [Header("Parts")]
     public Transform partToRotate;
+
+    [Header("Tower Models (visuals)")]
+    public GameObject level1Model;
+    public GameObject level2Model;
+    public GameObject level3Model;
+
+    private GameObject currentModelInstance;
 
     [Header("Upgrade Stats")]
     public string towerName = "Archer Tower";
@@ -30,8 +33,6 @@ public class TowerMP : NetworkBehaviour
 
     [HideInInspector] public int totalInvested;
     [HideInInspector] public TowerSpotMP myTowerSpot;
-
-    // NOVO: ID do jogador que é dono da torre
     [HideInInspector] public ulong donoDaTorreClientId;
 
     protected float baseRange;
@@ -41,21 +42,23 @@ public class TowerMP : NetworkBehaviour
     protected Transform target;
     protected float fireCountdown = 0f;
 
-
     protected virtual void Start()
     {
-        baseRange = range.Value; // Lê o valor inicial da NetworkVariable
+        baseRange = range.Value;
         StoreBaseBulletStats();
 
         if (totalInvested == 0)
             totalInvested = costLevel1;
+
+        // Apenas o servidor instancia o modelo base
+        if (IsServer)
+            SpawnModelForLevel(level.Value);
     }
 
     protected virtual void StoreBaseBulletStats()
     {
         if (bulletPrefab != null)
         {
-
             BulletMP b = bulletPrefab.GetComponent<BulletMP>();
             if (b != null)
             {
@@ -65,14 +68,10 @@ public class TowerMP : NetworkBehaviour
         }
     }
 
-
     protected virtual void Update()
     {
-        // --- IMPORTANTE ---
-        // Apenas o SERVER (Host) pode procurar alvos e disparar
         if (!IsServer) return;
 
-        // O resto da lógica é igual à sua
         UpdateTarget();
 
         if (target != null)
@@ -91,8 +90,6 @@ public class TowerMP : NetworkBehaviour
 
     protected virtual void UpdateTarget()
     {
-        // (Lógica de encontrar inimigos é igual)
-        // NOTA: Deve procurar por "EnemyMP" em vez de "Enemy"
         EnemyMP[] enemies = Object.FindObjectsByType<EnemyMP>(FindObjectsSortMode.None);
         float shortestDistance = Mathf.Infinity;
         EnemyMP nearest = null;
@@ -100,22 +97,18 @@ public class TowerMP : NetworkBehaviour
         foreach (EnemyMP e in enemies)
         {
             float d = Vector3.Distance(transform.position, e.transform.position);
-            if (d < shortestDistance && d <= range.Value) // Usa range.Value
+            if (d < shortestDistance && d <= range.Value)
             {
                 shortestDistance = d;
                 nearest = e;
             }
         }
 
-        if (nearest != null)
-            target = nearest.transform;
-        else
-            target = null;
+        target = nearest != null ? nearest.transform : null;
     }
 
     protected virtual void RotateToTarget()
     {
-        // (Lógica igual)
         if (partToRotate == null || target == null) return;
         Vector3 dir = target.position - partToRotate.position;
         dir.y = 0f;
@@ -126,62 +119,50 @@ public class TowerMP : NetworkBehaviour
 
     protected virtual void Shoot()
     {
-        // Esta função SÓ corre no Server
         if (bulletPrefab == null || firePoint == null || target == null) return;
 
         GameObject bulletGO = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
-
-        // Spawnar a bala na rede para todos os clientes a verem
         bulletGO.GetComponent<NetworkObject>().Spawn();
 
         BulletMP bullet = bulletGO.GetComponent<BulletMP>();
 
         if (bullet != null)
         {
-            // Diz à bala quem é o seu dono
-            bullet.ownerClientId = this.donoDaTorreClientId;
-            // --- FIM DA LINHA NOVA ---
+            bullet.ownerClientId = donoDaTorreClientId;
 
             if (level.Value == 3)
             {
                 bullet.damage = (int)(baseBulletDamage * 1.5f);
                 bullet.speed = baseBulletSpeed * 1.5f;
             }
+
             bullet.Seek(target);
         }
     }
 
-
-    // (Adicione este método DENTRO da classe TowerMP.cs)
-
     /// <summary>
-    /// Tenta melhorar a torre. SÓ DEVE SER CHAMADO NO SERVIDOR.
-    /// O próprio método verifica o nível, gasta o dinheiro e aplica os stats.
+    /// Método chamado pelo servidor quando um jogador tenta melhorar a torre.
     /// </summary>
     public void TryUpgrade(ulong playerClientId)
     {
-        // Verificação de segurança (embora já deva estar no server)
         if (!IsServer) return;
 
-        // Verifica se o jogador que está a pedir é o dono
         if (playerClientId != donoDaTorreClientId)
         {
             Debug.LogWarning("Jogador tentou melhorar torre que não é sua.");
             return;
         }
 
-        // Lógica de upgrade (baseada no seu Tower.cs)
         if (level.Value == 1)
         {
-            // Tenta gastar o dinheiro do jogador que pediu
             if (CurrencySystemMP.Instance.SpendMoney(playerClientId, upgradeCostLevel2))
             {
                 totalInvested += upgradeCostLevel2;
-                level.Value = 2; // Sincroniza o nível para todos
+                level.Value = 2;
+                range.Value = baseRange * 1.5f;
 
-                // AQUI ESTÁ A CORREÇÃO:
-                // Como estamos DENTRO da classe TowerMP, podemos aceder a 'baseRange'.
-                range.Value = baseRange * 1.5f; // Sincroniza o alcance para todos
+                // Atualiza modelo visual em todos os clientes
+                UpdateTowerModelClientRpc(level.Value);
             }
         }
         else if (level.Value == 2)
@@ -189,38 +170,65 @@ public class TowerMP : NetworkBehaviour
             if (CurrencySystemMP.Instance.SpendMoney(playerClientId, upgradeCostLevel3))
             {
                 totalInvested += upgradeCostLevel3;
-                level.Value = 3; // Sincroniza o nível para todos
+                level.Value = 3;
 
-                // (O dano/velocidade extra é aplicado no método 'Shoot()',
-                // que já está correto)
+                UpdateTowerModelClientRpc(level.Value);
             }
         }
-        // Se já for nível 3, não faz nada.
     }
 
+    [ClientRpc]
+    private void UpdateTowerModelClientRpc(int newLevel)
+    {
+        // Garante que o modelo muda em todos os clientes
+        SpawnModelForLevel(newLevel);
+    }
 
+    private void SpawnModelForLevel(int lvl)
+    {
+        if (currentModelInstance != null)
+            Destroy(currentModelInstance);
+
+        GameObject modelToSpawn = null;
+        if (lvl == 1) modelToSpawn = level1Model;
+        else if (lvl == 2) modelToSpawn = level2Model;
+        else if (lvl == 3) modelToSpawn = level3Model;
+
+        if (modelToSpawn == null)
+        {
+            Debug.LogWarning($"TowerMP: Modelo para o nível {lvl} não atribuído!");
+            return;
+        }
+
+        currentModelInstance = Instantiate(modelToSpawn, transform);
+        currentModelInstance.transform.localPosition = Vector3.zero;
+        currentModelInstance.transform.localRotation = Quaternion.identity;
+
+        // Atualiza referências
+        partToRotate = currentModelInstance.transform.Find("PartToRotate");
+        firePoint = currentModelInstance.transform.Find("FirePoint");
+
+        if (firePoint == null)
+        {
+            Debug.LogWarning($"Modelo de torre (nível {lvl}) não contém FirePoint!");
+        }
+    }
 
     private void OnMouseDown()
     {
-        // 1. Impede clique se o rato estiver sobre o UI
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 
-        // 2. Verifica se o jogador local (quem está a jogar neste PC)
-        // é o dono deste spot.
         if (PlayerNetwork.LocalInstance == null)
         {
             Debug.LogError("Não consigo encontrar o PlayerNetwork.LocalInstance!");
             return;
         }
 
-        // Descobre se este jogador é o JogadorA ou JogadorB
         PlayerID localPlayerId = (PlayerNetwork.LocalInstance.OwnerClientId == 0)
                                  ? PlayerID.JogadorA
                                  : PlayerID.JogadorB;
 
-        // A torre usa a referência 'myTowerSpot' (que já tens) para
-        // verificar se o spot pertence ao jogador que clicou.
         if (myTowerSpot == null)
         {
             Debug.LogError("A Torre " + gameObject.name + " não tem referência ao seu TowerSpotMP!");
@@ -230,18 +238,14 @@ public class TowerMP : NetworkBehaviour
         if (myTowerSpot.donoDoSpot != localPlayerId)
         {
             Debug.Log("Este spot não é seu!");
-            return; // Sai da função
+            return;
         }
 
-        // 3. Abre o painel de Upgrade
-        // (Como estamos a clicar na torre, sabemos que o spot está ocupado)
         if (TowerUpgradeUIMP.Instance != null)
         {
-            // Fecha o painel de construção se estiver aberto
             if (TowerPlacementUIMP.Instance != null)
                 TowerPlacementUIMP.Instance.ClosePanel();
 
-            // Abre o painel. 'this' é este script TowerMP.
             TowerUpgradeUIMP.Instance.OpenPanel(this, myTowerSpot);
         }
         else

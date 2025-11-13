@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1061192878215717758
+--- !u!1 &6042020500573286336
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 4795616727309065295}
+  - component: {fileID: 8226724354784049335}
   m_Layer: 0
   m_Name: FirePoint
   m_TagString: Untagged
@@ -16,22 +16,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4795616727309065295
+--- !u!4 &8226724354784049335
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1061192878215717758}
+  m_GameObject: {fileID: 6042020500573286336}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0.30970383, y: 5.33, z: -9.06}
   m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1128436232428907833}
+  m_Father: {fileID: 3408680121201873277}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1001 &586518789112695506
+--- !u!1001 &2937659773384996502
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -41,27 +41,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 0.75
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.959846
+      value: -15.361319
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.7886996
+      value: 1.9546682
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -19.24545
+      value: -15.970948
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       propertyPath: m_LocalRotation.w
@@ -100,68 +100,15 @@ PrefabInstance:
       value: torre3_1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: -7640558969779515294, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
-    - {fileID: -5568371526223589888, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4795616727309065295}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6748834427300390438}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 640233658232671452}
+      addedObject: {fileID: 8226724354784049335}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
---- !u!1 &352075077005260675 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
-  m_PrefabInstance: {fileID: 586518789112695506}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6748834427300390438
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352075077005260675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d430dbb510e79d2409f8cfd50bca624a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  range: 20
-  fireRate: 1
-  rotationSpeed: 10
-  bulletPrefab: {fileID: 7721633748168539548, guid: 5c31cb9067cc3a547ae4447c0615d931, type: 3}
-  firePoint: {fileID: 4795616727309065295}
-  partToRotate: {fileID: 0}
-  level1Model: {fileID: 2595692065050069959, guid: 840ff71cf9046f24e80c4153bd788aca, type: 3}
-  level2Model: {fileID: 4456206772451347378, guid: 8cea06f04173b6c4f867724879d03289, type: 3}
-  level3Model: {fileID: 8988602450940471858, guid: 3a17da34277b98c469bd064ccbd7cbd1, type: 3}
-  towerName: PieringTower
-  level: 1
-  costLevel1: 150
-  upgradeCostLevel2: 75
-  upgradeCostLevel3: 150
-  totalInvested: 0
-  myTowerSpot: {fileID: 0}
---- !u!114 &640233658232671452
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 352075077005260675}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b7f76b9ad95dcf64db89676dffd7413e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!4 &1128436232428907833 stripped
+--- !u!4 &3408680121201873277 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 19319d640c9f48244a550554350c4ffe, type: 3}
-  m_PrefabInstance: {fileID: 586518789112695506}
+  m_PrefabInstance: {fileID: 2937659773384996502}
   m_PrefabAsset: {fileID: 0}

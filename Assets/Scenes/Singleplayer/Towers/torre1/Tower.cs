@@ -15,42 +15,43 @@ public class Tower : MonoBehaviour
     [Header("Parts")]
     public Transform partToRotate;
 
+    [Header("Tower Models (visuals)")]
+    public GameObject level1Model;
+    public GameObject level2Model;
+    public GameObject level3Model;
+
+    private GameObject currentModelInstance;
 
     [Header("Upgrade Stats")]
-    public string towerName = "Archer Tower"; // Nome para o UI
-    public int level = 1;
+    public string towerName = "Archer Tower";
+    public int level = 1;
 
     [Tooltip("Custo para comprar esta torre (Nível 1)")]
     public int costLevel1 = 100;
     public int upgradeCostLevel2 = 75;
     public int upgradeCostLevel3 = 150;
 
-    [HideInInspector] public int totalInvested; // Total gasto (compra + melhorias)
-    [HideInInspector] public TowerSpot myTowerSpot; // Referência ao spot onde está
+    [HideInInspector] public int totalInvested;
+    [HideInInspector] public TowerSpot myTowerSpot;
 
-    // Stats Base (para calcular melhorias)
-    protected float baseRange;
+    protected float baseRange;
     protected int baseBulletDamage;
     protected float baseBulletSpeed;
-
-
 
     protected Transform target;
     protected float fireCountdown = 0f;
 
-
     protected virtual void Start()
     {
-        // Guarda os stats base 
-        baseRange = range;
+        baseRange = range;
         StoreBaseBulletStats();
 
         if (totalInvested == 0)
-        {
             totalInvested = costLevel1;
-        }
-    }
 
+        // Instancia o modelo inicial (nível 1)
+        SpawnModelForLevel(level);
+    }
 
     protected virtual void StoreBaseBulletStats()
     {
@@ -65,15 +66,12 @@ public class Tower : MonoBehaviour
         }
     }
 
-
     protected virtual void Update()
     {
         UpdateTarget();
 
         if (target != null)
-        {
             RotateToTarget();
-        }
 
         if (target == null) return;
 
@@ -88,20 +86,13 @@ public class Tower : MonoBehaviour
 
     protected virtual void UpdateTarget()
     {
-
         EnemyHealth[] allEnemies = Object.FindObjectsByType<EnemyHealth>(FindObjectsSortMode.None);
-
         float shortestDistance = Mathf.Infinity;
-
-
         EnemyHealth nearest = null;
-
 
         foreach (EnemyHealth e in allEnemies)
         {
             float d = Vector3.Distance(transform.position, e.transform.position);
-
-
             if (d < shortestDistance && d <= range)
             {
                 shortestDistance = d;
@@ -109,10 +100,7 @@ public class Tower : MonoBehaviour
             }
         }
 
-        if (nearest != null)
-            target = nearest.transform; // Continua a guardar o Transform do alvo
-        else
-            target = null;
+        target = nearest != null ? nearest.transform : null;
     }
 
     protected virtual void RotateToTarget()
@@ -125,7 +113,6 @@ public class Tower : MonoBehaviour
         partToRotate.rotation = Quaternion.Lerp(partToRotate.rotation, lookRotation, Time.deltaTime * rotationSpeed);
     }
 
-
     protected virtual void Shoot()
     {
         if (bulletPrefab == null || firePoint == null || target == null) return;
@@ -135,93 +122,100 @@ public class Tower : MonoBehaviour
 
         if (bullet != null)
         {
-            // Aplica melhorias de Nível 3
-            if (level == 3)
+            if (level == 3)
             {
-                bullet.damage = (int)(baseBulletDamage * 1.5f); // +50% Dano
-                bullet.speed = baseBulletSpeed * 1.5f;       // +50% Velocidade
-            }
-            // (Se for Nível 1 ou 2, usa os stats padrão do prefab)
+                bullet.damage = (int)(baseBulletDamage * 1.5f);
+                bullet.speed = baseBulletSpeed * 1.5f;
+            }
 
-            bullet.Seek(target);
+            bullet.Seek(target);
         }
     }
 
-
     public virtual void UpgradeTower()
     {
-        if (level == 1) // Tentar ir para Nível 2
-        {
+        if (level == 1)
+        {
             if (CurrencySystem.SpendMoney(upgradeCostLevel2))
             {
                 totalInvested += upgradeCostLevel2;
                 level = 2;
 
-                // Aplicar melhoria Nível 2: +50% Alcance
-                range = baseRange * 1.5f;
+                range = baseRange * 1.5f;
 
                 Debug.Log("Torre melhorada para Nível 2!");
+                SpawnModelForLevel(level);
 
-
-                // Avisa a Zona de Perigo sobre o Upgrade
                 TowerDangerZone dangerZone = GetComponent<TowerDangerZone>();
                 if (dangerZone != null)
-                {
-
                     dangerZone.OnTowerUpgrade(level, range);
-                }
-            }
+            }
         }
-        else if (level == 2) // Tentar ir para Nível 3
-        {
+        else if (level == 2)
+        {
             if (CurrencySystem.SpendMoney(upgradeCostLevel3))
             {
                 totalInvested += upgradeCostLevel3;
                 level = 3;
 
-                // Melhorias de Nível 3 (Dano e Velocidade) são aplicadas no 'Shoot()'
+                Debug.Log("Torre melhorada para Nível 3!");
+                SpawnModelForLevel(level);
 
-                Debug.Log("Torre melhorada para Nível 3!");
-
-
-                // Avisa a Zona de Perigo sobre o Upgrade
                 TowerDangerZone dangerZone = GetComponent<TowerDangerZone>();
                 if (dangerZone != null)
-                {
-
                     dangerZone.OnTowerUpgrade(level, range);
-                }
-            }
-
-
+            }
         }
     }
 
+    private void SpawnModelForLevel(int lvl)
+    {
+        // Destroi modelo anterior se existir
+        if (currentModelInstance != null)
+            Destroy(currentModelInstance);
 
-    // Vende a torre por 50% do valor total investido
+        GameObject modelToSpawn = null;
+        if (lvl == 1) modelToSpawn = level1Model;
+        else if (lvl == 2) modelToSpawn = level2Model;
+        else if (lvl == 3) modelToSpawn = level3Model;
+
+        if (modelToSpawn == null)
+        {
+            Debug.LogWarning("Modelo para o nível " + lvl + " não atribuído!");
+            return;
+        }
+
+        // Instancia modelo e define como filho da torre
+        currentModelInstance = Instantiate(modelToSpawn, transform);
+        currentModelInstance.transform.localPosition = Vector3.zero;
+        currentModelInstance.transform.localRotation = Quaternion.identity;
+
+        // Atualiza referências (partToRotate, firePoint)
+        partToRotate = currentModelInstance.transform.Find("PartToRotate");
+        firePoint = currentModelInstance.transform.Find("FirePoint");
+
+        if (partToRotate == null || firePoint == null)
+        {
+            Debug.LogWarning($"Modelo de torre (nível {lvl}) não contém PartToRotate ou FirePoint!");
+        }
+    }
 
     public virtual void SellTower()
     {
         int sellAmount = totalInvested / 2;
         CurrencySystem.AddMoney(sellAmount);
 
-        // Liberta o TowerSpot
-        if (myTowerSpot != null)
+        if (myTowerSpot != null)
         {
             myTowerSpot.isOccupied = false;
             myTowerSpot.currentTower = null;
         }
 
-
-        // Destrói a zona de perigo para limpar a NavMesh
         TowerDangerZone dangerZone = GetComponent<TowerDangerZone>();
         if (dangerZone != null)
-        {
             dangerZone.DestroyZone();
-        }
 
-        // Destrói a torre
-        Destroy(gameObject);
+        Destroy(gameObject);
     }
 
     private void OnDrawGizmosSelected()
