@@ -6,6 +6,9 @@ public class Bullet : MonoBehaviour
     public float speed = 10f;
     public int damage = 1;
 
+
+    public Vector3 rotationFix = new Vector3(180, 0, 0);
+
     public void Seek(Transform _target)
     {
         target = _target;
@@ -28,7 +31,14 @@ public class Bullet : MonoBehaviour
             return;
         }
 
+        // 1. Move a flecha
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
+
+        // 2. Faz a flecha olhar para o alvo
+        transform.LookAt(target);
+
+        // 3. Aplica a correção de 90 graus (localmente)
+        transform.Rotate(rotationFix);
     }
 
     void HitTarget()

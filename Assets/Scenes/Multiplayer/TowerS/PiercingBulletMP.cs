@@ -21,18 +21,21 @@ public class PiercingBulletMP : NetworkBehaviour
 
     public void SetDirection(Vector3 direction)
     {
-
-        // Ignora a componente Y.
+        // Ignora a componente Y para manter a trajetória plana
         direction.y = 0f;
 
         moveDirection = direction.normalized;
 
         if (moveDirection != Vector3.zero)
         {
-            transform.rotation = Quaternion.LookRotation(moveDirection);
+            // 1. Calcula a rotação para olhar na direção do movimento
+            Quaternion lookRotation = Quaternion.LookRotation(moveDirection);
+
+            // 2. Aplica a rotação extra de 180 graus no eixo Y para virar o modelo
+            // Se continuar torta, experimente 90 ou -90 aqui
+            transform.rotation = lookRotation * Quaternion.Euler(0f, 0f, 180f);
         }
     }
-
 
     void Start()
     {
@@ -61,6 +64,8 @@ public class PiercingBulletMP : NetworkBehaviour
         // Apenas o servidor move a bala
         if (!IsServer) return;
 
+        // Move a bala em Espaço Global (World) baseado na direção calculada
+        // Isto garante que a rotação visual do modelo não afeta a direção do movimento
         transform.Translate(moveDirection * speed * Time.deltaTime, Space.World);
 
         // Controlo de tempo de vida
@@ -71,7 +76,6 @@ public class PiercingBulletMP : NetworkBehaviour
         }
     }
 
-
     private void OnTriggerEnter(Collider other)
     {
         // Apenas o servidor deteta colisões
@@ -79,6 +83,7 @@ public class PiercingBulletMP : NetworkBehaviour
 
         EnemyHealthMP enemyHealth = other.GetComponent<EnemyHealthMP>();
 
+        // Garante que só dá dano uma vez por inimigo (piercing)
         if (enemyHealth != null && !enemiesHit.Contains(enemyHealth))
         {
             enemyHealth.TakeDamage(damage, ownerClientId);

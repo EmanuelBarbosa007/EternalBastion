@@ -1,6 +1,6 @@
 using UnityEngine;
 using Unity.Netcode;
-using Unity.Netcode.Components; // Precisa disto para o NetworkTransform
+using Unity.Netcode.Components;
 
 [RequireComponent(typeof(NetworkObject), typeof(NetworkTransform))]
 public class BulletMP : NetworkBehaviour
@@ -9,8 +9,6 @@ public class BulletMP : NetworkBehaviour
     public float speed = 10f;
     public int damage = 1;
 
-    // NOVO: ID do jogador que disparou esta bala
-    // (A TowerMP vai definir isto)
     [HideInInspector]
     public ulong ownerClientId;
 
@@ -24,15 +22,12 @@ public class BulletMP : NetworkBehaviour
         // --- SÓ O SERVER MOVIMENTA A BALA ---
         if (!IsServer)
         {
-            // Os clientes recebem a posição pelo NetworkTransform
             return;
         }
 
-        // O resto da lógica é igual à sua
         if (target == null)
         {
-            // O alvo morreu ou desapareceu
-            NetworkObject.Despawn(); // Destrói na rede
+            NetworkObject.Despawn();
             return;
         }
 
@@ -45,21 +40,26 @@ public class BulletMP : NetworkBehaviour
             return;
         }
 
+
+        // 1. Calcula a rotação normal para olhar para o alvo
+        Quaternion lookRotation = Quaternion.LookRotation(dir);
+
+        // 2. Combina com uma rotação de 180 graus no eixo Y para virar a flecha
+        // Se continuar torta, tente mudar o 180 para 90 ou -90
+        transform.rotation = lookRotation * Quaternion.Euler(0f, 0f, 180f);
+
+        // Move a bala
         transform.Translate(dir.normalized * distanceThisFrame, Space.World);
     }
 
     void HitTarget()
     {
-        // Esta função só corre no Server
-
-        // Procura o script de vida do inimigo (a versão MP)
         EnemyHealthMP e = target.GetComponent<EnemyHealthMP>();
         if (e != null)
         {
-            // Passa o dano E quem o causou (para o dinheiro)
             e.TakeDamage(damage, ownerClientId);
         }
 
-        NetworkObject.Despawn(); // Destrói a bala na rede
+        NetworkObject.Despawn();
     }
 }

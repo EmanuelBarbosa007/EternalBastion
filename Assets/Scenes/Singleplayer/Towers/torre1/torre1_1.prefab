@@ -147,7 +147,7 @@ MonoBehaviour:
   range: 15
   fireRate: 1
   rotationSpeed: 10
-  bulletPrefab: {fileID: 8165817430203650693, guid: 36d14bb67b23cc24e82443a3fc793c21, type: 3}
+  bulletPrefab: {fileID: 4029673068288597327, guid: f570e8420958d90438192eb4c9217f2d, type: 3}
   firePoint: {fileID: 0}
   partToRotate: {fileID: 0}
   level1Model: {fileID: 1310914942304656801, guid: e7eff495e0c26bb469a3df04d4636a4d, type: 3}

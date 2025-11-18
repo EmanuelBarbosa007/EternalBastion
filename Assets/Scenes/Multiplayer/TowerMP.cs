@@ -42,17 +42,32 @@ public class TowerMP : NetworkBehaviour
     protected Transform target;
     protected float fireCountdown = 0f;
 
-    protected virtual void Start()
+    public override void OnNetworkSpawn()
     {
+        base.OnNetworkSpawn();
+
         baseRange = range.Value;
         StoreBaseBulletStats();
 
         if (totalInvested == 0)
             totalInvested = costLevel1;
 
-        // Apenas o servidor instancia o modelo base
-        if (IsServer)
-            SpawnModelForLevel(level.Value);
+        SpawnModelForLevel(level.Value);
+        level.OnValueChanged += OnLevelChanged;
+    }
+
+    // Mantemos o Start virtual vazio para compatibilidade com as classes filhas
+    protected virtual void Start() { }
+
+    public override void OnNetworkDespawn()
+    {
+        base.OnNetworkDespawn();
+        level.OnValueChanged -= OnLevelChanged;
+    }
+
+    private void OnLevelChanged(int valorAntigo, int valorNovo)
+    {
+        SpawnModelForLevel(valorNovo);
     }
 
     protected virtual void StoreBaseBulletStats()
@@ -70,13 +85,13 @@ public class TowerMP : NetworkBehaviour
 
     protected virtual void Update()
     {
-        if (!IsServer) return;
-
+        // Visual: Rotação para todos
         UpdateTarget();
-
         if (target != null)
             RotateToTarget();
 
+        // Lógica: Só no servidor
+        if (!IsServer) return;
         if (target == null) return;
 
         if (fireCountdown <= 0f)
@@ -84,7 +99,6 @@ public class TowerMP : NetworkBehaviour
             Shoot();
             fireCountdown = 1f / fireRate;
         }
-
         fireCountdown -= Time.deltaTime;
     }
 
@@ -103,7 +117,6 @@ public class TowerMP : NetworkBehaviour
                 nearest = e;
             }
         }
-
         target = nearest != null ? nearest.transform : null;
     }
 
@@ -125,33 +138,22 @@ public class TowerMP : NetworkBehaviour
         bulletGO.GetComponent<NetworkObject>().Spawn();
 
         BulletMP bullet = bulletGO.GetComponent<BulletMP>();
-
         if (bullet != null)
         {
             bullet.ownerClientId = donoDaTorreClientId;
-
             if (level.Value == 3)
             {
                 bullet.damage = (int)(baseBulletDamage * 1.5f);
                 bullet.speed = baseBulletSpeed * 1.5f;
             }
-
             bullet.Seek(target);
         }
     }
 
-    /// <summary>
-    /// Método chamado pelo servidor quando um jogador tenta melhorar a torre.
-    /// </summary>
     public void TryUpgrade(ulong playerClientId)
     {
         if (!IsServer) return;
-
-        if (playerClientId != donoDaTorreClientId)
-        {
-            Debug.LogWarning("Jogador tentou melhorar torre que não é sua.");
-            return;
-        }
+        if (playerClientId != donoDaTorreClientId) return;
 
         if (level.Value == 1)
         {
@@ -160,9 +162,6 @@ public class TowerMP : NetworkBehaviour
                 totalInvested += upgradeCostLevel2;
                 level.Value = 2;
                 range.Value = baseRange * 1.5f;
-
-                // Atualiza modelo visual em todos os clientes
-                UpdateTowerModelClientRpc(level.Value);
             }
         }
         else if (level.Value == 2)
@@ -171,86 +170,88 @@ public class TowerMP : NetworkBehaviour
             {
                 totalInvested += upgradeCostLevel3;
                 level.Value = 3;
-
-                UpdateTowerModelClientRpc(level.Value);
             }
         }
     }
 
-    [ClientRpc]
-    private void UpdateTowerModelClientRpc(int newLevel)
-    {
-        // Garante que o modelo muda em todos os clientes
-        SpawnModelForLevel(newLevel);
-    }
-
     private void SpawnModelForLevel(int lvl)
     {
-        if (currentModelInstance != null)
-            Destroy(currentModelInstance);
+        if (currentModelInstance != null) Destroy(currentModelInstance);
 
         GameObject modelToSpawn = null;
         if (lvl == 1) modelToSpawn = level1Model;
         else if (lvl == 2) modelToSpawn = level2Model;
         else if (lvl == 3) modelToSpawn = level3Model;
 
-        if (modelToSpawn == null)
-        {
-            Debug.LogWarning($"TowerMP: Modelo para o nível {lvl} não atribuído!");
-            return;
-        }
+        if (modelToSpawn == null) return;
 
         currentModelInstance = Instantiate(modelToSpawn, transform);
         currentModelInstance.transform.localPosition = Vector3.zero;
         currentModelInstance.transform.localRotation = Quaternion.identity;
 
-        // Atualiza referências
         partToRotate = currentModelInstance.transform.Find("PartToRotate");
         firePoint = currentModelInstance.transform.Find("FirePoint");
-
-        if (firePoint == null)
-        {
-            Debug.LogWarning($"Modelo de torre (nível {lvl}) não contém FirePoint!");
-        }
     }
 
+    // --- AQUI ESTÁ A CORREÇÃO DO CLIQUE ---
     private void OnMouseDown()
     {
+        // 1. Verifica se está a clicar na UI
         if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             return;
 
-        if (PlayerNetwork.LocalInstance == null)
-        {
-            Debug.LogError("Não consigo encontrar o PlayerNetwork.LocalInstance!");
-            return;
-        }
+        if (PlayerNetwork.LocalInstance == null) return;
 
+        // 2. Descobre quem somos nós
         PlayerID localPlayerId = (PlayerNetwork.LocalInstance.OwnerClientId == 0)
                                  ? PlayerID.JogadorA
                                  : PlayerID.JogadorB;
 
+        // 3. >>> CORREÇÃO: Recuperação do Spot no Cliente <<<
+        // Se a torre não souber onde está (acontece no Cliente), ela procura o spot mais próximo
         if (myTowerSpot == null)
         {
-            Debug.LogError("A Torre " + gameObject.name + " não tem referência ao seu TowerSpotMP!");
+            TowerSpotMP[] allSpots = FindObjectsByType<TowerSpotMP>(FindObjectsSortMode.None);
+            float closestDist = Mathf.Infinity;
+            TowerSpotMP bestSpot = null;
+
+            foreach (var spot in allSpots)
+            {
+                // Medimos a distância ignorando a altura (Y), pois a torre pode ser alta
+                float dist = Vector2.Distance(new Vector2(transform.position.x, transform.position.z),
+                                              new Vector2(spot.transform.position.x, spot.transform.position.z));
+
+                // Se estiver muito perto (menos de 1 metro), assumimos que é este o spot
+                if (dist < 1.0f && dist < closestDist)
+                {
+                    closestDist = dist;
+                    bestSpot = spot;
+                }
+            }
+            myTowerSpot = bestSpot;
+        }
+
+        // 4. Se mesmo assim não encontrar, desiste (evita erros)
+        if (myTowerSpot == null)
+        {
+            Debug.LogWarning("TowerMP: Clique ignorado porque a torre não encontrou o seu Spot.");
             return;
         }
 
+        // 5. Verifica se o spot pertence ao jogador que clicou
         if (myTowerSpot.donoDoSpot != localPlayerId)
         {
-            Debug.Log("Este spot não é seu!");
+            Debug.Log("Esta torre não te pertence!");
             return;
         }
 
+        // 6. Abre o painel
         if (TowerUpgradeUIMP.Instance != null)
         {
             if (TowerPlacementUIMP.Instance != null)
                 TowerPlacementUIMP.Instance.ClosePanel();
 
             TowerUpgradeUIMP.Instance.OpenPanel(this, myTowerSpot);
-        }
-        else
-        {
-            Debug.LogError("FALHA CRÍTICA: TowerUpgradeUIMP.Instance está NULO!");
         }
     }
 }
