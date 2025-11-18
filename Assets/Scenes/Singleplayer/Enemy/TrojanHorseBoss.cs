@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
+using System.Collections; // Necessário para o IEnumerator
 
 public class TrojanHorseBoss : MonoBehaviour
 {
@@ -15,8 +16,11 @@ public class TrojanHorseBoss : MonoBehaviour
     public int enemiesToSpawn = 5;
     public GameObject[] enemyPrefabs;
 
-    // Variável para garantir que as tropas só spawnam uma vez
-    private bool troopsSpawned = false;
+    [Header("Configuração do Spawn")]
+    public float timeBetweenSpawns = 0.5f; // Tempo entre cada tropa
+
+    // --- AQUI ESTAVA A VARIÁVEL EM FALTA ---
+    private bool isDead = false;
 
     void Start()
     {
@@ -36,7 +40,7 @@ public class TrojanHorseBoss : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Não foi possível encontrar a Base! Verifica se o teu objeto 'Base' tem a Tag 'Base'.", this);
+            Debug.LogError("Erro: Objeto 'Base' não encontrado.", this);
         }
 
         if (baseHealth == null)
@@ -45,7 +49,10 @@ public class TrojanHorseBoss : MonoBehaviour
 
     void Update()
     {
-        if (agent != null && !agent.pathPending)
+        // Se estiver morto, não faz nada no Update
+        if (isDead) return;
+
+        if (agent != null && !agent.pathPending && agent.isActiveAndEnabled)
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
@@ -59,48 +66,65 @@ public class TrojanHorseBoss : MonoBehaviour
 
     void ReachBase()
     {
+        if (isDead) return;
+
         // Causa dano à base
         if (baseHealth != null)
             baseHealth.TakeDamage(damageToBase);
-        else
-            Debug.LogWarning("Não foi possível encontrar BaseHealth para dar dano.");
 
-        // Decrementa a contagem de inimigos (o boss vai ser destruído)
+        // Decrementa a contagem de inimigos (porque o cavalo vai morrer agora)
         if (EnemySpawner.EnemiesAlive > 0)
             EnemySpawner.EnemiesAlive--;
 
-        // Chama a função de spawn
-        SpawnTroops(); 
-
-        // Destroi o objeto do boss
-        Destroy(gameObject);
+        // Inicia a morte e o spawn
+        StartDeathSequence();
     }
 
-    public void SpawnTroops()
+    // Esta função é chamada pelo script de Vida (EnemyHealth) ou pelo ReachBase
+    public void StartDeathSequence()
     {
-        if (troopsSpawned) return;
-        troopsSpawned = true;
+        if (isDead) return; // Garante que só corre uma vez
+        isDead = true;
 
+        StartCoroutine(SpawnTroopsRoutine());
+    }
+
+    IEnumerator SpawnTroopsRoutine()
+    {
+        Debug.Log("Cavalo destruído. A libertar tropas com intervalo...");
+
+        // 1. DESATIVAR O CAVALO (Esconder visualmente)
+        if (agent != null) agent.enabled = false;
+
+        // Tenta apanhar o Renderer no próprio objeto ou nos filhos (caso o modelo 3D esteja dentro)
+        Renderer[] renderers = GetComponentsInChildren<Renderer>();
+        foreach (Renderer r in renderers) r.enabled = false;
+
+        Collider[] colliders = GetComponentsInChildren<Collider>();
+        foreach (Collider c in colliders) c.enabled = false;
+
+        // 2. SPAWNAR TROPAS COM TIMER
         if (enemyPrefabs != null && enemyPrefabs.Length > 0)
         {
-            Debug.Log("Cavalo de Troia foi destruído! A libertar inimigos...");
-
             for (int i = 0; i < enemiesToSpawn; i++)
             {
                 int randomIndex = Random.Range(0, enemyPrefabs.Length);
-                GameObject prefabToSpawn = enemyPrefabs[randomIndex];
 
-                Vector3 spawnPosition = transform.position + new Vector3(Random.Range(-1f, 1f), 0, Random.Range(-1f, 1f));
+                // Pequeno ajuste na posição para não ficarem uns em cima dos outros
+                Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
+                Vector3 spawnPos = transform.position + offset;
 
-                Instantiate(prefabToSpawn, spawnPosition, transform.rotation);
+                Instantiate(enemyPrefabs[randomIndex], spawnPos, transform.rotation);
 
-                // Adiciona o novo inimigo à contagem
+                // Adiciona à contagem global do jogo
                 EnemySpawner.EnemiesAlive++;
+
+                // O TIMER: Espera X segundos antes do próximo
+                yield return new WaitForSeconds(timeBetweenSpawns);
             }
         }
-        else
-        {
-            Debug.LogWarning("O Boss Cavalo de Troia não tem prefabs de inimigos para 'spawnar'!", this);
-        }
+
+        // 3. DESTRUIR O OBJETO FINALMENTE
+        Destroy(gameObject);
     }
 }

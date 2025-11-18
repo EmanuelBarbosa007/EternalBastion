@@ -2,22 +2,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
-using UnityEngine.EventSystems; // Importa o EventSystems
+using UnityEngine.EventSystems;
+using System.Collections; // Necessário para a Corrotina
 
 public class TowerUpgradeUIMP : MonoBehaviour
 {
-    public static TowerUpgradeUIMP Instance; // Singleton
+    public static TowerUpgradeUIMP Instance;
 
     public GameObject uiPanel;
     public Button upgradeButton;
     public Button sellButton;
     public Button closeButton;
 
+    [Header("Configurações UI")]
+    [Tooltip("Tempo de espera para evitar cliques acidentais ao abrir")]
+    public float inputDelay = 0.3f; // O atraso de segurança
+
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
-
-    // <<< LIGA ISTO NO INSPECTOR >>>
-    // (O script que tu colaste na tua mensagem não tinha esta linha)
     public TextMeshProUGUI towerNameText;
 
     private TowerMP currentTower;
@@ -36,7 +38,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
         if (uiPanel != null)
             uiPanel.SetActive(false);
 
-        // Liga os botões às funções de RPC
         if (upgradeButton != null)
             upgradeButton.onClick.AddListener(UpgradeTower);
 
@@ -47,44 +48,29 @@ public class TowerUpgradeUIMP : MonoBehaviour
             closeButton.onClick.AddListener(ClosePanel);
     }
 
-    // <<< CORREÇÃO: Lógica de fechar ao clicar fora >>>
     private void Update()
     {
-        // Se o painel não está ativo ou não há torre selecionada, não faz nada
         if (!uiPanel.activeInHierarchy || currentTower == null)
             return;
 
-        // Se o jogador clicar com o botão esquerdo
+        // Lógica para fechar ao clicar fora (mantida igual)
         if (Input.GetMouseButtonDown(0))
         {
-            // Verifica se o clique foi em cima de um elemento de UI (o painel, um botão, etc.)
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
-            {
-                // Foi num UI, por isso não fecha
                 return;
-            }
 
-            // NOVO: Raycast para ver se clicámos na torre que está selecionada
             RaycastHit hit;
-            // Dispara um raio da câmara para a posição do rato
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            // Se o raio acertar em alguma coisa
             if (Physics.Raycast(ray, out hit, 100f))
             {
-                // Se o objeto em que acertámos é o GameObject da torre atual...
                 if (hit.collider.gameObject == currentTower.gameObject)
-                {
-                    // ...ignora o clique (foi o clique que abriu o painel).
                     return;
-                }
             }
 
-            // Se chegou aqui, clicou fora do UI e fora da torre selecionada. Fecha o painel.
             ClosePanel();
         }
     }
-
 
     public void OpenPanel(TowerMP tower, TowerSpotMP spot)
     {
@@ -92,8 +78,43 @@ public class TowerUpgradeUIMP : MonoBehaviour
         currentSpot = spot;
         uiPanel.SetActive(true);
 
-        // Atualiza o UI com a informação da torre
-        UpdateUI();
+        // Atualiza os textos primeiro
+        UpdateUI_Texts();
+
+        // Inicia a rotina que gere os botões com segurança
+        StartCoroutine(EnableButtonsRoutine());
+    }
+
+    // --- NOVA CORROTINA DE SEGURANÇA ---
+    IEnumerator EnableButtonsRoutine()
+    {
+        // 1. Bloqueia todos os botões imediatamente
+        if (upgradeButton != null) upgradeButton.interactable = false;
+        if (sellButton != null) sellButton.interactable = false;
+        if (closeButton != null) closeButton.interactable = false;
+
+        // 2. Espera o tempo de segurança
+        yield return new WaitForSeconds(inputDelay);
+
+        // 3. Reativa os botões simples
+        if (sellButton != null) sellButton.interactable = true;
+        if (closeButton != null) closeButton.interactable = true;
+
+        // 4. Reativa o botão de Upgrade COM LÓGICA INTELIGENTE
+        // Só ativa se a torre ainda não estiver no nível máximo
+        if (currentTower != null && upgradeButton != null)
+        {
+            // Se o nível for menor que 3 (assumindo que 3 é o máximo baseado no teu código)
+            if (currentTower.level.Value < 3)
+            {
+                upgradeButton.interactable = true;
+            }
+            else
+            {
+                // Se já for nível máximo, mantém desativado
+                upgradeButton.interactable = false;
+            }
+        }
     }
 
     public void ClosePanel()
@@ -103,53 +124,34 @@ public class TowerUpgradeUIMP : MonoBehaviour
         currentSpot = null;
     }
 
-    // Função para atualizar os botões
-    void UpdateUI()
+    // Separei a atualização de Texto da atualização de Botões para facilitar
+    void UpdateUI_Texts()
     {
         if (currentTower == null) return;
 
-        // <<< NOVO: Atualiza o texto do nome e nível da torre >>>
-        // (O script que tu colaste na tua mensagem não tinha isto)
         if (towerNameText != null)
-        {
             towerNameText.text = $"{currentTower.towerName} (Level {currentTower.level.Value})";
-        }
-        else
-        {
-            // Aviso caso te tenhas esquecido de ligar no Inspector
-            Debug.LogWarning("TowerNameText não está ligado no Inspector do TowerUpgradeUIMP!");
-        }
 
-
-        // Lógica de Venda
         int sellAmount = currentTower.totalInvested / 2;
-        sellValueText.text = $"Vender\n{sellAmount} Moedas";
+        if (sellValueText != null)
+            sellValueText.text = $"Vender\n{sellAmount} Moedas";
 
-        // Lógica de Upgrade
-        if (currentTower.level.Value == 1)
+        if (upgradeCostText != null)
         {
-            upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel2} Moedas";
-            upgradeButton.interactable = true;
-        }
-        else if (currentTower.level.Value == 2)
-        {
-            upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel3} Moedas";
-            upgradeButton.interactable = true;
-        }
-        else
-        {
-            upgradeCostText.text = "NÍVEL MÁXIMO";
-            upgradeButton.interactable = false;
+            if (currentTower.level.Value == 1)
+                upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel2} Moedas";
+            else if (currentTower.level.Value == 2)
+                upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel3} Moedas";
+            else
+                upgradeCostText.text = "NÍVEL MÁXIMO";
         }
     }
-
 
     private void UpgradeTower()
     {
         if (currentTower == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
 
-        // Pede ao servidor para fazer o upgrade
         PlayerNetwork.LocalInstance.RequestUpgradeTowerServerRpc(
             currentTower.NetworkObjectId
         );
@@ -162,7 +164,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
         if (currentTower == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
 
-        // Pede ao servidor para vender a torre
         PlayerNetwork.LocalInstance.RequestSellTowerServerRpc(
             currentTower.NetworkObjectId,
             currentSpot.NetworkObjectId

@@ -7118,6 +7118,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 699952171}
   closeButton: {fileID: 2033580452}
+  inputDelay: 0.3
   buildNormalTowerButton: {fileID: 539801716}
   normalTowerPrefabId: 2
   normalTowerCost: 50
@@ -7143,6 +7144,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 1098147551}
   sellButton: {fileID: 822823985}
   closeButton: {fileID: 1115224537}
+  inputDelay: 0.3
   upgradeCostText: {fileID: 1153927637}
   sellValueText: {fileID: 1719484745}
   towerNameText: {fileID: 1292857551}
@@ -16025,12 +16027,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77fef92f78f41a41bb60819c88a87c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayEntreSpawns: 0.5
   custoTropaNormal: 20
   prefabIdTropaNormal: 0
   custoTropaTanque: 35
   prefabIdTropaTanque: 1
   custoCavalo: 25
   prefabIdCavalo: 8
+  botaoSpawnNormal: {fileID: 0}
+  botaoSpawnTanque: {fileID: 0}
+  botaoSpawnCavalo: {fileID: 0}
   custoUpgradeTropaNormal: 50
   custoUpgradeTropaTanque: 75
   custoUpgradeCavalo: 60
@@ -16283,7 +16289,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4677158821688963617, guid: 12472884ef2d9264e9fe385058026316, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -69.22
+      value: -66.4
       objectReference: {fileID: 0}
     - target: {fileID: 4677158821688963617, guid: 12472884ef2d9264e9fe385058026316, type: 3}
       propertyPath: m_LocalPosition.y
@@ -16291,7 +16297,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4677158821688963617, guid: 12472884ef2d9264e9fe385058026316, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 63.84
+      value: 35
       objectReference: {fileID: 0}
     - target: {fileID: 4677158821688963617, guid: 12472884ef2d9264e9fe385058026316, type: 3}
       propertyPath: m_LocalRotation.w

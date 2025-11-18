@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using UnityEngine.EventSystems;
+using System.Collections; // Necessário para IEnumerator
 
 public class MineUpgradeUIMP : MonoBehaviour
 {
@@ -10,12 +11,14 @@ public class MineUpgradeUIMP : MonoBehaviour
     public GameObject panel;
     public Button upgradeButton;
     public Button sellButton;
-    public Button closeButton; // Opcional, mas recomendado
+    public Button closeButton;
+
+    [Header("Configurações UI")]
+    public float inputDelay = 0.3f; // Tempo de segurança
 
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
     public TextMeshProUGUI statsText;
-    // public TextMeshProUGUI mineNameText; // Se quiseres, como na torre
 
     private GoldMineMP currentMine;
     private DebrisSpotMP currentSpot;
@@ -38,7 +41,6 @@ public class MineUpgradeUIMP : MonoBehaviour
             closeButton.onClick.AddListener(ClosePanel);
     }
 
-    // Lógica para fechar ao clicar fora
     void Update()
     {
         if (!panel.activeInHierarchy || currentMine == null) return;
@@ -63,8 +65,53 @@ public class MineUpgradeUIMP : MonoBehaviour
     {
         currentMine = mine;
         currentSpot = spot;
-        UpdateUI();
+
         panel.SetActive(true);
+
+        // Atualiza textos
+        UpdateUI_Texts();
+
+        // Inicia segurança dos botões
+        StartCoroutine(EnableButtonsRoutine());
+    }
+
+    // --- CORROTINA DE SEGURANÇA ---
+    IEnumerator EnableButtonsRoutine()
+    {
+        // 1. Bloqueia tudo
+        if (upgradeButton != null) upgradeButton.interactable = false;
+        if (sellButton != null) sellButton.interactable = false;
+        if (closeButton != null) closeButton.interactable = false;
+
+        // 2. Espera
+        yield return new WaitForSeconds(inputDelay);
+
+        // 3. Reativa Vender e Fechar
+        if (sellButton != null) sellButton.interactable = true;
+        if (closeButton != null) closeButton.interactable = true;
+
+        // 4. Lógica Inteligente do botão Upgrade
+        if (currentMine != null && upgradeButton != null)
+        {
+            int currentLevel = currentMine.level.Value;
+
+            // Se já for nível máximo, mantém desligado
+            if (currentLevel >= currentMine.maxLevel)
+            {
+                upgradeButton.interactable = false;
+            }
+            else
+            {
+                // Se não for máx, verifica se tem dinheiro
+                int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
+                bool hasMoney = false;
+
+                if (PlayerNetwork.LocalInstance != null)
+                    hasMoney = CurrencySystemMP.Instance.GetMoney(PlayerNetwork.LocalInstance.OwnerClientId) >= upgradeCost;
+
+                upgradeButton.interactable = hasMoney;
+            }
+        }
     }
 
     public void ClosePanel()
@@ -74,34 +121,31 @@ public class MineUpgradeUIMP : MonoBehaviour
         currentSpot = null;
     }
 
-    public void UpdateUI()
+    // Separei os textos para serem atualizados instantaneamente
+    public void UpdateUI_Texts()
     {
         if (currentMine == null) return;
 
         int currentLevel = currentMine.level.Value;
         var currentStats = currentMine.levelStats[currentLevel - 1];
 
-        // if (mineNameText != null) 
-        //     mineNameText.text = $"Mina de Ouro (Nível {currentLevel})";
+        if (statsText != null)
+            statsText.text = $"Gera: {currentStats.coinsPerInterval} moedas\na cada {currentStats.generationInterval} seg.";
 
-        statsText.text = $"Gera: {currentStats.coinsPerInterval} moedas\na cada {currentStats.generationInterval} seg.";
-        sellValueText.text = $"Vender\n+{currentMine.GetSellValue()}";
+        if (sellValueText != null)
+            sellValueText.text = $"Vender\n+{currentMine.GetSellValue()}";
 
-        if (currentLevel >= currentMine.maxLevel)
+        if (upgradeCostText != null)
         {
-            upgradeButton.interactable = false;
-            upgradeCostText.text = "NÍVEL MÁX.";
-        }
-        else
-        {
-            int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
-            upgradeCostText.text = $"Melhorar\n{upgradeCost}";
-
-            bool hasMoney = false;
-            if (PlayerNetwork.LocalInstance != null)
-                hasMoney = CurrencySystemMP.Instance.GetMoney(PlayerNetwork.LocalInstance.OwnerClientId) >= upgradeCost;
-
-            upgradeButton.interactable = hasMoney;
+            if (currentLevel >= currentMine.maxLevel)
+            {
+                upgradeCostText.text = "NÍVEL MÁX.";
+            }
+            else
+            {
+                int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
+                upgradeCostText.text = $"Melhorar\n{upgradeCost}";
+            }
         }
     }
 
