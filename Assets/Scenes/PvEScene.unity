@@ -13684,8 +13684,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   modoPvE: 1
-  baseJogadorA: {fileID: 0}
-  baseJogadorB: {fileID: 0}
+  baseJogadorA: {fileID: 1559150178}
+  baseJogadorB: {fileID: 2025328823}
   jogoIniciado:
     m_InternalValue: 0
   fimDeJogoPanel: {fileID: 4550912}
@@ -16945,6 +16945,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 467379608}
   sellButton: {fileID: 1072668388}
   closeButton: {fileID: 1939052963}
+  inputDelay: 0.3
   upgradeCostText: {fileID: 1353477473}
   sellValueText: {fileID: 1572516829}
   statsText: {fileID: 326625631}
@@ -16964,6 +16965,7 @@ MonoBehaviour:
   yesButton: {fileID: 436168993}
   noButton: {fileID: 696552844}
   costText: {fileID: 1597409298}
+  inputDelay: 0.3
 --- !u!4 &1833518603
 Transform:
   m_ObjectHideFlags: 0

@@ -3583,6 +3583,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 2057069410}
   sellButton: {fileID: 1629258556}
   closeButton: {fileID: 2086992986}
+  inputDelay: 0.3
   upgradeCostText: {fileID: 2132552428}
   sellValueText: {fileID: 1575731742}
   statsText: {fileID: 668122034}
@@ -3602,6 +3603,7 @@ MonoBehaviour:
   yesButton: {fileID: 2129390521}
   noButton: {fileID: 1241118870}
   costText: {fileID: 602488952}
+  inputDelay: 0.3
 --- !u!4 &382461858
 Transform:
   m_ObjectHideFlags: 0
@@ -7904,6 +7906,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   panel: {fileID: 699952171}
   closeButton: {fileID: 2033580452}
+  inputDelay: 0.3
   buildNormalTowerButton: {fileID: 539801716}
   normalTowerPrefabId: 2
   normalTowerCost: 50
@@ -7929,6 +7932,7 @@ MonoBehaviour:
   upgradeButton: {fileID: 1098147551}
   sellButton: {fileID: 822823985}
   closeButton: {fileID: 1115224537}
+  inputDelay: 0.3
   upgradeCostText: {fileID: 1153927637}
   sellValueText: {fileID: 1719484745}
   towerNameText: {fileID: 1292857551}
@@ -14892,10 +14896,10 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   spawnPointA: {fileID: 614109002}
   caminhoA: {fileID: 251396662}
-  baseA: {fileID: 0}
+  baseA: {fileID: 234623701}
   spawnPointB: {fileID: 1090624135}
   caminhoB: {fileID: 795603679}
-  baseB: {fileID: 0}
+  baseB: {fileID: 1961238326}
 --- !u!4 &1547290255
 Transform:
   m_ObjectHideFlags: 0
@@ -16472,12 +16476,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d77fef92f78f41a41bb60819c88a87c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  delayEntreSpawns: 0.5
   custoTropaNormal: 20
   prefabIdTropaNormal: 0
   custoTropaTanque: 35
   prefabIdTropaTanque: 1
   custoCavalo: 25
   prefabIdCavalo: 8
+  botaoSpawnNormal: {fileID: 0}
+  botaoSpawnTanque: {fileID: 0}
+  botaoSpawnCavalo: {fileID: 0}
   custoUpgradeTropaNormal: 50
   custoUpgradeTropaTanque: 75
   custoUpgradeCavalo: 60
