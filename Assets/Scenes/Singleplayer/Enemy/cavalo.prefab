@@ -118,8 +118,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 4
-  reward: 22
+  maxHealth: 7
+  reward: 25
 --- !u!195 &8950659102063989293
 NavMeshAgent:
   m_ObjectHideFlags: 0

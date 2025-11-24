@@ -185,7 +185,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   baseSpeed: 3
   rotateSpeed: 10
-  speedMultiplierLvl2: 1.2
+  speedMultiplierLvl2: 1.5
 --- !u!114 &7217199204484477639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -199,8 +199,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  baseHealth: 10
-  moneyOnDeath: 30
+  baseHealth: 14
+  moneyOnDeath: 45
   healthMultiplierLvl2: 1.5
   healthBar: {fileID: 0}
 --- !u!136 &5830207055287109355

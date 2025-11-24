@@ -2117,7 +2117,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 50
+  maxHealth: 25
   healthBar: {fileID: 2126167907}
   donoDaBaseClientId: 0
 --- !u!65 &234623702
@@ -17666,7 +17666,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 50
+  maxHealth: 25
   healthBar: {fileID: 1421479689}
   donoDaBaseClientId: 0
 --- !u!65 &1961238327

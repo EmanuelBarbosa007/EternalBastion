@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 20
-  damage: 3
+  damage: 2
   lifetime: 10
   rotationFix: {x: 180, y: 0, z: 0}
 --- !u!136 &6043923992815970549

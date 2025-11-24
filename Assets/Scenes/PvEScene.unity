@@ -13720,7 +13720,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  startingMoney: 500
+  startingMoney: 150
   moneyTextA: {fileID: 1299893056}
   moneyTextB: {fileID: 1678128890}
 --- !u!1 &1547290252
@@ -13921,7 +13921,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 50
+  maxHealth: 25
   healthBar: {fileID: 2126167907}
   donoDaBaseClientId: 0
 --- !u!65 &1559150179
@@ -16032,7 +16032,7 @@ MonoBehaviour:
   prefabIdTropaNormal: 0
   custoTropaTanque: 35
   prefabIdTropaTanque: 1
-  custoCavalo: 25
+  custoCavalo: 30
   prefabIdCavalo: 8
   botaoSpawnNormal: {fileID: 0}
   botaoSpawnTanque: {fileID: 0}
@@ -18880,7 +18880,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  maxHealth: 50
+  maxHealth: 25
   healthBar: {fileID: 1421479689}
   donoDaBaseClientId: 0
 --- !u!65 &2025328824

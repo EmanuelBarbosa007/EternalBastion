@@ -98,8 +98,6 @@ public class NetworkConnectUI : MonoBehaviour
             {
                 if (ip.AddressFamily == AddressFamily.InterNetwork && !IPAddress.IsLoopback(ip))
                 {
-                    // Filtro extra: Evitar adaptadores virtuais (VMware, VirtualBox) que começam muitas vezes por 192.168.56...
-                    // Mas para teste simples, retornar o primeiro geralmente funciona.
                     return ip.ToString();
                 }
             }

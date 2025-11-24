@@ -11409,16 +11409,16 @@ MonoBehaviour:
   waveText: {fileID: 84617832}
   countdownText: {fileID: 1879939926}
   timeBetweenWaves: 5
-  enemiesPerWave: 5
+  enemiesPerWave: 4
   spawnInterval: 1
   enemiesPerWaveIncrease: 2
   waveToStartTanks: 3
-  waveToStartHorses: 1
+  waveToStartHorses: 10
   spawnIntervalDecrease: 0.05
   minSpawnInterval: 0.2
   timeBetweenWavesDecrease: 0.5
   minTimeBetweenWaves: 5
-  bossWaveFrequency: 1
+  bossWaveFrequency: 5
   bossCount: 1
 --- !u!4 &1457408881
 Transform:
@@ -11447,8 +11447,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 988b14582039616479ea7c7e8d373724, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 50
-  currentHealth: 50
+  maxHealth: 40
+  currentHealth: 40
   healthBar: {fileID: 56250043}
 --- !u!114 &1457408883
 MonoBehaviour:
@@ -11462,7 +11462,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43c91f3f107673040a906e7097613571, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  startingMoney: 1000
+  startingMoney: 100
   moneyText: {fileID: 1780253725}
 --- !u!114 &1457408884
 MonoBehaviour:
