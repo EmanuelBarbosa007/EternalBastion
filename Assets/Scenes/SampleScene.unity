@@ -11413,12 +11413,12 @@ MonoBehaviour:
   spawnInterval: 1
   enemiesPerWaveIncrease: 2
   waveToStartTanks: 3
-  waveToStartHorses: 10
+  waveToStartHorses: 5
   spawnIntervalDecrease: 0.05
   minSpawnInterval: 0.2
   timeBetweenWavesDecrease: 0.5
   minTimeBetweenWaves: 5
-  bossWaveFrequency: 5
+  bossWaveFrequency: 10
   bossCount: 1
 --- !u!4 &1457408881
 Transform:

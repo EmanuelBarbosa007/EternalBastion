@@ -144,7 +144,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1f3892117002cdc4bbbbf7e02693e4ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  range: 15
+  range: 18
   fireRate: 1
   rotationSpeed: 10
   bulletPrefab: {fileID: 4029673068288597327, guid: f570e8420958d90438192eb4c9217f2d, type: 3}

@@ -173,7 +173,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   baseSpeed: 3
   rotateSpeed: 10
-  speedMultiplierLvl2: 6
+  speedMultiplierLvl2: 2
 --- !u!114 &3963553024775863633
 MonoBehaviour:
   m_ObjectHideFlags: 0
