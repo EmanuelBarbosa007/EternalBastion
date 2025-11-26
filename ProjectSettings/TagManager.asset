@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Base
   - Path
+  - Enemy
   layers:
   - Default
   - TransparentFX

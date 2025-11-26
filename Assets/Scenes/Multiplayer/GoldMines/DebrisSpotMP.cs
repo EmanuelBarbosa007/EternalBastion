@@ -6,18 +6,16 @@ using UnityEngine.EventSystems;
 public class DebrisSpotMP : NetworkBehaviour
 {
     [Header("Configuração de Rede")]
-    // NOVO: Sincroniza o estado de ocupado
+    // Sincroniza o estado de ocupado
     public NetworkVariable<bool> isOccupied = new NetworkVariable<bool>(false);
-    // NOVO: Sincroniza qual mina está neste spot
+    // Sincroniza qual mina está neste spot (pelo NetworkObjectId)
     public NetworkVariable<ulong> currentMineNetworkId = new NetworkVariable<ulong>(0);
-    // NOVO: Defina isto no Inspector para cada spot
+    // Defina isto no Inspector para cada spot
     public PlayerID donoDoSpot;
 
     [Header("Configuração da Mina")]
-    // NOVO: ID do Prefab da Mina (da lista de NetworkPrefabs)
     public int goldMinePrefabId;
     public int buildCost = 75;
-
 
     [Tooltip("Quão mais alto a mina deve 'spawnar' em relação aos destroços.")]
     public float spawnHeightOffset = 0f;
@@ -27,7 +25,7 @@ public class DebrisSpotMP : NetworkBehaviour
     [Header("Referências")]
     public GameObject debrisVisuals;
 
-    private GoldMineMP cachedMine; // Guarda a mina em cache
+    // REMOVIDO: private GoldMineMP cachedMine; -> Não estava a ser usado
 
     public override void OnNetworkSpawn()
     {
@@ -43,7 +41,6 @@ public class DebrisSpotMP : NetworkBehaviour
         isOccupied.OnValueChanged -= OnOccupiedChanged;
     }
 
-
     private void OnOccupiedChanged(bool previousValue, bool newValue)
     {
         if (debrisVisuals != null)
@@ -51,14 +48,7 @@ public class DebrisSpotMP : NetworkBehaviour
             // Mostra os destroços se NÃO estiver ocupado
             debrisVisuals.SetActive(!newValue);
         }
-
-        // Se o spot ficou vazio, limpa a cache
-        if (newValue == false)
-        {
-            cachedMine = null;
-        }
     }
-
 
     private void OnMouseDown()
     {
@@ -100,7 +90,6 @@ public class DebrisSpotMP : NetworkBehaviour
         }
     }
 
-
     public void SetOcupado(GoldMineMP mine)
     {
         if (!IsServer) return;
@@ -108,12 +97,10 @@ public class DebrisSpotMP : NetworkBehaviour
         currentMineNetworkId.Value = mine.NetworkObjectId;
     }
 
-
     public void SetVazio()
     {
         if (!IsServer) return;
         isOccupied.Value = false;
         currentMineNetworkId.Value = 0;
-        cachedMine = null;
     }
 }

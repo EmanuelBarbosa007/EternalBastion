@@ -94,16 +94,21 @@ public class EscMenuManager : MonoBehaviour
 
     public void GoToMainMenu()
     {
-        //despausar o jogo antes de sair da cena
+        // Despausar o jogo antes de sair da cena
         Time.timeScale = 1f;
         isPaused = false;
         IsGamePaused = false;
 
-
         if (NetworkManager.Singleton != null)
         {
+            // Guarda a referência do GameObject antes de fazer shutdown
+            GameObject networkManagerGo = NetworkManager.Singleton.gameObject;
+
             NetworkManager.Singleton.Shutdown();
-            Debug.Log("NetworkManager foi desligado.");
+
+
+            Destroy(networkManagerGo);
+            Debug.Log("NetworkManager foi desligado e destruído.");
         }
 
         // Carrega a cena do menu

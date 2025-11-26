@@ -1,14 +1,19 @@
 using UnityEngine;
 using Unity.Netcode;
-using System.Collections.Generic;
 using TMPro;
-using System;
 
 public class CurrencySystemMP : NetworkBehaviour
 {
     public static CurrencySystemMP Instance;
 
+    [Header("Configurações Iniciais")]
     public int startingMoney = 150;
+
+    [Header("Renda Passiva (Moedas por Tempo)")]
+    public bool ativarRendaPassiva = true;
+    public int moedasPorRonda = 100;     // Quantidade de moedas a dar
+    public float tempoParaRenda = 30f;   // Intervalo de tempo em segundos
+    private float temporizadorRenda = 0f;
 
     // Referências aos textos de UI de cada jogador
     public TextMeshProUGUI moneyTextA;
@@ -41,7 +46,39 @@ public class CurrencySystemMP : NetworkBehaviour
         UpdateUI();
     }
 
-    // --- Funções chamadas APENAS NO SERVER ---
+    void Update()
+    {
+        // A lógica de dar dinheiro acontece APENAS no servidor
+        if (!IsServer) return;
+
+        // Se a renda passiva estiver desligada, não faz nada
+        if (!ativarRendaPassiva) return;
+
+        // Precisamos verificar se o GameManager existe e se o jogo já começou
+        if (GameManagerMP.Instance == null || !GameManagerMP.Instance.jogoIniciado.Value) return;
+
+        // Incrementa o temporizador
+        temporizadorRenda += Time.deltaTime;
+
+        if (temporizadorRenda >= tempoParaRenda)
+        {
+            temporizadorRenda = 0f; // Reseta o tempo
+            DarRendaPassiva();
+        }
+    }
+
+
+
+    private void DarRendaPassiva()
+    {
+        // Adiciona dinheiro ao Jogador A 
+        moneyJogadorA.Value += moedasPorRonda;
+
+        // Adiciona dinheiro ao Jogador B 
+        moneyJogadorB.Value += moedasPorRonda;
+
+        Debug.Log($"Renda Passiva: +{moedasPorRonda} moedas para ambos os jogadores.");
+    }
 
     public void AddMoney(ulong clientId, int amount)
     {

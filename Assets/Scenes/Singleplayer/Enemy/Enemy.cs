@@ -7,27 +7,22 @@ public class Enemy : MonoBehaviour
     public float speed = 3f;
 
     [Header("AI Pathfinding")]
-    [Tooltip("De quantos em quantos segundos o inimigo recalcula o caminho? ")]
     public float pathUpdateRate = 1.0f;
 
     private Transform baseTarget;
     private NavMeshAgent agent;
-    private float startY;
     private static BaseHealth baseHealth;
 
     void Start()
     {
-        startY = transform.position.y;
-
-        // Obtem o componente NavMeshAgent
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
         {
-            Debug.LogError("NavMeshAgent não encontrado no inimigo!", this);
+            Debug.LogError("NavMeshAgent não encontrado!", this);
             return;
         }
 
-        // Encontra a base pela Tag "Base" 
+        // Procura a base
         GameObject baseObject = GameObject.FindGameObjectWithTag("Base");
         if (baseObject != null)
         {
@@ -35,27 +30,25 @@ public class Enemy : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Não foi possível encontrar a Base! Verifica se o teu objeto 'Base' tem a Tag 'Base'.", this);
+            Debug.LogError("Base não encontrada! Verifica a Tag 'Base'.", this);
             return;
         }
 
-        // Cache da vida da base 
         if (baseHealth == null)
             baseHealth = Object.FindFirstObjectByType<BaseHealth>();
 
-        // Define a velocidade do agente
         agent.speed = speed;
 
-        // Aplica os custos de área (para evitar zonas perigosas)
-        ApplyAreaCosts();
+        // IMPORTANTE: Stopping Distance a 0 para ele tentar ir até ao centro mesmo
+        agent.stoppingDistance = 0f;
 
-        // Inicia a rotina de atualização de caminho
+        ApplyAreaCosts();
         StartCoroutine(UpdatePath());
     }
 
+    // ... (Mantém os métodos ApplyAreaCosts e SetCost iguais) ...
     private void ApplyAreaCosts()
     {
-        // Aplica manualmente os custos de área — isto força o agente a respeitar as zonas perigosas
         SetCost("Walkable", 1f);
         SetCost("DangerLevel1", 5f);
         SetCost("DangerLevel2", 15f);
@@ -65,14 +58,7 @@ public class Enemy : MonoBehaviour
     private void SetCost(string areaName, float cost)
     {
         int index = NavMesh.GetAreaFromName(areaName);
-        if (index != -1)
-        {
-            agent.SetAreaCost(index, cost);
-        }
-        else
-        {
-            Debug.LogWarning($"Área '{areaName}' não encontrada no NavMesh. Verifica em Navigation > Areas.");
-        }
+        if (index != -1) agent.SetAreaCost(index, cost);
     }
 
     IEnumerator UpdatePath()
@@ -87,33 +73,25 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    void Update()
+    // NOVA LÓGICA: Detecta colisão física com a Base
+    void OnTriggerEnter(Collider other)
     {
-        if (agent != null && !agent.pathPending)
+        // Se entrarmos num objeto com a Tag "Base"
+        if (other.CompareTag("Base"))
         {
-            if (agent.remainingDistance <= agent.stoppingDistance)
-            {
-                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
-                {
-                    ReachBase();
-                }
-            }
+            ReachBase();
         }
     }
 
     void ReachBase()
     {
+        // Impede que o código corra duas vezes se houver colliders duplos
+        if (!this.enabled) return;
+
         StopAllCoroutines();
-        if (agent != null && agent.isOnNavMesh)
-        {
-            agent.isStopped = true;
-            agent.enabled = false;
-        }
 
         if (baseHealth != null)
             baseHealth.TakeDamage(1);
-        else
-            Debug.LogWarning("Não foi possível encontrar BaseHealth para dar dano.");
 
         if (EnemySpawner.EnemiesAlive > 0)
             EnemySpawner.EnemiesAlive--;
