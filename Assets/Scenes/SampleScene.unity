@@ -1004,7 +1004,7 @@ GameObject:
   - component: {fileID: 89997169}
   m_Layer: 1
   m_Name: Portal VFX
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6850,7 +6850,7 @@ GameObject:
   - component: {fileID: 624012254}
   m_Layer: 1
   m_Name: Portal VFX (1)
-  m_TagString: Untagged
+  m_TagString: Portal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11179,6 +11179,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   normalSpeed: 1
   fastSpeed: 2
+  superFastSpeed: 4
   speedButtonText: {fileID: 1602070624}
 --- !u!4 &982437468
 Transform:
@@ -13694,6 +13695,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183026755}
   m_CullTransparentMesh: 1
+--- !u!1 &1205314362
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1205314364}
+  - component: {fileID: 1205314363}
+  m_Layer: 0
+  m_Name: setas indicadoras
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1205314363
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205314362}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16a208ba506332e45ad438b37edada4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  arrowPrefab: {fileID: 177897299099148259, guid: 2c78e879666670148bee2fd1a07a0cb1, type: 3}
+  canvasTransform: {fileID: 936719090}
+  baseTag: Base
+  portalTag: Portal
+--- !u!4 &1205314364
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1205314362}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 960, y: 537.7, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1216466303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -22178,6 +22227,7 @@ SceneRoots:
   m_Roots:
   - {fileID: 1937669659}
   - {fileID: 1457408881}
+  - {fileID: 1205314364}
   - {fileID: 982437468}
   - {fileID: 330585546}
   - {fileID: 410087041}

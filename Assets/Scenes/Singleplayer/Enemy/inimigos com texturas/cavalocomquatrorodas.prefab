@@ -580,9 +580,9 @@ MonoBehaviour:
   damageToBase: 10
   enemiesToSpawn: 5
   enemyPrefabs:
-  - {fileID: 1962177786879868133, guid: 933b09ee93c5ca847aac88279caa40a4, type: 3}
-  - {fileID: 5219282202488026003, guid: 056df1d06af23744caf87df5c028d485, type: 3}
-  - {fileID: 5012839943139491806, guid: 7128a15161dc3d540b4d34740d3eb79e, type: 3}
+  - {fileID: 7374552401245800580, guid: eae21b2622ef76f408b72b2da956695b, type: 3}
+  - {fileID: 7374552401245800580, guid: d72d547c928edc541aac5b1878c3dfdd, type: 3}
+  - {fileID: 4992308714102802302, guid: 918a174cd8220a44092d219b6aa3eda9, type: 3}
   timeBetweenSpawns: 0.5
 --- !u!195 &3070755040600632169
 NavMeshAgent:

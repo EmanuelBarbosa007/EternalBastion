@@ -1352,6 +1352,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1308103137}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot
@@ -2602,6 +2614,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1308103137}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (2)
@@ -3232,6 +3256,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1140553041}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (5)
@@ -3275,6 +3311,18 @@ PrefabInstance:
     - target: {fileID: 7508184315765692607, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8812762758471914512, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
@@ -3763,6 +3811,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1140553041}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (6)
@@ -3806,6 +3866,18 @@ PrefabInstance:
     - target: {fileID: 7508184315765692607, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8812762758471914512, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
@@ -6976,6 +7048,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1308103137}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (1)
@@ -9936,6 +10020,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1140553041}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (7)
@@ -9979,6 +10075,18 @@ PrefabInstance:
     - target: {fileID: 7508184315765692607, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8812762758471914512, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
@@ -13727,6 +13835,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1308103137}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.101960786
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (3)
@@ -14292,6 +14412,18 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1140553041}
     m_Modifications:
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470009680640667733, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
+      objectReference: {fileID: 0}
     - target: {fileID: 7167968598385738245, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_Name
       value: towerspot (4)
@@ -14335,6 +14467,18 @@ PrefabInstance:
     - target: {fileID: 7508184315765692607, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.b
+      value: 0.68235296
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.g
+      value: 0.007843138
+      objectReference: {fileID: 0}
+    - target: {fileID: 8326594547545363823, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
+      propertyPath: InitialModule.startColor.maxColor.r
+      value: 0.49803922
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8812762758471914512, guid: ab1da54b685aa714dae5fe4bad2d40fa, type: 3}
@@ -15213,6 +15357,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
+  modoPvE: 0
   startingMoney: 225
   ativarRendaPassiva: 1
   moedasPorRonda: 100

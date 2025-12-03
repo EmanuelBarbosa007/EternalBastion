@@ -6,6 +6,9 @@ public class CurrencySystemMP : NetworkBehaviour
 {
     public static CurrencySystemMP Instance;
 
+    [Header("Modo de Jogo")]
+    public bool modoPvE = false; // A tal "caixinha" para selecionar se é PvE
+
     [Header("Configurações Iniciais")]
     public int startingMoney = 150;
 
@@ -43,6 +46,8 @@ public class CurrencySystemMP : NetworkBehaviour
         // Todos os clientes atualizam o UI quando o dinheiro muda
         moneyJogadorA.OnValueChanged += (prev, next) => UpdateUI();
         moneyJogadorB.OnValueChanged += (prev, next) => UpdateUI();
+
+        // Atualiza a UI assim que nasce para garantir que os nomes (Host/Bot) aparecem logo
         UpdateUI();
     }
 
@@ -66,8 +71,6 @@ public class CurrencySystemMP : NetworkBehaviour
             DarRendaPassiva();
         }
     }
-
-
 
     private void DarRendaPassiva()
     {
@@ -117,7 +120,6 @@ public class CurrencySystemMP : NetworkBehaviour
         return false; // Não tem dinheiro
     }
 
-
     public int GetMoney(ulong clientId)
     {
         if (clientId == 0) // Jogador A
@@ -130,14 +132,17 @@ public class CurrencySystemMP : NetworkBehaviour
         }
     }
 
-
-    //UI
+    // --- UI ATUALIZADA ---
     void UpdateUI()
     {
+        // Define os nomes baseados na checkbox "modoPvE"
+        string nomeA = modoPvE ? "Player" : "Host";
+        string nomeB = modoPvE ? "Bot" : "Client";
+
         if (moneyTextA != null)
-            moneyTextA.text = "Moedas A: " + moneyJogadorA.Value;
+            moneyTextA.text = $"{nomeA}: {moneyJogadorA.Value}";
 
         if (moneyTextB != null)
-            moneyTextB.text = "Moedas B: " + moneyJogadorB.Value;
+            moneyTextB.text = $"{nomeB}: {moneyJogadorB.Value}";
     }
 }

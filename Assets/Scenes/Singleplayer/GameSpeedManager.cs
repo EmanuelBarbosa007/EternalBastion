@@ -6,19 +6,21 @@ public class GameSpeedManager : MonoBehaviour
     [Header("Speed Settings")]
     public float normalSpeed = 1f;
     public float fastSpeed = 2f;
+    public float superFastSpeed = 4f; // Nova variável para o x4
 
     [Header("UI")]
-    public TextMeshProUGUI speedButtonText; //para o texto "x1" / "x2"
+    public TextMeshProUGUI speedButtonText;
 
-    private bool isFastForward = false;
+    // Mudamos de bool para int para controlar 3 estados (0, 1, 2)
+    // 0 = x1, 1 = x2, 2 = x4
+    private int currentSpeedIndex = 0;
 
     void Start()
     {
-        // Garante que o jogo começa na velocidade normal
-        isFastForward = false;
+        // Garante que o jogo começa na velocidade normal (índice 0)
+        currentSpeedIndex = 0;
         ApplyCurrentSpeed();
     }
-
 
     public void ToggleSpeed()
     {
@@ -28,7 +30,14 @@ public class GameSpeedManager : MonoBehaviour
             return;
         }
 
-        isFastForward = !isFastForward;
+        // Aumenta o índice. Se passar de 2, volta para 0.
+        // Ciclo: x1 -> x2 -> x4 -> x1 ...
+        currentSpeedIndex++;
+        if (currentSpeedIndex > 2)
+        {
+            currentSpeedIndex = 0;
+        }
+
         ApplyCurrentSpeed();
     }
 
@@ -41,17 +50,23 @@ public class GameSpeedManager : MonoBehaviour
             return;
         }
 
-        if (isFastForward)
+        // Verifica qual é o índice atual e aplica a velocidade correspondente
+        switch (currentSpeedIndex)
         {
-            Time.timeScale = fastSpeed;
-            if (speedButtonText != null)
-                speedButtonText.text = "x2";
-        }
-        else
-        {
-            Time.timeScale = normalSpeed;
-            if (speedButtonText != null)
-                speedButtonText.text = "x1";
+            case 0: // Velocidade Normal (x1)
+                Time.timeScale = normalSpeed;
+                if (speedButtonText != null) speedButtonText.text = "x1";
+                break;
+
+            case 1: // Rápido (x2)
+                Time.timeScale = fastSpeed;
+                if (speedButtonText != null) speedButtonText.text = "x2";
+                break;
+
+            case 2: // Muito Rápido (x4)
+                Time.timeScale = superFastSpeed;
+                if (speedButtonText != null) speedButtonText.text = "x4";
+                break;
         }
     }
 }
