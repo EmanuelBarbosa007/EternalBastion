@@ -14,9 +14,15 @@ public class CameraControllerMP : NetworkBehaviour
     public Vector2 panLimitMin;
     public Vector2 panLimitMax;
 
-
     public override void OnNetworkSpawn()
     {
+
+        if (PlayerPrefs.HasKey("Sensitivity"))
+        {
+            SettingsMenu.mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity");
+        }
+
+
         // Ativa a câmara e o audio listener APENAS para o jogador local
         if (IsOwner)
         {
@@ -50,7 +56,6 @@ public class CameraControllerMP : NetworkBehaviour
         }
     }
 
-
     void Update()
     {
         // Só executa o movimento se esta câmara pertencer ao jogador local
@@ -60,7 +65,6 @@ public class CameraControllerMP : NetworkBehaviour
         }
 
         // Lógica de Movimento
-
         float xInput = 0f;
         float zInput = 0f;
 
@@ -72,21 +76,25 @@ public class CameraControllerMP : NetworkBehaviour
 
         // 2. Normalizar o vetor de direção 
         Vector3 dir = new Vector3(xInput, 0, zInput).normalized;
-        Vector3 move = dir * panSpeed * Time.deltaTime;
+
+
+        // Aplicamos o multiplicador de sensibilidade vindo do menu de definições
+        float currentPanSpeed = panSpeed * SettingsMenu.mouseSensitivity;
+
+        Vector3 move = dir * currentPanSpeed * Time.deltaTime;
 
         // 3. Obter Posição Atual e Aplicar Movimento
         Vector3 newPos = transform.position;
         newPos += move;
 
-
+        // 4. Zoom (Scroll)
         float scroll = Input.GetAxis("Mouse ScrollWheel");
         newPos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
 
-        //Aplicar Limites
+        // 5. Aplicar Limites
         newPos.x = Mathf.Clamp(newPos.x, panLimitMin.x, panLimitMax.x);
-        newPos.y = Mathf.Clamp(newPos.y, minY, maxY); // Limites de zoom
+        newPos.y = Mathf.Clamp(newPos.y, minY, maxY); // Limites de zoom (altura)
         newPos.z = Mathf.Clamp(newPos.z, panLimitMin.y, panLimitMax.y); // Limites de movimento Z
-
 
         transform.position = newPos;
     }

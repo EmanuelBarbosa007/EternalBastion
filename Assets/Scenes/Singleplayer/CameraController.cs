@@ -3,10 +3,10 @@ using UnityEngine;
 public class CameraController : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveSpeed = 20f;        // Velocidade de movimento
-    public float zoomSpeed = 200f;       //scroll para zoom
-    public float minY = 10f;             // zoom mínimo
-    public float maxY = 25f;             // zoom máximo
+    public float moveSpeed = 20f;        // Velocidade base de movimento
+    public float zoomSpeed = 200f;       // Velocidade do scroll para zoom
+    public float minY = 10f;             // Altura mínima (zoom in)
+    public float maxY = 25f;             // Altura máxima (zoom out)
 
     [Header("Map Limits")]
     public float minX = -30f;
@@ -21,8 +21,13 @@ public class CameraController : MonoBehaviour
         cam = Camera.main;
 
         // Ajusta posição inicial 
-        transform.position = new Vector3( -27.5f, 20f, 20f);
+        transform.position = new Vector3(-27.5f, 20f, 20f);
         transform.rotation = Quaternion.Euler(60f, 180f, 0f);
+
+        if (PlayerPrefs.HasKey("Sensitivity"))
+        {
+            SettingsMenu.mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity");
+        }
     }
 
     void Update()
@@ -36,30 +41,34 @@ public class CameraController : MonoBehaviour
         float x = 0f;
         float z = 0f;
 
-        // WASD movement
-        if (Input.GetKey(KeyCode.W)) z -= 1f; 
-        if (Input.GetKey(KeyCode.S)) z += 1f; 
-        if (Input.GetKey(KeyCode.A)) x += 1f; 
+        // Movimento WASD
+        if (Input.GetKey(KeyCode.W)) z -= 1f;
+        if (Input.GetKey(KeyCode.S)) z += 1f;
+        if (Input.GetKey(KeyCode.A)) x += 1f;
         if (Input.GetKey(KeyCode.D)) x -= 1f;
 
-
         Vector3 dir = new Vector3(x, 0, z).normalized;
-        Vector3 move = dir * moveSpeed * Time.deltaTime;
+
+
+        // Multiplicamos a velocidade base pela sensibilidade que vem do Menu de Definições
+        // Se a classe SettingsMenu ainda não tiver sido corrida, o valor padrão lá é 1.0f
+        float currentSpeed = moveSpeed * SettingsMenu.mouseSensitivity;
+
+        Vector3 move = dir * currentSpeed * Time.deltaTime;
 
         // Move e limita dentro do mapa
         Vector3 newPos = transform.position + move;
+
         newPos.x = Mathf.Clamp(newPos.x, minX, maxX);
         newPos.z = Mathf.Clamp(newPos.z, minZ, maxZ);
 
         transform.position = newPos;
-        transform.position = Vector3.Lerp(transform.position, newPos, 10f * Time.deltaTime);
-
     }
 
     void ZoomCamera()
     {
-        
         float scroll = Input.GetAxis("Mouse ScrollWheel");
+
         if (scroll != 0f)
         {
             Vector3 pos = transform.position;

@@ -1,29 +1,31 @@
 using UnityEngine;
 using UnityEngine.UI;
-using TMPro; // Se usares TextMeshPro
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class MusicRadio : MonoBehaviour
 {
-    // --- Singleton (Para manter entre cenas) ---
     public static MusicRadio instance;
 
     [Header("Configurações de Áudio")]
     public AudioSource audioSource;
-    public AudioClip[] musicList; // Arrasta as tuas músicas para aqui no Inspector
+    public AudioClip[] musicList;
     private int currentTrackIndex = 0;
 
     [Header("UI References")]
-    public GameObject painelControlos; // O painel que abre e fecha
-    public TextMeshProUGUI songNameText; // Texto do nome da música
+    public GameObject painelControlos;
+    public TextMeshProUGUI songNameText;
     public Slider volumeSlider;
 
-    // Estado do painel (Aberto/Fechado)
+    [Header("Animação do Botão")]
+    public RectTransform botaoRect; 
+    public float posYFechado = -460f; // Posição inicial
+    public float posYAberto = -310f;  // Para onde ele vai quando abre
+
     private bool isPanelOpen = false;
 
     void Awake()
     {
-        // Lógica para não destruir entre cenas
         if (instance == null)
         {
             instance = this;
@@ -31,22 +33,19 @@ public class MusicRadio : MonoBehaviour
         }
         else
         {
-            Destroy(gameObject); // Se já existir um rádio, destrói este novo para não duplicar
+            Destroy(gameObject);
             return;
         }
     }
 
     void Start()
     {
-        // Configuração inicial
-        painelControlos.SetActive(false); // Começa fechado
+        painelControlos.SetActive(false);
 
-        // Configurar o volume inicial
         volumeSlider.onValueChanged.AddListener(SetVolume);
-        volumeSlider.value = 0.5f; // Começa a 50%
+        volumeSlider.value = 0.5f;
         audioSource.volume = 0.5f;
 
-        // Tocar a primeira música
         if (musicList.Length > 0)
         {
             PlayTrack(0);
@@ -55,40 +54,44 @@ public class MusicRadio : MonoBehaviour
 
     void Update()
     {
-        // Opcional: Se a música acabar, passar para a próxima automaticamente
         if (!audioSource.isPlaying && audioSource.time == 0)
         {
             NextTrack();
         }
     }
 
-    // --- Funções dos Botões ---
-
+    // --- AQUI ESTÁ A MUDANÇA ---
     public void TogglePanel()
     {
         isPanelOpen = !isPanelOpen;
-
-        // Aqui podes substituir por uma Animação (ver explicação abaixo)
         painelControlos.SetActive(isPanelOpen);
+
+        // Atualizar a posição do botão
+        Vector2 novaPosicao = botaoRect.anchoredPosition;
+
+        if (isPanelOpen)
+        {
+            novaPosicao.y = posYAberto; // Sobe para -310
+        }
+        else
+        {
+            novaPosicao.y = posYFechado; // Desce para -460
+        }
+
+        botaoRect.anchoredPosition = novaPosicao;
     }
 
     public void NextTrack()
     {
         currentTrackIndex++;
-        if (currentTrackIndex >= musicList.Length)
-        {
-            currentTrackIndex = 0; // Volta ao início (Loop)
-        }
+        if (currentTrackIndex >= musicList.Length) currentTrackIndex = 0;
         PlayTrack(currentTrackIndex);
     }
 
     public void PreviousTrack()
     {
         currentTrackIndex--;
-        if (currentTrackIndex < 0)
-        {
-            currentTrackIndex = musicList.Length - 1; // Vai para a última
-        }
+        if (currentTrackIndex < 0) currentTrackIndex = musicList.Length - 1;
         PlayTrack(currentTrackIndex);
     }
 
@@ -97,19 +100,13 @@ public class MusicRadio : MonoBehaviour
         audioSource.volume = volume;
     }
 
-    // --- Lógica Interna ---
-
     private void PlayTrack(int index)
     {
         if (musicList.Length == 0) return;
-
         audioSource.clip = musicList[index];
         audioSource.Play();
 
-        // Atualiza o texto na UI
         if (songNameText != null)
-        {
-            songNameText.text = musicList[index].name; // Usa o nome do ficheiro ou cria uma lista de Strings com nomes bonitos
-        }
+            songNameText.text = musicList[index].name;
     }
 }
