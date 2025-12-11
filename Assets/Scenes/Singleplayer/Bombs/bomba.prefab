@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   damage: 5
-  explosionRadius: 4
+  explosionRadius: 5
   explosionVFX: {fileID: 2123742520182605410, guid: 35a9735ab051f8646a034324a20712fa, type: 3}
 --- !u!135 &8423761120131827782
 SphereCollider:

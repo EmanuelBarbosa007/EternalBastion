@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: PiercingTowerL2
   m_EditorClassIdentifier: 
   nomeItem: Fire Tower (Level2)
-  descricao: 
+  descricao: 'Now with improved aiming, this tower has a better range.
+
+    Damage:
+    2
+
+    Range:35'
   imagem: {fileID: 21300000, guid: e053cebf38122bd45a91b3f248e2e684, type: 3}
   categoria: 0

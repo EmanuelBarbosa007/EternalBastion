@@ -194,14 +194,15 @@ MonoBehaviour:
     generationInterval: 10
     visualPrefab: {fileID: 249953576375126662, guid: 6235fe3f92255094fa9bb275179b97f8, type: 3}
   - upgradeCost: 100
-    coinsPerInterval: 23
+    coinsPerInterval: 20
     generationInterval: 10
     visualPrefab: {fileID: 4419313008340934641, guid: c9953e3c1730efe438a24f9a5478058c, type: 3}
   - upgradeCost: 150
-    coinsPerInterval: 40
+    coinsPerInterval: 35
     generationInterval: 10
     visualPrefab: {fileID: 4572302432975538116, guid: 0dde6d7b38eca254a941ea35a09578b7, type: 3}
   visualContainer: {fileID: 6139679526346523738}
-  donoDaMinaClientId: 0
-  totalInvested: 0
-  myDebrisSpot: {fileID: 7300601549770964175, guid: d23483b03c69001458dbd9a42966f897, type: 3}
+  donoDaMinaClientId:
+    m_InternalValue: 0
+  totalInvested:
+    m_InternalValue: 0

@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FireTowerL3
   m_EditorClassIdentifier: 
   nomeItem: Fire Tower (Level3)
-  descricao: 
+  descricao: 'Special spells made this tower a killing machine
+
+    Damage: 2
+
+    Range:
+    27'
   imagem: {fileID: 21300000, guid: aacfdfa270bff4f4393fc8132d5f4dbc, type: 3}
   categoria: 0

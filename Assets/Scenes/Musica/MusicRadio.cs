@@ -15,12 +15,12 @@ public class MusicRadio : MonoBehaviour
     [Header("UI References")]
     public GameObject painelControlos;
     public TextMeshProUGUI songNameText;
-    public Slider volumeSlider;
+    // O Slider foi removido daqui
 
     [Header("Animação do Botão")]
-    public RectTransform botaoRect; 
-    public float posYFechado = -460f; // Posição inicial
-    public float posYAberto = -310f;  // Para onde ele vai quando abre
+    public RectTransform botaoRect;
+    public float posYFechado = -460f;
+    public float posYAberto = -310f;
 
     private bool isPanelOpen = false;
 
@@ -42,9 +42,7 @@ public class MusicRadio : MonoBehaviour
     {
         painelControlos.SetActive(false);
 
-        volumeSlider.onValueChanged.AddListener(SetVolume);
-        volumeSlider.value = 0.5f;
-        audioSource.volume = 0.5f;
+        // Removemos a configuração do volumeSlider aqui
 
         if (musicList.Length > 0)
         {
@@ -54,28 +52,57 @@ public class MusicRadio : MonoBehaviour
 
     void Update()
     {
+        // Só passa para a próxima se a música não estiver a tocar E se não estiver em PAUSA (tempo no fim)
+        // Nota: Quando fazemos Pause(), o isPlaying fica false, mas o time mantém-se.
+        // Por isso verificamos se o time é 0 ou se chegou ao fim do clip.
         if (!audioSource.isPlaying && audioSource.time == 0)
         {
-            NextTrack();
+            // Proteção extra: só avança se o clip tiver realmente terminado e não apenas pausado no inicio
+            if (audioSource.clip != null && audioSource.time >= audioSource.clip.length)
+            {
+                NextTrack();
+            }
+            // Na maioria dos casos simples, o código antigo funcionava, mas este é mais seguro para o Pause.
+            else if (audioSource.time == 0 && !isPausedManual)
+            {
+                // Se estava a tocar e acabou (e não foi pausa manual no inicio)
+                NextTrack();
+            }
         }
     }
 
-    // --- AQUI ESTÁ A MUDANÇA ---
+    // Variável para controlar se o jogador pausou manualmente
+    private bool isPausedManual = false;
+
+    // --- NOVA FUNÇÃO DE PAUSA ---
+    public void TogglePause()
+    {
+        if (audioSource.isPlaying)
+        {
+            audioSource.Pause();
+            isPausedManual = true;
+        }
+        else
+        {
+            audioSource.UnPause();
+            isPausedManual = false;
+        }
+    }
+
     public void TogglePanel()
     {
         isPanelOpen = !isPanelOpen;
         painelControlos.SetActive(isPanelOpen);
 
-        // Atualizar a posição do botão
         Vector2 novaPosicao = botaoRect.anchoredPosition;
 
         if (isPanelOpen)
         {
-            novaPosicao.y = posYAberto; // Sobe para -310
+            novaPosicao.y = posYAberto;
         }
         else
         {
-            novaPosicao.y = posYFechado; // Desce para -460
+            novaPosicao.y = posYFechado;
         }
 
         botaoRect.anchoredPosition = novaPosicao;
@@ -95,16 +122,13 @@ public class MusicRadio : MonoBehaviour
         PlayTrack(currentTrackIndex);
     }
 
-    public void SetVolume(float volume)
-    {
-        audioSource.volume = volume;
-    }
-
     private void PlayTrack(int index)
     {
         if (musicList.Length == 0) return;
+
         audioSource.clip = musicList[index];
         audioSource.Play();
+        isPausedManual = false; // Reset da pausa ao mudar de música
 
         if (songNameText != null)
             songNameText.text = musicList[index].name;

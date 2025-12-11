@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: Tank
   m_EditorClassIdentifier: 
   nomeItem: Tank
-  descricao: 
+  descricao: 'a giant golem capable of absorbing a great deal of damage.
+
+    Health:
+    20
+
+    Speed: 3'
   imagem: {fileID: 21300000, guid: a35a3e2bc6af40641b645c3db4fed2c0, type: 3}
   categoria: 1

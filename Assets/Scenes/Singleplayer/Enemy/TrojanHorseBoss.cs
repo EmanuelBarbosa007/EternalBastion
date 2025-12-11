@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.AI;
-using System.Collections; // Necessário para o IEnumerator
+using System.Collections;
 
 public class TrojanHorseBoss : MonoBehaviour
 {
@@ -17,9 +17,8 @@ public class TrojanHorseBoss : MonoBehaviour
     public GameObject[] enemyPrefabs;
 
     [Header("Configuração do Spawn")]
-    public float timeBetweenSpawns = 0.5f; // Tempo entre cada tropa
+    public float timeBetweenSpawns = 0.5f;
 
-    // --- AQUI ESTAVA A VARIÁVEL EM FALTA ---
     private bool isDead = false;
 
     void Start()
@@ -30,6 +29,12 @@ public class TrojanHorseBoss : MonoBehaviour
             Debug.LogError("NavMeshAgent não encontrado no Boss!", this);
             return;
         }
+
+        // --- NOVA ALTERAÇÃO AQUI ---
+        // Chamamos esta função para "lobotomizar" a IA deste agente específico,
+        // forçando-o a ignorar os perigos que os outros respeitam.
+        IgnorarPerigo();
+        // ---------------------------
 
         GameObject baseObject = GameObject.FindGameObjectWithTag("Base");
         if (baseObject != null)
@@ -47,9 +52,29 @@ public class TrojanHorseBoss : MonoBehaviour
             baseHealth = Object.FindFirstObjectByType<BaseHealth>();
     }
 
+    // --- MÉTODOS NOVOS PARA O "TANK PATHFINDING" ---
+    void IgnorarPerigo()
+    {
+        // Define o custo das áreas perigosas como 1.
+        // Custo 1 = Custo de andar em chão normal ("Walkable").
+        // Isto faz com que o cálculo do caminho seja puramente pela distância.
+        SetCost("DangerLevel1", 1f);
+        SetCost("DangerLevel2", 1f);
+        SetCost("DangerLevel3", 1f);
+    }
+
+    void SetCost(string areaName, float cost)
+    {
+        int index = NavMesh.GetAreaFromName(areaName);
+        if (index != -1)
+        {
+            agent.SetAreaCost(index, cost);
+        }
+    }
+    // ------------------------------------------------
+
     void Update()
     {
-        // Se estiver morto, não faz nada no Update
         if (isDead) return;
 
         if (agent != null && !agent.pathPending && agent.isActiveAndEnabled)
@@ -68,22 +93,18 @@ public class TrojanHorseBoss : MonoBehaviour
     {
         if (isDead) return;
 
-        // Causa dano à base
         if (baseHealth != null)
             baseHealth.TakeDamage(damageToBase);
 
-        // Decrementa a contagem de inimigos (porque o cavalo vai morrer agora)
         if (EnemySpawner.EnemiesAlive > 0)
             EnemySpawner.EnemiesAlive--;
 
-        // Inicia a morte e o spawn
         StartDeathSequence();
     }
 
-    // Esta função é chamada pelo script de Vida (EnemyHealth) ou pelo ReachBase
     public void StartDeathSequence()
     {
-        if (isDead) return; // Garante que só corre uma vez
+        if (isDead) return;
         isDead = true;
 
         StartCoroutine(SpawnTroopsRoutine());
@@ -93,38 +114,29 @@ public class TrojanHorseBoss : MonoBehaviour
     {
         Debug.Log("Cavalo destruído. A libertar tropas com intervalo...");
 
-        // 1. DESATIVAR O CAVALO (Esconder visualmente)
         if (agent != null) agent.enabled = false;
 
-        // Tenta apanhar o Renderer no próprio objeto ou nos filhos (caso o modelo 3D esteja dentro)
         Renderer[] renderers = GetComponentsInChildren<Renderer>();
         foreach (Renderer r in renderers) r.enabled = false;
 
         Collider[] colliders = GetComponentsInChildren<Collider>();
         foreach (Collider c in colliders) c.enabled = false;
 
-        // 2. SPAWNAR TROPAS COM TIMER
         if (enemyPrefabs != null && enemyPrefabs.Length > 0)
         {
             for (int i = 0; i < enemiesToSpawn; i++)
             {
                 int randomIndex = Random.Range(0, enemyPrefabs.Length);
-
-                // Pequeno ajuste na posição para não ficarem uns em cima dos outros
                 Vector3 offset = new Vector3(Random.Range(-1f, 1f), 0.5f, Random.Range(-1f, 1f));
                 Vector3 spawnPos = transform.position + offset;
 
                 Instantiate(enemyPrefabs[randomIndex], spawnPos, transform.rotation);
-
-                // Adiciona à contagem global do jogo
                 EnemySpawner.EnemiesAlive++;
 
-                // O TIMER: Espera X segundos antes do próximo
                 yield return new WaitForSeconds(timeBetweenSpawns);
             }
         }
 
-        // 3. DESTRUIR O OBJETO FINALMENTE
         Destroy(gameObject);
     }
 }

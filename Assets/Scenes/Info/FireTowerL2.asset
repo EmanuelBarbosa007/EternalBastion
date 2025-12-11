@@ -13,6 +13,11 @@ MonoBehaviour:
   m_Name: FireTowerL2
   m_EditorClassIdentifier: 
   nomeItem: Fire Tower (Level2)
-  descricao: 
+  descricao: 'With enchanted orbs now this tower has a greater range.
+
+    Damage:
+    2
+
+    Range: 27'
   imagem: {fileID: 21300000, guid: c941ccf82818aa14da80f38fab4fdde8, type: 3}
   categoria: 0
