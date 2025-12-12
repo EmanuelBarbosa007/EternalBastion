@@ -452,7 +452,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 82408307b30324f429205b80ec2d2129, type: 3}
       propertyPath: m_Name
-      value: cavalo
+      value: cavaloMP cor
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 82408307b30324f429205b80ec2d2129, type: 3}
       propertyPath: m_IsActive
@@ -601,7 +601,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 3590772729
+  GlobalObjectIdHash: 4200509273
   InScenePlacedSourceGlobalObjectIdHash: 0
   DeferredDespawnTick: 0
   Ownership: 1
@@ -677,6 +677,8 @@ MonoBehaviour:
   moneyOnDeath: 40
   healthMultiplierLvl2: 1.5
   healthBar: {fileID: 7641524679474851884}
+  deathSound: {fileID: 8300000, guid: 88b84ad8ea3e10c4280ffe53dcb001e2, type: 3}
+  soundVolume: 1
 --- !u!114 &7086918754056833324
 MonoBehaviour:
   m_ObjectHideFlags: 0

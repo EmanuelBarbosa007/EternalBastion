@@ -11055,6 +11055,9 @@ MonoBehaviour:
   maxHealth: 40
   currentHealth: 40
   healthBar: {fileID: 56250043}
+  damageSound: {fileID: 8300000, guid: 4b687c441d5000c47b355b5fba232d8f, type: 3}
+  destroySound: {fileID: 0}
+  soundVolume: 1
 --- !u!114 &1457408883
 MonoBehaviour:
   m_ObjectHideFlags: 0

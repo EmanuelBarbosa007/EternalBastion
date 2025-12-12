@@ -522,6 +522,8 @@ MonoBehaviour:
   maxHealth: 7
   reward: 25
   healthBar: {fileID: 8943460917362716712}
+  deathSound: {fileID: 8300000, guid: 88b84ad8ea3e10c4280ffe53dcb001e2, type: 3}
+  soundVolume: 1
 --- !u!95 &7855179482211900640
 Animator:
   serializedVersion: 7

@@ -16202,7 +16202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c30bbdc3912f2044e867f895fe67f218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMixer: {fileID: 0}
+  mainMixer: {fileID: 24100000, guid: 636087a80ab135041ac6df896ebea981, type: 2}
   volumeSlider: {fileID: 0}
   muteImage: {fileID: 0}
   mutedSprite: {fileID: 0}

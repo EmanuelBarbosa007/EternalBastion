@@ -46,7 +46,7 @@ public class Enemy : MonoBehaviour
         StartCoroutine(UpdatePath());
     }
 
-    // ... (Mantém os métodos ApplyAreaCosts e SetCost iguais) ...
+
     private void ApplyAreaCosts()
     {
         SetCost("Walkable", 1f);
