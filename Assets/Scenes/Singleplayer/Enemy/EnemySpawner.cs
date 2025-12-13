@@ -5,55 +5,44 @@ using TMPro;
 public class EnemySpawner : MonoBehaviour
 {
     public enum SpawnState { SPAWNING, WAITING, COUNTDOWN }
-    private SpawnState state = SpawnState.COUNTDOWN;
 
-    [Header("Prefabs dos Inimigos")]
-    public GameObject enemyPrefab; // Inimigo normal
-    public GameObject firstEnemyPrefab; // Inimigo Tanque
-    public GameObject lastEnemyPrefab; // Inimigo Cavalo
-    public GameObject bossPrefab; // cavalo de troia
+    [Header("Prefabs")]
+    public GameObject baseEnemyPrefab; // Para Normal e Tanque
+    public GameObject horsePrefab;     // Prefab do Cavalo 
+    public GameObject bossPrefab;      // Prefab do Boss
 
-    [Header("Referências")]
-    [Tooltip("Pontos de spawn (2 ou mais)")]
+    [Header("Assets para Decorators")]
+    public Material tankMaterial;
+
+    [Header("Referências UI e Spawn")]
     public Transform[] spawnPoints;
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI countdownText;
 
-    [Header("Stats Iniciais da Wave")]
+    [Header("Stats das Waves")]
     public float timeBetweenWaves = 20f;
     public int enemiesPerWave = 5;
     public float spawnInterval = 1f;
 
-    [Header("Escala de Dificuldade (por wave)")]
-    [Tooltip("Quantos inimigos NORMAIS a mais por wave")]
+    [Header("Dificuldade")]
     public int enemiesPerWaveIncrease = 2;
-    [Tooltip("Em que wave começam a aparecer Tanques")]
     public int waveToStartTanks = 3;
-    [Tooltip("Em que wave começam a aparecer Cavalos")]
     public int waveToStartHorses = 5;
-
-    [Space]
-    [Tooltip("Quanto mais rápido fica o spawn de inimigos (ex: 0.05)")]
     public float spawnIntervalDecrease = 0.05f;
-    [Tooltip("O tempo mínimo de spawn (para não ser 0)")]
     public float minSpawnInterval = 0.2f;
-
-    [Space]
-    [Tooltip("Quanto tempo a menos de espera entre waves (ex: 0.5)")]
     public float timeBetweenWavesDecrease = 0.5f;
-    [Tooltip("O tempo mínimo de espera")]
     public float minTimeBetweenWaves = 5f;
 
-    [Header("Stats do Boss")] 
-    [Tooltip("A cada quantas waves o boss deve 'spawnar' (ex: 5 = Wave 5, 10, 15...)")] 
-    public int bossWaveFrequency = 5; 
-    [Tooltip("Quantos bosses 'spawnam' nessa wave.")] 
-    public int bossCount = 1; 
+    [Header("Boss")]
+    public int bossWaveFrequency = 5;
+    public int bossCount = 1;
 
     private int waveNumber = 1;
     private float countdown;
-
+    private SpawnState state = SpawnState.COUNTDOWN;
     public static int EnemiesAlive = 0;
+
+    private enum EnemyType { Normal, Tank, Horse }
 
     private void Start()
     {
@@ -67,10 +56,7 @@ public class EnemySpawner : MonoBehaviour
     {
         if (state == SpawnState.WAITING)
         {
-            if (EnemiesAlive <= 0)
-            {
-                StartWaveCountdown();
-            }
+            if (EnemiesAlive <= 0) StartWaveCountdown();
             return;
         }
 
@@ -78,12 +64,12 @@ public class EnemySpawner : MonoBehaviour
         {
             countdown -= Time.deltaTime;
             countdown = Mathf.Max(0, countdown);
-            countdownText.text = $"Próxima Wave em: {Mathf.CeilToInt(countdown)}s";
+            if (countdownText) countdownText.text = $"Próxima Wave: {Mathf.CeilToInt(countdown)}s";
 
             if (countdown <= 0f)
             {
                 state = SpawnState.SPAWNING;
-                countdownText.text = "Ataque!";
+                if (countdownText) countdownText.text = "ATAQUE!";
                 StartCoroutine(SpawnWave());
             }
         }
@@ -92,88 +78,113 @@ public class EnemySpawner : MonoBehaviour
     void StartWaveCountdown()
     {
         state = SpawnState.COUNTDOWN;
-
         enemiesPerWave += enemiesPerWaveIncrease;
         spawnInterval = Mathf.Max(minSpawnInterval, spawnInterval - spawnIntervalDecrease);
         timeBetweenWaves = Mathf.Max(minTimeBetweenWaves, timeBetweenWaves - timeBetweenWavesDecrease);
-
         countdown = timeBetweenWaves;
-
         waveNumber++;
         UpdateWaveUI();
-        Debug.Log("Wave completa! A preparar a Wave " + waveNumber);
     }
 
     void UpdateWaveUI()
     {
-        if (waveText != null)
-            waveText.text = "Wave " + waveNumber;
+        if (waveText) waveText.text = "Wave " + waveNumber;
     }
 
     IEnumerator SpawnWave()
     {
         EnemiesAlive = 0;
 
-        // Spawna os TANQUES
-        if (waveNumber >= waveToStartTanks && firstEnemyPrefab != null)
+        // 1. Spawna TANQUES (Usa Decorator)
+        if (waveNumber >= waveToStartTanks)
         {
             int tankCount = waveNumber / waveToStartTanks;
             for (int i = 0; i < tankCount; i++)
             {
-                SpawnEnemy(firstEnemyPrefab);
+                SpawnEnemy(EnemyType.Tank);
                 yield return new WaitForSeconds(spawnInterval * 2);
             }
         }
 
-        // Spawna os inimigos NORMAIS
+        // 2. Spawna INIMIGOS NORMAIS (Usa Decorator)
         for (int i = 0; i < enemiesPerWave; i++)
         {
-            SpawnEnemy(enemyPrefab);
+            SpawnEnemy(EnemyType.Normal);
             yield return new WaitForSeconds(spawnInterval);
         }
 
-        // Spawna os CAVALOS
-        if (waveNumber >= waveToStartHorses && lastEnemyPrefab != null)
+        // 3. Spawna CAVALOS (Usa Prefab)
+        if (waveNumber >= waveToStartHorses)
         {
             int horseCount = waveNumber / waveToStartHorses;
             for (int i = 0; i < horseCount; i++)
             {
-                SpawnEnemy(lastEnemyPrefab);
+                SpawnEnemy(EnemyType.Horse);
                 yield return new WaitForSeconds(spawnInterval * 0.5f);
             }
         }
 
-        // Verifica se é uma "Boss Wave" 
-        if (waveNumber % bossWaveFrequency == 0 && bossPrefab != null) 
+        // 4. Boss Logic
+        if (waveNumber % bossWaveFrequency == 0 && bossPrefab != null)
         {
-            Debug.LogWarning("WAVE " + waveNumber + " É UMA BOSS WAVE! A 'spawnar' Cavalo de Troia...");
-
-            // Espera um pouco mais para o boss entrar
-            yield return new WaitForSeconds(spawnInterval * 3); 
-
-            // Spawna a quantidade de bosses definida
-            for (int i = 0; i < bossCount; i++) // <-- NOVO
+            yield return new WaitForSeconds(spawnInterval * 3);
+            for (int i = 0; i < bossCount; i++)
             {
-                SpawnEnemy(bossPrefab); // <-- NOVO
-                yield return new WaitForSeconds(spawnInterval * 2); // Intervalo entre bosses (se for mais que 1)
+                Transform sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+                Instantiate(bossPrefab, sp.position, sp.rotation);
+                EnemiesAlive++;
+                yield return new WaitForSeconds(spawnInterval * 2);
             }
         }
 
         state = SpawnState.WAITING;
     }
 
-    void SpawnEnemy(GameObject prefab)
+    void SpawnEnemy(EnemyType type)
     {
-        if (spawnPoints == null || spawnPoints.Length == 0)
+        if (spawnPoints.Length == 0) return;
+        Transform sp = spawnPoints[Random.Range(0, spawnPoints.Length)];
+
+        GameObject objectToSpawn = null;
+
+        
+        // Se for Cavalo, usamos o prefab específico dele.
+        // Se for Normal ou Tanque, usamos o prefab Base e aplicamos Decorator.
+
+        if (type == EnemyType.Horse)
         {
-            Debug.LogWarning("Nenhum ponto de spawn atribuído!");
-            return;
+            // CAMINHO DO CAVALO (SEM DECORATOR)
+            if (horsePrefab != null)
+            {
+                Instantiate(horsePrefab, sp.position, sp.rotation);
+                EnemiesAlive++;
+            }
+            return; // Sai da função, não precisa de decorator
+        }
+        else
+        {
+            //  CAMINHO DO NORMAL/TANQUE (COM DECORATOR) 
+            objectToSpawn = Instantiate(baseEnemyPrefab, sp.position, sp.rotation);
         }
 
-        // Escolhe aleatoriamente um ponto de spawn
-        Transform chosenSpawn = spawnPoints[Random.Range(0, spawnPoints.Length)];
+        // Aplica o Decorator apenas para Normal e Tanque
+        IEnemyDecorator decorator = null;
 
-        Instantiate(prefab, chosenSpawn.position, chosenSpawn.rotation);
+        switch (type)
+        {
+            case EnemyType.Normal:
+                decorator = new NormalEnemyDecorator();
+                break;
+            case EnemyType.Tank:
+                decorator = new TankEnemyDecorator(tankMaterial);
+                break;
+        }
+
+        if (decorator != null && objectToSpawn != null)
+        {
+            decorator.Decorate(objectToSpawn);
+        }
+
         EnemiesAlive++;
     }
 }

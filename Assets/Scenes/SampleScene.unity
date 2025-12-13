@@ -16291,10 +16291,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ecd71517a3a5350459efe9e8cf1edf63, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 7374552401245800580, guid: eae21b2622ef76f408b72b2da956695b, type: 3}
-  firstEnemyPrefab: {fileID: 7374552401245800580, guid: d72d547c928edc541aac5b1878c3dfdd, type: 3}
-  lastEnemyPrefab: {fileID: 4992308714102802302, guid: 918a174cd8220a44092d219b6aa3eda9, type: 3}
+  baseEnemyPrefab: {fileID: 7374552401245800580, guid: eae21b2622ef76f408b72b2da956695b, type: 3}
+  horsePrefab: {fileID: 4992308714102802302, guid: 918a174cd8220a44092d219b6aa3eda9, type: 3}
   bossPrefab: {fileID: 6250809204728643355, guid: c232cefea31d39445adef2edbd4bdf75, type: 3}
+  tankMaterial: {fileID: 2100000, guid: 124d777ebca5b37409647c1a4a4a5393, type: 2}
   spawnPoints:
   - {fileID: 89997171}
   - {fileID: 624012256}

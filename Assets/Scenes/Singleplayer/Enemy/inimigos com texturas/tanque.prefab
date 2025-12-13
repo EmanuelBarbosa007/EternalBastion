@@ -483,13 +483,13 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7bfa865ee093b543af6cf124887668a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1259559891733526839}
+      addedObject: {fileID: 4743083264095918741}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7bfa865ee093b543af6cf124887668a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3707435848992016504}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7bfa865ee093b543af6cf124887668a, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 4743083264095918741}
+      addedObject: {fileID: 1259559891733526839}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: e7bfa865ee093b543af6cf124887668a, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6987378434451490757}
@@ -505,6 +505,37 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: e7bfa865ee093b543af6cf124887668a, type: 3}
   m_PrefabInstance: {fileID: 7680543401792484821}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4743083264095918741
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374552401245800580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4d800fe2950cbd84d873ebe6f181a3f3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  speed: 3
+  pathUpdateRate: 1
+--- !u!114 &3707435848992016504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7374552401245800580}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 20
+  reward: 30
+  healthBar: {fileID: 220371609443524077}
+  deathSound: {fileID: 0}
+  soundVolume: 1
 --- !u!95 &1259559891733526839
 Animator:
   serializedVersion: 7
@@ -527,35 +558,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &3707435848992016504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7374552401245800580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxHealth: 20
-  reward: 30
-  healthBar: {fileID: 220371609443524077}
---- !u!114 &4743083264095918741
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7374552401245800580}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d800fe2950cbd84d873ebe6f181a3f3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  speed: 3
-  pathUpdateRate: 1
 --- !u!136 &6987378434451490757
 CapsuleCollider:
   m_ObjectHideFlags: 0
