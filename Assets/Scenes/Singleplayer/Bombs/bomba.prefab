@@ -95,6 +95,7 @@ MonoBehaviour:
   damage: 5
   explosionRadius: 5
   explosionVFX: {fileID: 2123742520182605410, guid: 35a9735ab051f8646a034324a20712fa, type: 3}
+  explosionSound: {fileID: 8300000, guid: 008e4c4e9e74f9441a2ac15fd7c1d9f9, type: 3}
 --- !u!135 &8423761120131827782
 SphereCollider:
   m_ObjectHideFlags: 0

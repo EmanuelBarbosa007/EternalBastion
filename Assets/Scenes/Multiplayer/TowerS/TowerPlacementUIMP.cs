@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Unity.Netcode;
-using System.Collections; // Necessário para usar Corrotinas
+using System.Collections;
 
 public class TowerPlacementUIMP : MonoBehaviour
 {
@@ -12,7 +12,7 @@ public class TowerPlacementUIMP : MonoBehaviour
 
     [Header("Configurações de UI")]
     [Tooltip("Tempo em segundos que os botões ficam bloqueados ao abrir o painel (evita cliques acidentais)")]
-    public float inputDelay = 0.3f; // 0.3 segundos é geralmente o ideal
+    public float inputDelay = 0.3f;
 
     [Header("Torre Normal")]
     public Button buildNormalTowerButton;
@@ -28,6 +28,10 @@ public class TowerPlacementUIMP : MonoBehaviour
     public Button buildPiercingTowerButton;
     public int piercingTowerPrefabId;
     public int piercingTowerCost;
+
+    [Header("Audio")]
+    public AudioClip actionSound; // Som de Construção
+    [Range(0f, 1f)] public float soundVolume = 1f;
 
     private TowerSpotMP currentSpot;
 
@@ -47,7 +51,6 @@ public class TowerPlacementUIMP : MonoBehaviour
         if (closeButton != null)
             closeButton.onClick.AddListener(ClosePanel);
 
-        // Configuração dos Listeners (igual ao teu código original)
         if (buildNormalTowerButton != null)
         {
             buildNormalTowerButton.onClick.AddListener(() => {
@@ -70,37 +73,25 @@ public class TowerPlacementUIMP : MonoBehaviour
         }
     }
 
-    // --- FUNÇÃO OPENPANEL MODIFICADA ---
     public void OpenPanel(TowerSpotMP spot)
     {
         currentSpot = spot;
         panel.SetActive(true);
-
-        // Inicia a rotina de segurança para evitar cliques acidentais
         StartCoroutine(EnableButtonsRoutine());
     }
 
-    // Esta rotina desativa os botões temporariamente e reativa após o delay
     IEnumerator EnableButtonsRoutine()
     {
-        // 1. Desativa a interação imediatamente
         SetButtonsInteractable(false);
-
-        // 2. Espera o tempo de segurança (ex: 0.3 segundos)
         yield return new WaitForSeconds(inputDelay);
-
-        // 3. Reativa a interação
         SetButtonsInteractable(true);
     }
 
-    // Função auxiliar para ligar/desligar todos os botões de uma vez
     void SetButtonsInteractable(bool state)
     {
         if (buildNormalTowerButton != null) buildNormalTowerButton.interactable = state;
         if (buildFireTowerButton != null) buildFireTowerButton.interactable = state;
         if (buildPiercingTowerButton != null) buildPiercingTowerButton.interactable = state;
-
-        // O botão de fechar pode ficar sempre ativo, ou podes incluir aqui se quiseres
         if (closeButton != null) closeButton.interactable = state;
     }
 
@@ -114,6 +105,22 @@ public class TowerPlacementUIMP : MonoBehaviour
     {
         if (currentSpot == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
+
+        // Usar GetMoney com o ID do jogador local
+        ulong myClientId = PlayerNetwork.LocalInstance.OwnerClientId;
+        int myMoney = CurrencySystemMP.Instance.GetMoney(myClientId);
+
+        if (myMoney < cost)
+        {
+            Debug.Log("Dinheiro insuficiente!");
+            return;
+        }
+
+        // Tocar Som (apenas se tiver dinheiro e for construir)
+        if (actionSound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+        }
 
         Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f);
 

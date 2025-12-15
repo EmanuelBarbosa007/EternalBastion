@@ -15,6 +15,10 @@ public class MinePlacementUIMP : MonoBehaviour
     [Header("Configurações UI")]
     public float inputDelay = 0.3f; // Tempo de segurança
 
+    [Header("Audio")]
+    public AudioClip actionSound; // Som de Construção
+    [Range(0f, 1f)] public float soundVolume = 1f;
+
     private DebrisSpotMP currentDebrisSpot;
 
     void Awake()
@@ -75,6 +79,16 @@ public class MinePlacementUIMP : MonoBehaviour
     {
         if (currentDebrisSpot == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
+
+        // Verificação local rápida para tocar o som
+        if (CurrencySystemMP.Instance.GetMoney(PlayerNetwork.LocalInstance.OwnerClientId) < currentDebrisSpot.buildCost)
+            return;
+
+        // Tocar Som
+        if (actionSound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+        }
 
         PlayerNetwork.LocalInstance.RequestBuildMineServerRpc(
             currentDebrisSpot.goldMinePrefabId,

@@ -7,17 +7,28 @@ public class EnemySpawner : MonoBehaviour
     public enum SpawnState { SPAWNING, WAITING, COUNTDOWN }
 
     [Header("Prefabs")]
-    public GameObject baseEnemyPrefab; // Para Normal e Tanque
-    public GameObject horsePrefab;     // Prefab do Cavalo 
-    public GameObject bossPrefab;      // Prefab do Boss
+    public GameObject baseEnemyPrefab;
+    public GameObject horsePrefab;
+    public GameObject bossPrefab;
 
     [Header("Assets para Decorators")]
     public Material tankMaterial;
+
+    // --- SONS DE MORTE (Para os Decorators) ---
+    [Header("Sons de Morte (Inimigos)")]
+    public AudioClip normalDeathSound;
+    public AudioClip tankDeathSound;
 
     [Header("Referências UI e Spawn")]
     public Transform[] spawnPoints;
     public TextMeshProUGUI waveText;
     public TextMeshProUGUI countdownText;
+
+    [Header("Sistema de Áudio das Waves")]
+    public AudioSource audioSource;
+    public AudioClip startGameAudio; // "Inimigos a caminho"
+    public AudioClip firstWaveAudio; // "Primeira Onda"
+    public AudioClip bossWaveAudio;  // "Boss a chegar"
 
     [Header("Stats das Waves")]
     public float timeBetweenWaves = 20f;
@@ -50,6 +61,13 @@ public class EnemySpawner : MonoBehaviour
         countdown = timeBetweenWaves;
         state = SpawnState.COUNTDOWN;
         UpdateWaveUI();
+
+        if (audioSource != null)
+        {
+            if (startGameAudio != null)
+                audioSource.PlayOneShot(startGameAudio);
+
+        }
     }
 
     private void Update()
@@ -70,6 +88,14 @@ public class EnemySpawner : MonoBehaviour
             {
                 state = SpawnState.SPAWNING;
                 if (countdownText) countdownText.text = "ATAQUE!";
+
+
+                // Toca o áudio da Primeira Onda no momento exato em que o ataque começa
+                if (waveNumber == 1 && audioSource != null && firstWaveAudio != null)
+                {
+                    audioSource.PlayOneShot(firstWaveAudio);
+                }
+
                 StartCoroutine(SpawnWave());
             }
         }
@@ -82,8 +108,19 @@ public class EnemySpawner : MonoBehaviour
         spawnInterval = Mathf.Max(minSpawnInterval, spawnInterval - spawnIntervalDecrease);
         timeBetweenWaves = Mathf.Max(minTimeBetweenWaves, timeBetweenWaves - timeBetweenWavesDecrease);
         countdown = timeBetweenWaves;
-        waveNumber++;
+
+        waveNumber++; // Incrementa a onda
+
         UpdateWaveUI();
+
+        // Lógica de Áudio do Boss
+        if (waveNumber % bossWaveFrequency == 0)
+        {
+            if (audioSource != null && bossWaveAudio != null)
+            {
+                audioSource.PlayOneShot(bossWaveAudio);
+            }
+        }
     }
 
     void UpdateWaveUI()
@@ -95,7 +132,7 @@ public class EnemySpawner : MonoBehaviour
     {
         EnemiesAlive = 0;
 
-        // 1. Spawna TANQUES (Usa Decorator)
+        // 1. Spawna TANQUES
         if (waveNumber >= waveToStartTanks)
         {
             int tankCount = waveNumber / waveToStartTanks;
@@ -106,14 +143,14 @@ public class EnemySpawner : MonoBehaviour
             }
         }
 
-        // 2. Spawna INIMIGOS NORMAIS (Usa Decorator)
+        // 2. Spawna INIMIGOS NORMAIS
         for (int i = 0; i < enemiesPerWave; i++)
         {
             SpawnEnemy(EnemyType.Normal);
             yield return new WaitForSeconds(spawnInterval);
         }
 
-        // 3. Spawna CAVALOS (Usa Prefab)
+        // 3. Spawna CAVALOS
         if (waveNumber >= waveToStartHorses)
         {
             int horseCount = waveNumber / waveToStartHorses;
@@ -147,36 +184,29 @@ public class EnemySpawner : MonoBehaviour
 
         GameObject objectToSpawn = null;
 
-        
-        // Se for Cavalo, usamos o prefab específico dele.
-        // Se for Normal ou Tanque, usamos o prefab Base e aplicamos Decorator.
-
         if (type == EnemyType.Horse)
         {
-            // CAMINHO DO CAVALO (SEM DECORATOR)
             if (horsePrefab != null)
             {
                 Instantiate(horsePrefab, sp.position, sp.rotation);
                 EnemiesAlive++;
             }
-            return; // Sai da função, não precisa de decorator
+            return;
         }
         else
         {
-            //  CAMINHO DO NORMAL/TANQUE (COM DECORATOR) 
             objectToSpawn = Instantiate(baseEnemyPrefab, sp.position, sp.rotation);
         }
 
-        // Aplica o Decorator apenas para Normal e Tanque
         IEnemyDecorator decorator = null;
 
         switch (type)
         {
             case EnemyType.Normal:
-                decorator = new NormalEnemyDecorator();
+                decorator = new NormalEnemyDecorator(normalDeathSound);
                 break;
             case EnemyType.Tank:
-                decorator = new TankEnemyDecorator(tankMaterial);
+                decorator = new TankEnemyDecorator(tankMaterial, tankDeathSound);
                 break;
         }
 

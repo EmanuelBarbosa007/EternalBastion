@@ -564,6 +564,8 @@ MonoBehaviour:
   maxHealth: 40
   reward: 50
   healthBar: {fileID: 2196194880906860537}
+  deathSound: {fileID: 8300000, guid: 3d642a4fe416db94695566f0167f04b9, type: 3}
+  soundVolume: 1
 --- !u!114 &7390341340570567253
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using UnityEngine.EventSystems; 
+using UnityEngine.EventSystems;
 
 public class MineUpgradeUI : MonoBehaviour
 {
@@ -14,6 +14,10 @@ public class MineUpgradeUI : MonoBehaviour
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
     public TextMeshProUGUI statsText;
+
+    [Header("Audio")] 
+    public AudioClip actionSound; // Som de Upgrade
+    [Range(0f, 1f)] public float soundVolume = 1f;
 
     private GoldMine currentMine;
 
@@ -33,7 +37,6 @@ public class MineUpgradeUI : MonoBehaviour
         sellButton.onClick.AddListener(OnSellClicked);
     }
 
-
     void Update()
     {
         if (panel.activeSelf && Input.GetMouseButtonDown(0))
@@ -47,7 +50,7 @@ public class MineUpgradeUI : MonoBehaviour
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-            // Usamos 100f como distância de raycast, igual ao seu script de torre
+            // Usamos 100f como distância de raycast
             if (Physics.Raycast(ray, out hit, 100f))
             {
                 // Se acertámos na mina que abriu este painel, não o fecha
@@ -57,11 +60,10 @@ public class MineUpgradeUI : MonoBehaviour
                 }
             }
 
-            // Se clicou fora de tudo  fecha o painel
+            // Se clicou fora de tudo fecha o painel
             ClosePanel();
         }
     }
-
 
     public void OpenPanel(GoldMine mine)
     {
@@ -114,7 +116,19 @@ public class MineUpgradeUI : MonoBehaviour
     {
         if (currentMine != null)
         {
-            currentMine.Upgrade();
+            // Verificação de segurança extra para tocar o som apenas se tiver dinheiro
+            // (Embora o botão já fique desativado se não tiver)
+            int cost = currentMine.GetNextUpgradeCost();
+            if (CurrencySystem.Money >= cost)
+            {
+                //  Tocar Som
+                if (actionSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+                }
+
+                currentMine.Upgrade();
+            }
         }
     }
 
@@ -126,7 +140,6 @@ public class MineUpgradeUI : MonoBehaviour
         }
         ClosePanel();
     }
-
 
     public bool IsPanelActive()
     {

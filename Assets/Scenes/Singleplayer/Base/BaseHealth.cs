@@ -9,6 +9,7 @@ public class BaseHealth : MonoBehaviour
     public Slider healthBar;
 
     [Header("Audio Settings")]
+    public AudioSource audioSource; //  Arrastar o componente Audio Source da Base
     public AudioClip damageSound;   // Som quando leva dano 
     public AudioClip destroySound;  // Som quando base é destruida
     [Range(0f, 1f)] public float soundVolume = 1f;
@@ -40,10 +41,10 @@ public class BaseHealth : MonoBehaviour
         // Verifica se morreu ou se apenas sofreu dano
         if (currentHealth <= 0)
         {
-            // SOM DE DESTRUIÇÃO
-            if (destroySound != null)
+            // --- SOM DE DESTRUIÇÃO (Via AudioSource) ---
+            if (audioSource != null && destroySound != null)
             {
-                AudioSource.PlayClipAtPoint(destroySound, transform.position, soundVolume);
+                audioSource.PlayOneShot(destroySound, soundVolume);
             }
 
             // Chama o Game Over
@@ -52,10 +53,10 @@ public class BaseHealth : MonoBehaviour
         }
         else
         {
-            //SOM DE DANO NORMAL
-            if (damageSound != null)
+            // --- SOM DE DANO NORMAL (Via AudioSource) ---
+            if (audioSource != null && damageSound != null)
             {
-                AudioSource.PlayClipAtPoint(damageSound, transform.position, soundVolume);
+                audioSource.PlayOneShot(damageSound, soundVolume);
             }
         }
     }

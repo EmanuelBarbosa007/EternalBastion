@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using TMPro;
 using Unity.Netcode;
 using UnityEngine.EventSystems;
-using System.Collections; // Necessário para a Corrotina
+using System.Collections;
 
 public class TowerUpgradeUIMP : MonoBehaviour
 {
@@ -16,11 +16,15 @@ public class TowerUpgradeUIMP : MonoBehaviour
 
     [Header("Configurações UI")]
     [Tooltip("Tempo de espera para evitar cliques acidentais ao abrir")]
-    public float inputDelay = 0.3f; // O atraso de segurança
+    public float inputDelay = 0.3f;
 
     public TextMeshProUGUI upgradeCostText;
     public TextMeshProUGUI sellValueText;
     public TextMeshProUGUI towerNameText;
+
+    [Header("Audio")]
+    public AudioClip actionSound; // Som de Upgrade
+    [Range(0f, 1f)] public float soundVolume = 1f;
 
     private TowerMP currentTower;
     private TowerSpotMP currentSpot;
@@ -53,7 +57,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
         if (!uiPanel.activeInHierarchy || currentTower == null)
             return;
 
-        // Lógica para fechar ao clicar fora (mantida igual)
         if (Input.GetMouseButtonDown(0))
         {
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
@@ -78,40 +81,29 @@ public class TowerUpgradeUIMP : MonoBehaviour
         currentSpot = spot;
         uiPanel.SetActive(true);
 
-        // Atualiza os textos primeiro
         UpdateUI_Texts();
-
-        // Inicia a rotina que gere os botões com segurança
         StartCoroutine(EnableButtonsRoutine());
     }
 
-    // --- NOVA CORROTINA DE SEGURANÇA ---
     IEnumerator EnableButtonsRoutine()
     {
-        // 1. Bloqueia todos os botões imediatamente
         if (upgradeButton != null) upgradeButton.interactable = false;
         if (sellButton != null) sellButton.interactable = false;
         if (closeButton != null) closeButton.interactable = false;
 
-        // 2. Espera o tempo de segurança
         yield return new WaitForSeconds(inputDelay);
 
-        // 3. Reativa os botões simples
         if (sellButton != null) sellButton.interactable = true;
         if (closeButton != null) closeButton.interactable = true;
 
-        // 4. Reativa o botão de Upgrade COM LÓGICA INTELIGENTE
-        // Só ativa se a torre ainda não estiver no nível máximo
         if (currentTower != null && upgradeButton != null)
         {
-            // Se o nível for menor que 3 (assumindo que 3 é o máximo baseado no teu código)
             if (currentTower.level.Value < 3)
             {
                 upgradeButton.interactable = true;
             }
             else
             {
-                // Se já for nível máximo, mantém desativado
                 upgradeButton.interactable = false;
             }
         }
@@ -124,7 +116,6 @@ public class TowerUpgradeUIMP : MonoBehaviour
         currentSpot = null;
     }
 
-    // Separei a atualização de Texto da atualização de Botões para facilitar
     void UpdateUI_Texts()
     {
         if (currentTower == null) return;
@@ -151,6 +142,26 @@ public class TowerUpgradeUIMP : MonoBehaviour
     {
         if (currentTower == null) return;
         if (PlayerNetwork.LocalInstance == null) return;
+
+        // Determina o custo
+        int cost = 0;
+        if (currentTower.level.Value == 1) cost = currentTower.upgradeCostLevel2;
+        else if (currentTower.level.Value == 2) cost = currentTower.upgradeCostLevel3;
+
+        //  Usar GetMoney com o ID do jogador local ---
+        ulong myClientId = PlayerNetwork.LocalInstance.OwnerClientId;
+        int myMoney = CurrencySystemMP.Instance.GetMoney(myClientId);
+
+        if (myMoney < cost)
+        {
+            return; // Não tem dinheiro, sai da função
+        }
+
+        // Tocar Som
+        if (actionSound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+        }
 
         PlayerNetwork.LocalInstance.RequestUpgradeTowerServerRpc(
             currentTower.NetworkObjectId

@@ -6,6 +6,9 @@ public class BombItem : MonoBehaviour
     public float explosionRadius = 3f; // Raio da explosão
     public GameObject explosionVFX; // (Opcional) Particulas da explosão
 
+    [Header("Audio")]
+    public AudioClip explosionSound; // Arrastar o ficheiro de áudio da explosão aqui
+
     // Quando algo entra no Trigger da bomba
     private void OnTriggerEnter(Collider other)
     {
@@ -18,6 +21,11 @@ public class BombItem : MonoBehaviour
 
     void Explode()
     {
+        if (explosionSound != null)
+        {
+            AudioSource.PlayClipAtPoint(explosionSound, transform.position);
+        }
+
         // 1. Criar efeito visual se existir
         if (explosionVFX != null)
         {
@@ -29,7 +37,7 @@ public class BombItem : MonoBehaviour
 
         foreach (var hitCollider in hitColliders)
         {
-            // Tenta encontrar o script EnemyHealth que tu enviaste
+            // Tenta encontrar o script EnemyHealth
             EnemyHealth enemy = hitCollider.GetComponent<EnemyHealth>();
 
             if (enemy != null)

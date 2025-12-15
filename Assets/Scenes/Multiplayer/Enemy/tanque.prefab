@@ -684,6 +684,8 @@ MonoBehaviour:
   moneyOnDeath: 45
   healthMultiplierLvl2: 1.5
   healthBar: {fileID: 8183431314139468052}
+  deathSound: {fileID: 8300000, guid: 5bd241741c0e45d42a65f38959de2003, type: 3}
+  soundVolume: 1
 --- !u!4 &4601985465778788571 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: e7bfa865ee093b543af6cf124887668a, type: 3}

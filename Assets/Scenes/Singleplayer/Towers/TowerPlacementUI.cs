@@ -18,6 +18,9 @@ public class TowerPlacementUI : MonoBehaviour
     public GameObject fireTowerPrefab;
     public GameObject piercingTowerPrefab;
 
+    [Header("Audio")] // --- NOVO ---
+    public AudioClip actionSound; // Som de Construção (martelada, etc)
+    [Range(0f, 1f)] public float soundVolume = 1f;
 
     private TowerSpot currentSpot;
 
@@ -76,12 +79,17 @@ public class TowerPlacementUI : MonoBehaviour
         {
             CurrencySystem.SpendMoney(cost);
 
+            // --- NOVO: Tocar Som ---
+            if (actionSound != null)
+            {
+                AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+            }
+            // -----------------------
+
             // Posição de spawn 
             Vector3 spawnPos = currentSpot.transform.position + new Vector3(0f, 2f, 0f);
 
-
             GameObject newTowerGO = Instantiate(towerPrefab, spawnPos, Quaternion.identity);
-
 
             Tower newTower = newTowerGO.GetComponent<Tower>();
 

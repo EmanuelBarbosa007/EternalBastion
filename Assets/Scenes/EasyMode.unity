@@ -14933,6 +14933,7 @@ GameObject:
   - component: {fileID: 1457408889}
   - component: {fileID: 1457408888}
   - component: {fileID: 1457408890}
+  - component: {fileID: 1457408891}
   m_Layer: 0
   m_Name: GameObject
   m_TagString: Untagged
@@ -14956,10 +14957,16 @@ MonoBehaviour:
   horsePrefab: {fileID: 4992308714102802302, guid: 918a174cd8220a44092d219b6aa3eda9, type: 3}
   bossPrefab: {fileID: 6250809204728643355, guid: c232cefea31d39445adef2edbd4bdf75, type: 3}
   tankMaterial: {fileID: 2100000, guid: 124d777ebca5b37409647c1a4a4a5393, type: 2}
+  normalDeathSound: {fileID: 8300000, guid: 2e3969c1b6c27eb4685033cc7db9b603, type: 3}
+  tankDeathSound: {fileID: 8300000, guid: 5bd241741c0e45d42a65f38959de2003, type: 3}
   spawnPoints:
   - {fileID: 89997171}
   waveText: {fileID: 84617832}
   countdownText: {fileID: 1879939926}
+  audioSource: {fileID: 1457408891}
+  startGameAudio: {fileID: 8300000, guid: cb8f5227e2a236b44b37cdd641d2e7b0, type: 3}
+  firstWaveAudio: {fileID: 8300000, guid: c1dfab0855979624f94332ab10a57d6e, type: 3}
+  bossWaveAudio: {fileID: 8300000, guid: 7c19fb5d05de57748a6413576ec35774, type: 3}
   timeBetweenWaves: 5
   enemiesPerWave: 4
   spawnInterval: 1
@@ -15002,8 +15009,9 @@ MonoBehaviour:
   maxHealth: 40
   currentHealth: 40
   healthBar: {fileID: 56250043}
-  damageSound: {fileID: 8300000, guid: 4b687c441d5000c47b355b5fba232d8f, type: 3}
-  destroySound: {fileID: 0}
+  audioSource: {fileID: 1457408891}
+  damageSound: {fileID: 8300000, guid: d7a4ce7825887f14da0f32486167db10, type: 3}
+  destroySound: {fileID: 8300000, guid: 008e4c4e9e74f9441a2ac15fd7c1d9f9, type: 3}
   soundVolume: 1
 --- !u!114 &1457408883
 MonoBehaviour:
@@ -15033,6 +15041,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameOverPanel: {fileID: 943031723}
   restartButton: {fileID: 1132161433}
+  audioSource: {fileID: 1457408891}
+  defeatVoice: {fileID: 8300000, guid: 75f99b9f3c432ef43b3074cd528ee63e, type: 3}
 --- !u!114 &1457408885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15069,6 +15079,8 @@ MonoBehaviour:
   basicTowerPrefab: {fileID: 8322645601424750573, guid: ca06908b57f349a4794d46d8a4e5d1fc, type: 3}
   fireTowerPrefab: {fileID: 8137337345590146101, guid: b76845092ca01e24084a2def5ef40644, type: 3}
   piercingTowerPrefab: {fileID: 352075077005260675, guid: ce417107d37b8c9469ca292c27c533ac, type: 3}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &1457408887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15087,6 +15099,8 @@ MonoBehaviour:
   sellButton: {fileID: 991846919}
   upgradeButtonText: {fileID: 81100911}
   sellButtonText: {fileID: 973137281}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &1457408888
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15103,6 +15117,8 @@ MonoBehaviour:
   yesButton: {fileID: 416612553}
   noButton: {fileID: 164058465}
   costText: {fileID: 962252282}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &1457408889
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15121,6 +15137,8 @@ MonoBehaviour:
   upgradeCostText: {fileID: 1397795645}
   sellValueText: {fileID: 856883849}
   statsText: {fileID: 709592767}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &1457408890
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15141,6 +15159,103 @@ MonoBehaviour:
     m_Bits: 8
   roadTag: Path
   highlightColor: {r: 1, g: 0.06635971, b: 0.0039215684, a: 1}
+--- !u!82 &1457408891
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1457408879}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 636087a80ab135041ac6df896ebea981, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1001 &1461456198
 PrefabInstance:
   m_ObjectHideFlags: 0

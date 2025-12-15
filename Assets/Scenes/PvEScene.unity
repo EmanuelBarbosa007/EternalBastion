@@ -27544,6 +27544,8 @@ MonoBehaviour:
   buildPiercingTowerButton: {fileID: 2007163297}
   piercingTowerPrefabId: 4
   piercingTowerCost: 150
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &875167860
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -27564,6 +27566,8 @@ MonoBehaviour:
   upgradeCostText: {fileID: 1153927637}
   sellValueText: {fileID: 1719484745}
   towerNameText: {fileID: 1292857551}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!1 &876356957
 GameObject:
   m_ObjectHideFlags: 0
@@ -37305,6 +37309,135 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5d21ddc018bc16745adf2eb24bc6fa70, type: 3}
+--- !u!1 &1126959739
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1126959741}
+  - component: {fileID: 1126959740}
+  m_Layer: 0
+  m_Name: audio
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &1126959740
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126959739}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 24300002, guid: 636087a80ab135041ac6df896ebea981, type: 2}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &1126959741
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1126959739}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -42.039986, y: -667.81604, z: -627.6016}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1131507800
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -43791,6 +43924,10 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 25
   healthBar: {fileID: 2126167907}
+  audioSource: {fileID: 1126959740}
+  damageSound: {fileID: 8300000, guid: d7a4ce7825887f14da0f32486167db10, type: 3}
+  destroySound: {fileID: 8300000, guid: 75f99b9f3c432ef43b3074cd528ee63e, type: 3}
+  soundVolume: 1
   donoDaBaseClientId: 0
 --- !u!65 &1559150179
 BoxCollider:
@@ -48445,6 +48582,8 @@ MonoBehaviour:
   upgradeCostText: {fileID: 1416820489}
   sellValueText: {fileID: 1572516829}
   statsText: {fileID: 326625631}
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!114 &1833518602
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48462,6 +48601,8 @@ MonoBehaviour:
   noButton: {fileID: 696552844}
   costText: {fileID: 1597409298}
   inputDelay: 0.3
+  actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
+  soundVolume: 1
 --- !u!4 &1833518603
 Transform:
   m_ObjectHideFlags: 0
@@ -56231,6 +56372,10 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   maxHealth: 25
   healthBar: {fileID: 1421479689}
+  audioSource: {fileID: 1126959740}
+  damageSound: {fileID: 8300000, guid: d7a4ce7825887f14da0f32486167db10, type: 3}
+  destroySound: {fileID: 8300000, guid: 75f99b9f3c432ef43b3074cd528ee63e, type: 3}
+  soundVolume: 1
   donoDaBaseClientId: 0
 --- !u!65 &2025328824
 BoxCollider:
@@ -63396,3 +63541,4 @@ SceneRoots:
   - {fileID: 229317449}
   - {fileID: 1703474373}
   - {fileID: 451343484}
+  - {fileID: 1126959741}

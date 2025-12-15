@@ -9,6 +9,10 @@ public class MinePlacementUI : MonoBehaviour
     public Button noButton;
     public TextMeshProUGUI costText;
 
+    [Header("Audio")] 
+    public AudioClip actionSound; // Som de Construção 
+    [Range(0f, 1f)] public float soundVolume = 1f;
+
     private DebrisSpot currentDebrisSpot;
 
     void Start()
@@ -38,9 +42,14 @@ public class MinePlacementUI : MonoBehaviour
 
     private void OnYesClicked()
     {
-        // O CurrencySystem.SpendMoney() já faz a verificação e gasta o dinheiro
         if (currentDebrisSpot != null && CurrencySystem.SpendMoney(currentDebrisSpot.buildCost))
         {
+            //  Tocar Som
+            if (actionSound != null)
+            {
+                AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+            }
+
             currentDebrisSpot.BuildMine();
         }
         ClosePanel();

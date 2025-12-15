@@ -8,6 +8,12 @@ public class BaseHealthMP : NetworkBehaviour
     public int maxHealth = 100;
     public Slider healthBar;
 
+    [Header("Audio Settings")]
+    public AudioSource audioSource; // Arrastar o Audio Source
+    public AudioClip damageSound;   // Som do Sino/Dano
+    public AudioClip destroySound;  // Som de Destruição
+    [Range(0f, 1f)] public float soundVolume = 1f;
+
     // Sincroniza a vida da base do Server para os Clientes
     private NetworkVariable<int> currentHealth = new NetworkVariable<int>();
 
@@ -32,10 +38,31 @@ public class BaseHealthMP : NetworkBehaviour
         UpdateHealthBar(currentHealth.Value);
     }
 
-    // Esta função corre em TODOS OS CLIENTES
+    // Esta função corre em TODOS OS CLIENTES sempre que a vida muda
     private void OnHealthChanged(int previousValue, int newValue)
     {
         UpdateHealthBar(newValue);
+
+        // --- LÓGICA DE SOM ---
+        // Verifica se a vida desceu (dano)
+        if (newValue < previousValue)
+        {
+            if (audioSource != null)
+            {
+                if (newValue <= 0)
+                {
+                    // Morreu
+                    if (destroySound != null)
+                        audioSource.PlayOneShot(destroySound, soundVolume);
+                }
+                else
+                {
+                    // Ainda está viva, apenas dano
+                    if (damageSound != null)
+                        audioSource.PlayOneShot(damageSound, soundVolume);
+                }
+            }
+        }
     }
 
     private void UpdateHealthBar(int value)

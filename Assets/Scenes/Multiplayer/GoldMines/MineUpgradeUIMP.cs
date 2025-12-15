@@ -20,6 +20,10 @@ public class MineUpgradeUIMP : MonoBehaviour
     public TextMeshProUGUI sellValueText;
     public TextMeshProUGUI statsText;
 
+    [Header("Audio")] 
+    public AudioClip actionSound; // Som de Upgrade
+    [Range(0f, 1f)] public float soundVolume = 1f;
+
     private GoldMineMP currentMine;
     private DebrisSpotMP currentSpot;
 
@@ -127,7 +131,10 @@ public class MineUpgradeUIMP : MonoBehaviour
         if (currentMine == null) return;
 
         int currentLevel = currentMine.level.Value;
-        var currentStats = currentMine.levelStats[currentLevel - 1];
+
+        // Proteção caso o nível esteja dessincronizado
+        int statsIndex = Mathf.Clamp(currentLevel - 1, 0, currentMine.levelStats.Length - 1);
+        var currentStats = currentMine.levelStats[statsIndex];
 
         if (statsText != null)
             statsText.text = $"Gera: {currentStats.coinsPerInterval} moedas\na cada {currentStats.generationInterval} seg.";
@@ -143,8 +150,12 @@ public class MineUpgradeUIMP : MonoBehaviour
             }
             else
             {
-                int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
-                upgradeCostText.text = $"Melhorar\n{upgradeCost}";
+                // Verifica se o array tem o próximo nível
+                if (currentLevel < currentMine.levelStats.Length)
+                {
+                    int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
+                    upgradeCostText.text = $"Melhorar\n{upgradeCost}";
+                }
             }
         }
     }
@@ -152,6 +163,25 @@ public class MineUpgradeUIMP : MonoBehaviour
     private void OnUpgradeClicked()
     {
         if (currentMine == null) return;
+
+        // Verificação local de dinheiro antes de tocar o som
+        if (PlayerNetwork.LocalInstance != null)
+        {
+            int currentLevel = currentMine.level.Value;
+            if (currentLevel < currentMine.maxLevel)
+            {
+                int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
+                if (CurrencySystemMP.Instance.GetMoney(PlayerNetwork.LocalInstance.OwnerClientId) < upgradeCost)
+                    return;
+            }
+        }
+
+        // NOVO: Tocar Som 
+        if (actionSound != null && Camera.main != null)
+        {
+            AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+        }
+
         PlayerNetwork.LocalInstance.RequestUpgradeMineServerRpc(currentMine.NetworkObjectId);
         ClosePanel();
     }

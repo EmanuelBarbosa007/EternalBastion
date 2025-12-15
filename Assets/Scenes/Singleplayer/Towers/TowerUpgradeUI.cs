@@ -12,9 +12,12 @@ public class TowerUpgradeUI : MonoBehaviour
     public Button upgradeButton;
     public Button sellButton;
 
-
     public TextMeshProUGUI upgradeButtonText;
     public TextMeshProUGUI sellButtonText;
+
+    [Header("Audio")] // --- NOVO ---
+    public AudioClip actionSound; // Som de Upgrade (ding, powerup)
+    [Range(0f, 1f)] public float soundVolume = 1f;
 
     private Tower selectedTower;
 
@@ -36,9 +39,8 @@ public class TowerUpgradeUI : MonoBehaviour
         {
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
             {
-                return; 
+                return;
             }
-
 
             RaycastHit hit;
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -55,7 +57,6 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-
     //Abre o painel para uma torre específica
     public void OpenPanel(Tower tower)
     {
@@ -64,15 +65,12 @@ public class TowerUpgradeUI : MonoBehaviour
         UpdateUI();
     }
 
-
-
     // Fecha o painel
     public void ClosePanel()
     {
         selectedTower = null;
         uiPanel.SetActive(false);
     }
-
 
     // Atualiza toda a informação no painel (textos, botões)
     void UpdateUI()
@@ -105,7 +103,6 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-
     // Chamado quando o dinheiro do jogador muda 
     public void OnMoneyChanged()
     {
@@ -115,15 +112,26 @@ public class TowerUpgradeUI : MonoBehaviour
         }
     }
 
-
-
     public void OnUpgradePressed()
     {
         if (selectedTower != null)
         {
-            selectedTower.UpgradeTower();
-            // Atualiza o UI para refletir o novo nível (ou se falhou por falta de dinheiro)
-            UpdateUI();
+            // Verificação extra antes de tentar o upgrade
+            int cost = 0;
+            if (selectedTower.level == 1) cost = selectedTower.upgradeCostLevel2;
+            else if (selectedTower.level == 2) cost = selectedTower.upgradeCostLevel3;
+
+            if (CurrencySystem.Money >= cost && cost > 0)
+            {
+                selectedTower.UpgradeTower();
+
+                if (actionSound != null)
+                {
+                    AudioSource.PlayClipAtPoint(actionSound, Camera.main.transform.position, soundVolume);
+                }
+
+                UpdateUI();
+            }
         }
     }
 
