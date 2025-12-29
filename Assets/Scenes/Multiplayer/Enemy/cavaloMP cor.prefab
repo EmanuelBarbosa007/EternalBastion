@@ -470,9 +470,6 @@ PrefabInstance:
       addedObject: {fileID: 1117103185526351034}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 82408307b30324f429205b80ec2d2129, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3057898758438786156}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 82408307b30324f429205b80ec2d2129, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 3254902057440835974}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 82408307b30324f429205b80ec2d2129, type: 3}
       insertIndex: -1
@@ -517,28 +514,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!195 &3057898758438786156
-NavMeshAgent:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3895613045406415738}
-  m_Enabled: 1
-  m_AgentTypeID: 0
-  m_Radius: 0.5
-  m_Speed: 7
-  m_Acceleration: 8
-  avoidancePriority: 50
-  m_AngularSpeed: 120
-  m_StoppingDistance: 0
-  m_AutoTraverseOffMeshLink: 1
-  m_AutoBraking: 1
-  m_AutoRepath: 1
-  m_Height: 2
-  m_BaseOffset: 0
-  m_WalkableMask: 4294967295
-  m_ObstacleAvoidanceType: 0
 --- !u!136 &3254902057440835974
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -673,9 +648,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  baseHealth: 7
-  moneyOnDeath: 40
-  healthMultiplierLvl2: 1.5
+  baseHealth: 10
+  moneyOnDeath: 8
+  healthMultiplierLvl2: 2
   healthBar: {fileID: 7641524679474851884}
   deathSound: {fileID: 8300000, guid: 88b84ad8ea3e10c4280ffe53dcb001e2, type: 3}
   soundVolume: 1
@@ -694,7 +669,7 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   baseSpeed: 7
   rotateSpeed: 10
-  speedMultiplierLvl2: 2
+  speedMultiplierLvl2: 1.5
 --- !u!4 &4414706037809209792 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 82408307b30324f429205b80ec2d2129, type: 3}

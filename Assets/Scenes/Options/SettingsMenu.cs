@@ -4,87 +4,76 @@ using UnityEngine.UI;
 
 public class SettingsMenu : MonoBehaviour
 {
-    [Header("Audio")]
+    [Header("Audio Mixer")]
     public AudioMixer mainMixer;
-    public Slider volumeSlider;
-    // Referência para o ícone do botão de mute (opcional, para mudar visualmente)
-    public Image muteImage;
-    public Sprite mutedSprite;
-    public Sprite unmutedSprite;
 
-    private bool isMuted = false;
-    private float previousVolume = 0f;
+    [Header("Sliders")]
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider sfxSlider;   
 
     [Header("Sensibilidade")]
     public Slider sensitivitySlider;
-    public static float mouseSensitivity = 1.0f; // Variável estática para acesso fácil
+    public static float mouseSensitivity = 1.0f;
 
     [Header("Video")]
-    // Se for um Toggle (caixa de seleção)
     public Toggle fullscreenToggle;
 
     void Start()
     {
-        // --- Carregar Definições Salvas ---
+        // Carregar Volumes
+        float savedMaster = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
+        float savedMusic = PlayerPrefs.GetFloat("MusicVolume", 0.75f);
+        float savedSFX = PlayerPrefs.GetFloat("SFXVolume", 0.75f);
 
-        // 1. Carregar Sensibilidade
-        mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity", 1.0f);
-        if (sensitivitySlider != null)
-            sensitivitySlider.value = mouseSensitivity;
+        // Atualizar posição visual dos sliders
+        if (masterSlider) masterSlider.value = savedMaster;
+        if (musicSlider) musicSlider.value = savedMusic;
+        if (sfxSlider) sfxSlider.value = savedSFX;
 
-        // 2. Carregar Volume
-        // O slider vai de 0.0001 a 1. Logaritmo de 1 é 0dB.
-        float savedVolume = PlayerPrefs.GetFloat("MasterVolume", 0.75f);
-        if (volumeSlider != null)
-            volumeSlider.value = savedVolume;
+        // Aplicar os volumes ao Mixer
+        SetMasterVolume(savedMaster);
+        SetMusicVolume(savedMusic);
+        SetSFXVolume(savedSFX);
 
-        // Aplica o volume inicial
-        SetVolume(savedVolume);
+        // Carregar Sensibilidade 
+        if (PlayerPrefs.HasKey("Sensitivity"))
+            mouseSensitivity = PlayerPrefs.GetFloat("Sensitivity");
 
-        // 3. Carregar Fullscreen
-        if (fullscreenToggle != null)
-            fullscreenToggle.isOn = Screen.fullScreen;
+        if (sensitivitySlider) sensitivitySlider.value = mouseSensitivity;
+
+        // Carregar Fullscreen
+        if (fullscreenToggle) fullscreenToggle.isOn = Screen.fullScreen;
     }
 
-    // --- Funções ligadas à UI ---
 
-    public void SetVolume(float sliderValue)
+
+    public void SetMasterVolume(float sliderValue)
     {
-        // Unity AudioMixer funciona em Decibéis (-80 a 0).
-        // Usamos Log10 para converter o slider linear (0-1) para logarítmico.
-        float volumeInDecibels = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20;
-
-        mainMixer.SetFloat("MasterVolume", volumeInDecibels);
-
-        // Guardar preferência
-        PlayerPrefs.SetFloat("MasterVolume", sliderValue);
+        SetMixerVolume("MasterVolume", sliderValue);
     }
 
-    public void ToggleMute()
+    public void SetMusicVolume(float sliderValue)
     {
-        isMuted = !isMuted;
+        SetMixerVolume("MusicVolume", sliderValue);
+    }
 
-        if (isMuted)
-        {
-            // Guarda o volume atual antes de mutar
-            previousVolume = volumeSlider.value;
-            volumeSlider.value = volumeSlider.minValue; // Põe o slider no mínimo
+    public void SetSFXVolume(float sliderValue)
+    {
+        SetMixerVolume("SFXVolume", sliderValue);
+    }
 
-            // Muta o som (-80db)
-            mainMixer.SetFloat("MasterVolume", -80f);
+    // Função auxiliar para evitar repetir código
+    private void SetMixerVolume(string paramName, float sliderValue)
+    {
 
-            // Troca sprite (opcional)
-            if (muteImage != null && mutedSprite != null) muteImage.sprite = mutedSprite;
-        }
-        else
-        {
-            // Restaura o volume
-            volumeSlider.value = previousVolume;
-            SetVolume(previousVolume);
+        float volumeDb = Mathf.Log10(Mathf.Clamp(sliderValue, 0.0001f, 1f)) * 20;
 
-            // Troca sprite (opcional)
-            if (muteImage != null && unmutedSprite != null) muteImage.sprite = unmutedSprite;
-        }
+        if (mainMixer != null)
+            mainMixer.SetFloat(paramName, volumeDb);
+
+        PlayerPrefs.SetFloat(paramName, sliderValue);
+        PlayerPrefs.Save();
     }
 
     public void SetSensitivity(float sensitivity)
@@ -97,11 +86,5 @@ public class SettingsMenu : MonoBehaviour
     public void ToggleFullscreen()
     {
         Screen.fullScreen = !Screen.fullScreen;
-    }
-
-    // Se usares um Toggle em vez de botão simples
-    public void SetFullscreenToggle(bool isFullscreen)
-    {
-        Screen.fullScreen = isFullscreen;
     }
 }

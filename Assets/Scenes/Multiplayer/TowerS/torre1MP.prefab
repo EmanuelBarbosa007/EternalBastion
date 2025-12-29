@@ -73,10 +73,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   range:
-    m_InternalValue: 25
+    m_InternalValue: 18
   level:
     m_InternalValue: 1
-  fireRate: 1
+  fireRate: 2
   rotationSpeed: 10
   bulletPrefab: {fileID: 372263689092144527, guid: 2e667d198f331854989e69dd2d5e9782, type: 3}
   firePoint: {fileID: 0}
@@ -86,8 +86,8 @@ MonoBehaviour:
   level3Model: {fileID: 628002178589949107, guid: 897fb1e638e80ec48accd49ddd872af8, type: 3}
   towerName: Archer Tower
   costLevel1: 50
-  upgradeCostLevel2: 75
-  upgradeCostLevel3: 150
+  upgradeCostLevel2: 50
+  upgradeCostLevel3: 75
   totalInvested: 0
   myTowerSpot: {fileID: 0}
   donoDaTorreClientId: 0

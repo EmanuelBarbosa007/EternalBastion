@@ -561,8 +561,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 40
-  reward: 50
+  maxHealth: 300
+  reward: 100
   healthBar: {fileID: 2196194880906860537}
   deathSound: {fileID: 8300000, guid: 3d642a4fe416db94695566f0167f04b9, type: 3}
   soundVolume: 1
@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 841b2663f3dc99741842567b3f4bf911, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 2
+  speed: 3
   damageToBase: 10
   enemiesToSpawn: 5
   enemyPrefabs:
@@ -596,7 +596,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 3
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

@@ -505,7 +505,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d800fe2950cbd84d873ebe6f181a3f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 7
+  speed: 6
   pathUpdateRate: 1
 --- !u!114 &6593415276764736952
 MonoBehaviour:
@@ -519,8 +519,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 7
-  reward: 25
+  maxHealth: 10
+  reward: 8
   healthBar: {fileID: 8943460917362716712}
   deathSound: {fileID: 8300000, guid: 88b84ad8ea3e10c4280ffe53dcb001e2, type: 3}
   soundVolume: 1
@@ -556,7 +556,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 7
+  m_Speed: 6
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120

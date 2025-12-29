@@ -90,5 +90,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 15
-  damage: 2
+  damage: 3
   rotationFix: {x: 180, y: 0, z: 0}

@@ -86,7 +86,7 @@ MonoBehaviour:
   level3Model: {fileID: 8988602450940471858, guid: 3a17da34277b98c469bd064ccbd7cbd1, type: 3}
   towerName: Archer Tower
   costLevel1: 150
-  upgradeCostLevel2: 75
+  upgradeCostLevel2: 100
   upgradeCostLevel3: 150
   totalInvested: 0
   myTowerSpot: {fileID: 0}

@@ -145,7 +145,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 15
-  fireRate: 1
+  fireRate: 0.75
   rotationSpeed: 10
   bulletPrefab: {fileID: 51247320105680500, guid: 3ba0eb79eb8073841a32b18d93d15428, type: 3}
   firePoint: {fileID: 0}
@@ -155,9 +155,9 @@ MonoBehaviour:
   level3Model: {fileID: 7895945558851938342, guid: a769a1f5d5c4cd84ba947b90b73752c6, type: 3}
   towerName: Fire Tower
   level: 1
-  costLevel1: 100
+  costLevel1: 120
   upgradeCostLevel2: 75
-  upgradeCostLevel3: 150
+  upgradeCostLevel3: 120
   totalInvested: 0
   myTowerSpot: {fileID: 0}
 --- !u!4 &8909933841986875023 stripped

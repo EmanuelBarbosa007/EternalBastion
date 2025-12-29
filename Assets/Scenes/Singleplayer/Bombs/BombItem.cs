@@ -4,15 +4,15 @@ public class BombItem : MonoBehaviour
 {
     public int damage = 5;        // Dano pedido
     public float explosionRadius = 3f; // Raio da explosão
-    public GameObject explosionVFX; // (Opcional) Particulas da explosão
+    public GameObject explosionVFX; 
 
     [Header("Audio")]
-    public AudioClip explosionSound; // Arrastar o ficheiro de áudio da explosão aqui
+    public AudioClip explosionSound; 
 
     // Quando algo entra no Trigger da bomba
     private void OnTriggerEnter(Collider other)
     {
-        // Verifica se o objeto é um inimigo (assegura-te que os inimigos têm a Tag "Enemy")
+        // Verifica se o objeto é um inimigo 
         if (other.CompareTag("Enemy"))
         {
             Explode();
@@ -26,7 +26,7 @@ public class BombItem : MonoBehaviour
             AudioSource.PlayClipAtPoint(explosionSound, transform.position);
         }
 
-        // 1. Criar efeito visual se existir
+        //  Criar efeito visual se existir
         if (explosionVFX != null)
         {
             Instantiate(explosionVFX, transform.position, Quaternion.identity);
@@ -50,7 +50,6 @@ public class BombItem : MonoBehaviour
         Destroy(gameObject);
     }
 
-    // Para desenhar o raio da explosão no editor e facilitar o ajuste
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;

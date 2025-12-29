@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro; 
 
 public class MenuManager : MonoBehaviour
 {
@@ -9,15 +10,52 @@ public class MenuManager : MonoBehaviour
     public GameObject gameModesMenu;
 
     [Header("Painéis de História")]
-    public GameObject singleplayerStoryPanel; // NOVO: Painel da história Singleplayer
-    public GameObject multiplayerStoryPanel;  // NOVO: Painel da história Multiplayer
+    public GameObject singleplayerStoryPanel;
+    public GameObject multiplayerStoryPanel;
 
-    // --- Navegação: Menu Principal <-> Modos de Jogo ---
+    [Header("UI Recordes (Arrastar os textos do Menu)")]
+    public TextMeshProUGUI easyRecordText;   // Texto recorde Fácil
+    public TextMeshProUGUI mediumRecordText; // Texto recorde Médio
+    public TextMeshProUGUI hardRecordText;   // Texto recorde Difícil
+
+    private void Start()
+    {
+        // Atualiza os recordes assim que o jogo abre
+        UpdateRecordUI();
+    }
+
+    // Função para ler o PlayerPrefs e meter nos textos
+    private void UpdateRecordUI()
+    {
+        // EASY MODE
+        if (easyRecordText != null)
+        {
+            int record = PlayerPrefs.GetInt("Recorde_EasyMode", 0);
+            easyRecordText.text = "Recorde: Onda " + record;
+        }
+
+        // MEDIUM MODE 
+        if (mediumRecordText != null)
+        {
+            int record = PlayerPrefs.GetInt("Recorde_SampleScene", 0);
+            mediumRecordText.text = "Recorde: Onda " + record;
+        }
+
+        // HARD MODE
+        if (hardRecordText != null)
+        {
+            int record = PlayerPrefs.GetInt("Recorde_HardMode", 0);
+            hardRecordText.text = "Recorde: Onda " + record;
+        }
+    }
 
     public void OpenGameModes()
     {
         mainMenu.SetActive(false);
         gameModesMenu.SetActive(true);
+
+        // Atualiza quando abre este menu 
+        UpdateRecordUI();
     }
 
     public void CloseGameModes()
@@ -26,32 +64,26 @@ public class MenuManager : MonoBehaviour
         mainMenu.SetActive(true);
     }
 
-    // --- Navegação: Modos de Jogo <-> Histórias (NOVO) ---
+    // --- Restante do teu código original igual ---
 
-    // Atribuir ao botão "História Singleplayer"
     public void OpenSingleplayerStory()
     {
         gameModesMenu.SetActive(false);
         singleplayerStoryPanel.SetActive(true);
     }
 
-    // Atribuir ao botão "História Multiplayer"
     public void OpenMultiplayerStory()
     {
         gameModesMenu.SetActive(false);
         multiplayerStoryPanel.SetActive(true);
     }
 
-    // Atribuir ao botão "Voltar" DENTRO dos painéis de história
-    // Esta função serve para ambos os painéis, pois fecha os dois e abre o menu de modos
     public void BackToGameModes()
     {
         singleplayerStoryPanel.SetActive(false);
         multiplayerStoryPanel.SetActive(false);
         gameModesMenu.SetActive(true);
     }
-
-    // --- Navegação: Opções ---
 
     public void OpenOptions()
     {
@@ -64,8 +96,6 @@ public class MenuManager : MonoBehaviour
         optionsMenu.SetActive(false);
         mainMenu.SetActive(true);
     }
-
-    // --- Carregamento de Cenas ---
 
     public void StartStandardGame()
     {
@@ -81,7 +111,6 @@ public class MenuManager : MonoBehaviour
     {
         SceneManager.LoadScene("HardMode");
     }
-
 
     public void MultiplayerGame()
     {

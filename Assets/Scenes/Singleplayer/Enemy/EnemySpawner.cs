@@ -28,7 +28,18 @@ public class EnemySpawner : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip startGameAudio; // "Inimigos a caminho"
     public AudioClip firstWaveAudio; // "Primeira Onda"
-    public AudioClip bossWaveAudio;  // "Boss a chegar"
+    public AudioClip bossWaveAudio;  // "Boss"
+
+
+    [Header("Comandante UI")]
+    public GameObject commanderFaceUI; // O Painel com a imagem
+    public TextMeshProUGUI commanderSpeechText; 
+    public float commanderDisplayTime = 4f;
+
+    [Header("Falas do Comandante (Texto)")]
+    [TextArea] public string startText = "Enemies are Coming!";
+    [TextArea] public string firstWaveText = "FIRTS WAVE";
+    [TextArea] public string bossText = "BOSS Wave";
 
     [Header("Stats das Waves")]
     public float timeBetweenWaves = 20f;
@@ -62,11 +73,16 @@ public class EnemySpawner : MonoBehaviour
         state = SpawnState.COUNTDOWN;
         UpdateWaveUI();
 
+        // Garante que a UI do comandante começa desligada
+        if (commanderFaceUI != null) commanderFaceUI.SetActive(false);
+
         if (audioSource != null)
         {
             if (startGameAudio != null)
+            {
                 audioSource.PlayOneShot(startGameAudio);
-
+                ShowCommanderFace(startText);
+            }
         }
     }
 
@@ -89,11 +105,11 @@ public class EnemySpawner : MonoBehaviour
                 state = SpawnState.SPAWNING;
                 if (countdownText) countdownText.text = "ATAQUE!";
 
-
                 // Toca o áudio da Primeira Onda no momento exato em que o ataque começa
                 if (waveNumber == 1 && audioSource != null && firstWaveAudio != null)
                 {
                     audioSource.PlayOneShot(firstWaveAudio);
+                    ShowCommanderFace(firstWaveText);
                 }
 
                 StartCoroutine(SpawnWave());
@@ -119,8 +135,36 @@ public class EnemySpawner : MonoBehaviour
             if (audioSource != null && bossWaveAudio != null)
             {
                 audioSource.PlayOneShot(bossWaveAudio);
+                ShowCommanderFace(bossText);
             }
         }
+    }
+
+
+    void ShowCommanderFace(string message)
+    {
+        if (commanderFaceUI == null) return;
+
+        // Atualiza o texto se tivermos a referência
+        if (commanderSpeechText != null)
+        {
+            commanderSpeechText.text = message;
+        }
+
+        // Para qualquer contagem anterior para não piscar
+        StopCoroutine("DisableCommanderRoutine");
+
+        commanderFaceUI.SetActive(true);
+        StartCoroutine("DisableCommanderRoutine");
+    }
+
+
+    IEnumerator DisableCommanderRoutine()
+    {
+        yield return new WaitForSeconds(commanderDisplayTime);
+
+        if (commanderFaceUI != null)
+            commanderFaceUI.SetActive(false);
     }
 
     void UpdateWaveUI()
@@ -216,5 +260,10 @@ public class EnemySpawner : MonoBehaviour
         }
 
         EnemiesAlive++;
+    }
+
+    public int GetCurrentWave()
+    {
+        return waveNumber;
     }
 }

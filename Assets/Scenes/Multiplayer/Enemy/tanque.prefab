@@ -680,9 +680,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  baseHealth: 20
-  moneyOnDeath: 45
-  healthMultiplierLvl2: 1.5
+  baseHealth: 80
+  moneyOnDeath: 15
+  healthMultiplierLvl2: 2
   healthBar: {fileID: 8183431314139468052}
   deathSound: {fileID: 8300000, guid: 5bd241741c0e45d42a65f38959de2003, type: 3}
   soundVolume: 1

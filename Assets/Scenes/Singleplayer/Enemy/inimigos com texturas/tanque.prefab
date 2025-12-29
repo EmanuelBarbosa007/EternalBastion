@@ -531,10 +531,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c4c58620238b464f80577764ed92f82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  reward: 30
+  maxHealth: 80
+  reward: 15
   healthBar: {fileID: 220371609443524077}
-  deathSound: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: 5bd241741c0e45d42a65f38959de2003, type: 3}
   soundVolume: 1
 --- !u!95 &1259559891733526839
 Animator:

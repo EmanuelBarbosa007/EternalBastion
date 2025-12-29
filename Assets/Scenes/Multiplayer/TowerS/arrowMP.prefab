@@ -168,5 +168,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 18
-  damage: 2
+  damage: 5
   ownerClientId: 0

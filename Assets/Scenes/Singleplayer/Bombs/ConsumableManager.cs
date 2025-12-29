@@ -5,7 +5,7 @@ public class ConsumableManager : MonoBehaviour
 {
     [Header("Configurações da Bomba")]
     public GameObject bombPrefab;
-    public int bombCost = 15;
+    public int bombCost = 20;
     public Button bombButton;
 
     [Header("Configurações do Caminho")]
@@ -32,7 +32,7 @@ public class ConsumableManager : MonoBehaviour
                 Renderer rend = roadSegments[i].GetComponent<Renderer>();
                 if (rend != null)
                 {
-                    // CORREÇÃO: Usa GetColor com o nome da propriedade do Shader
+                    //  Usa GetColor com o nome da propriedade do Shader
                     if (rend.material.HasProperty(colorProperty))
                     {
                         originalColors[i] = rend.material.GetColor(colorProperty);

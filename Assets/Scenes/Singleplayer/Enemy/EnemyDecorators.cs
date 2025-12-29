@@ -21,8 +21,8 @@ public class NormalEnemyDecorator : IEnemyDecorator
         var health = enemyObj.GetComponent<EnemyHealth>();
         var movement = enemyObj.GetComponent<Enemy>();
 
-        health.maxHealth = 5;
-        health.reward = 20;
+        health.maxHealth = 15;
+        health.reward = 5;
         movement.speed = 3.0f;
         enemyObj.transform.localScale = Vector3.one;
 
@@ -49,8 +49,8 @@ public class TankEnemyDecorator : IEnemyDecorator
         var health = enemyObj.GetComponent<EnemyHealth>();
         var movement = enemyObj.GetComponent<Enemy>();
 
-        health.maxHealth = 20;
-        health.reward = 30;
+        health.maxHealth = 80;
+        health.reward = 15;
         movement.speed = 3.0f;
         enemyObj.transform.localScale = new Vector3(2f, 2f, 2f);
 
