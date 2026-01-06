@@ -63,10 +63,10 @@ public class GameManager : MonoBehaviour
 
         // Atualiza os textos na tela de Game Over
         if (currentWaveText != null)
-            currentWaveText.text = "Onda Alcançada: " + waveReached;
+            currentWaveText.text = "Wave Reached: " + waveReached;
 
         if (recordText != null)
-            recordText.text = "Recorde Atual: " + bestWave;
+            recordText.text = "Current Record: " + bestWave;
 
         Time.timeScale = 0f; // pausa o jogo
 

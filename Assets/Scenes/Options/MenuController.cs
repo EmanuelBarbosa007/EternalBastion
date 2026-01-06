@@ -31,21 +31,21 @@ public class MenuManager : MonoBehaviour
         if (easyRecordText != null)
         {
             int record = PlayerPrefs.GetInt("Recorde_EasyMode", 0);
-            easyRecordText.text = "Recorde: Onda " + record;
+            easyRecordText.text = "Record: Wave " + record;
         }
 
         // MEDIUM MODE 
         if (mediumRecordText != null)
         {
             int record = PlayerPrefs.GetInt("Recorde_SampleScene", 0);
-            mediumRecordText.text = "Recorde: Onda " + record;
+            mediumRecordText.text = "Record: Wave " + record;
         }
 
         // HARD MODE
         if (hardRecordText != null)
         {
             int record = PlayerPrefs.GetInt("Recorde_HardMode", 0);
-            hardRecordText.text = "Recorde: Onda " + record;
+            hardRecordText.text = "Record: Wave " + record;
         }
     }
 

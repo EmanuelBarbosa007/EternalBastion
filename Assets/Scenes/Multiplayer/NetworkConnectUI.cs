@@ -46,7 +46,7 @@ public class NetworkConnectUI : MonoBehaviour
         string localIP = GetLocalIPv4();
 
         if (hostInfoText != null)
-            hostInfoText.text = $"Host Ativo\nIP para conectar: {localIP}";
+            hostInfoText.text = $"Host Active\nIP to Conect: {localIP}";
 
         // --- FIX: Configurar o Host para aceitar conexões externas ---
         var utpTransport = NetworkManager.Singleton.GetComponent<UnityTransport>();

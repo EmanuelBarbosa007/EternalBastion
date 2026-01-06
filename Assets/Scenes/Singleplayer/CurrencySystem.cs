@@ -75,6 +75,6 @@ public class CurrencySystem : MonoBehaviour
     void UpdateUI()
     {
         if (moneyText != null)
-            moneyText.text = "Moedas: " + Money;
+            moneyText.text = "Coins: " + Money;
     }
 }

@@ -125,16 +125,16 @@ public class TowerUpgradeUIMP : MonoBehaviour
 
         int sellAmount = currentTower.totalInvested / 2;
         if (sellValueText != null)
-            sellValueText.text = $"Vender\n{sellAmount} Moedas";
+            sellValueText.text = $"Sell\n{sellAmount} Coins";
 
         if (upgradeCostText != null)
         {
             if (currentTower.level.Value == 1)
-                upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel2} Moedas";
+                upgradeCostText.text = $"Upgrade\n{currentTower.upgradeCostLevel2} Coins";
             else if (currentTower.level.Value == 2)
-                upgradeCostText.text = $"Melhorar\n{currentTower.upgradeCostLevel3} Moedas";
+                upgradeCostText.text = $"Upgrade\n{currentTower.upgradeCostLevel3} Coins";
             else
-                upgradeCostText.text = "NÍVEL MÁXIMO";
+                upgradeCostText.text = "Max Level";
         }
     }
 

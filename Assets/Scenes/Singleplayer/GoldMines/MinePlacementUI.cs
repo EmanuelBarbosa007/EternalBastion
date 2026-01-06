@@ -26,7 +26,7 @@ public class MinePlacementUI : MonoBehaviour
     public void OpenPanel(DebrisSpot spot)
     {
         currentDebrisSpot = spot;
-        costText.text = "Construir Mina?\nCusto: " + spot.buildCost;
+        costText.text = "Cost: " + spot.buildCost;
 
         // Verifica o botão usando a variável estática
         yesButton.interactable = (CurrencySystem.Money >= spot.buildCost);

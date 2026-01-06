@@ -132,7 +132,7 @@ public class GameManagerMP : NetworkBehaviour
         {
             fimDeJogoPanel.SetActive(true);
             if (textoVencedor != null)
-                textoVencedor.text = $"O {nomeVencedor} VENCEU!";
+                textoVencedor.text = $"{nomeVencedor} WON!";
         }
     }
 
@@ -177,7 +177,7 @@ public class GameManagerMP : NetworkBehaviour
     {
         if (textoBotaoRestart != null)
         {
-            textoBotaoRestart.text = $"Aguardando ({votosAtuais}/{totalNecessario})";
+            textoBotaoRestart.text = $"Waiting ({votosAtuais}/{totalNecessario})";
         }
     }
 
@@ -187,7 +187,7 @@ public class GameManagerMP : NetworkBehaviour
         // Garante que o texto volta ao normal quando o painel abre
         if (textoBotaoRestart != null)
         {
-            textoBotaoRestart.text = "Reiniciar Jogo";
+            textoBotaoRestart.text = "Restart Game";
         }
         if (restartButton != null) restartButton.interactable = true;
         euJaVotei = false;

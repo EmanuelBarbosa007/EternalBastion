@@ -96,18 +96,18 @@ public class MineUpgradeUI : MonoBehaviour
     {
         if (currentMine == null) return;
 
-        statsText.text = $"Gera: {currentMine.GetCurrentProduction()} moedas\na cada {currentMine.GetCurrentInterval()} seg.";
-        sellValueText.text = $"Vender\n+{currentMine.GetSellValue()}";
+        statsText.text = $"Generate: {currentMine.GetCurrentProduction()} coins\neach {currentMine.GetCurrentInterval()} sec.";
+        sellValueText.text = $"Sell\n+{currentMine.GetSellValue()}";
 
         if (currentMine.currentLevel >= currentMine.maxLevel)
         {
             upgradeButton.interactable = false;
-            upgradeCostText.text = "NÍVEL MÁX.";
+            upgradeCostText.text = "Max Level";
         }
         else
         {
             int upgradeCost = currentMine.GetNextUpgradeCost();
-            upgradeCostText.text = $"Melhorar\n{upgradeCost}";
+            upgradeCostText.text = $"Upgrade\n{upgradeCost}";
             upgradeButton.interactable = (CurrencySystem.Money >= upgradeCost);
         }
     }

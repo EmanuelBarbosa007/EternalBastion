@@ -39,7 +39,7 @@ public class MinePlacementUIMP : MonoBehaviour
     public void OpenPanel(DebrisSpotMP spot)
     {
         currentDebrisSpot = spot;
-        costText.text = "Construir Mina?\nCusto: " + spot.buildCost;
+        costText.text = "\nCost: " + spot.buildCost;
 
         panel.SetActive(true);
 

@@ -137,16 +137,16 @@ public class MineUpgradeUIMP : MonoBehaviour
         var currentStats = currentMine.levelStats[statsIndex];
 
         if (statsText != null)
-            statsText.text = $"Gera: {currentStats.coinsPerInterval} moedas\na cada {currentStats.generationInterval} seg.";
+            statsText.text = $"Generate: {currentStats.coinsPerInterval} coins\neach {currentStats.generationInterval} sec.";
 
         if (sellValueText != null)
-            sellValueText.text = $"Vender\n+{currentMine.GetSellValue()}";
+            sellValueText.text = $"Sell\n+{currentMine.GetSellValue()}";
 
         if (upgradeCostText != null)
         {
             if (currentLevel >= currentMine.maxLevel)
             {
-                upgradeCostText.text = "NÍVEL MÁX.";
+                upgradeCostText.text = "Max Level";
             }
             else
             {
@@ -154,7 +154,7 @@ public class MineUpgradeUIMP : MonoBehaviour
                 if (currentLevel < currentMine.levelStats.Length)
                 {
                     int upgradeCost = currentMine.levelStats[currentLevel].upgradeCost;
-                    upgradeCostText.text = $"Melhorar\n{upgradeCost}";
+                    upgradeCostText.text = $"Upgrade\n{upgradeCost}";
                 }
             }
         }

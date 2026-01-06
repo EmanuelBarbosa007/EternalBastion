@@ -82,23 +82,23 @@ public class TowerUpgradeUI : MonoBehaviour
 
         // Texto do botão Vender
         int sellAmount = selectedTower.totalInvested / 2;
-        sellButtonText.text = $"Vender\n({sellAmount} Moedas)";
+        sellButtonText.text = $"Sell\n({sellAmount} Coins)";
 
         // Lógica do botão Melhorar
         if (selectedTower.level == 1)
         {
-            upgradeButtonText.text = $"Melhorar\n({selectedTower.upgradeCostLevel2} Moedas)";
+            upgradeButtonText.text = $"Upgrade\n({selectedTower.upgradeCostLevel2} Coins)";
             // Ativa/desativa o botão se tiver dinheiro
             upgradeButton.interactable = CurrencySystem.Money >= selectedTower.upgradeCostLevel2;
         }
         else if (selectedTower.level == 2)
         {
-            upgradeButtonText.text = $"Melhorar\n({selectedTower.upgradeCostLevel3} Moedas)";
+            upgradeButtonText.text = $"Upgrade\n({selectedTower.upgradeCostLevel3} Coins)";
             upgradeButton.interactable = CurrencySystem.Money >= selectedTower.upgradeCostLevel3;
         }
         else // Nível 3 (Máximo)
         {
-            upgradeButtonText.text = "NÍVEL MÁX.";
+            upgradeButtonText.text = "Max Level";
             upgradeButton.interactable = false;
         }
     }

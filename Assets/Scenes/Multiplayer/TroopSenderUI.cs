@@ -59,19 +59,19 @@ public class TroopSenderUI : MonoBehaviour
 
         // --- Atualiza UI da Tropa Normal ---
         int nivelNormal = PlayerNetwork.LocalInstance.NivelTropaNormal.Value;
-        if (textoNivelNormal != null) textoNivelNormal.text = "Nível: " + nivelNormal;
+        if (textoNivelNormal != null) textoNivelNormal.text = "Level: " + nivelNormal;
 
         if (botaoUpgradeNormal != null) botaoUpgradeNormal.interactable = (nivelNormal < 2);
 
         // --- Atualiza UI da Tropa Tanque ---
         int nivelTanque = PlayerNetwork.LocalInstance.NivelTropaTanque.Value;
-        if (textoNivelTanque != null) textoNivelTanque.text = "Nível: " + nivelTanque;
+        if (textoNivelTanque != null) textoNivelTanque.text = "Level: " + nivelTanque;
 
         if (botaoUpgradeTanque != null) botaoUpgradeTanque.interactable = (nivelTanque < 2);
 
         // --- Atualiza UI do Cavalo ---
         int nivelCavalo = PlayerNetwork.LocalInstance.NivelCavalo.Value;
-        if (textoNivelCavalo != null) textoNivelCavalo.text = "Nível: " + nivelCavalo;
+        if (textoNivelCavalo != null) textoNivelCavalo.text = "Level: " + nivelCavalo;
 
         if (botaoUpgradeCavalo != null) botaoUpgradeCavalo.interactable = (nivelCavalo < 2);
     }

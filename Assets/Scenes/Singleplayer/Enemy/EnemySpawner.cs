@@ -98,12 +98,12 @@ public class EnemySpawner : MonoBehaviour
         {
             countdown -= Time.deltaTime;
             countdown = Mathf.Max(0, countdown);
-            if (countdownText) countdownText.text = $"Próxima Wave: {Mathf.CeilToInt(countdown)}s";
+            if (countdownText) countdownText.text = $"Next Wave: {Mathf.CeilToInt(countdown)}s";
 
             if (countdown <= 0f)
             {
                 state = SpawnState.SPAWNING;
-                if (countdownText) countdownText.text = "ATAQUE!";
+                if (countdownText) countdownText.text = "ATACK!";
 
                 // Toca o áudio da Primeira Onda no momento exato em que o ataque começa
                 if (waveNumber == 1 && audioSource != null && firstWaveAudio != null)
