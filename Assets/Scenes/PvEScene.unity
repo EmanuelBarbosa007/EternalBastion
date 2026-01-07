@@ -28504,7 +28504,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6509804, b: 0, a: 0.3137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -49845,7 +49845,7 @@ MonoBehaviour:
   panel: {fileID: 1381217953}
   yesButton: {fileID: 436168993}
   noButton: {fileID: 696552844}
-  costText: {fileID: 1597409298}
+  costText: {fileID: 1860972875}
   inputDelay: 0.3
   actionSound: {fileID: 8300000, guid: 28890d1ffdd2a624bbdbfa17b78e402a, type: 3}
   soundVolume: 1
@@ -58596,7 +58596,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 1}
+  m_Color: {r: 1, g: 0.6509804, b: 0, a: 0.3137255}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
