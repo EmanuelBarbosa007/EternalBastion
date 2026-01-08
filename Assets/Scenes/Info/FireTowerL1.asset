@@ -15,8 +15,11 @@ MonoBehaviour:
   nomeItem: Fire Tower (Level1)
   descricao: 'A magical tower that deals area damage with its projectiles.
 
+
     Damage:
-    2
+    10
+
+    Fire Rate: 1 per second
 
     Range: 18'
   imagem: {fileID: 21300000, guid: 8837140fd998a9247a39b522426972d6, type: 3}

@@ -197,6 +197,6 @@ MonoBehaviour:
   ShowTopMostFoldoutHeaderGroup: 1
   speed: 23
   explosionRadius: 4
-  damage: 15
+  damage: 10
   impactEffectPrefab: {fileID: 0}
   ownerClientId: 0

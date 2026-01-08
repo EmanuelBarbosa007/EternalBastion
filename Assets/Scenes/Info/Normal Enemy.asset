@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Normal Enemy
   m_EditorClassIdentifier: 
   nomeItem: Normal Troop
-  descricao: 'a normal guy with a skirt
+  descricao: 'A normal man with a skirt who has anger issues and just wants to destroy
+    things.
 
-    Health: 5
+    Health: 15
 
-    Speed: 3'
+    Speed: 3
+
+    Reward: 5'
   imagem: {fileID: 21300000, guid: 89d26348f899f024eb131cfc5ccbfd74, type: 3}
   categoria: 1

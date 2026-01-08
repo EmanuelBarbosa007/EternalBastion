@@ -12,13 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0f655ac6b66b62642bf66c6b2309c617, type: 3}
   m_Name: Trojan Horse
   m_EditorClassIdentifier: 
-  nomeItem: Horse
-  descricao: 'A giant wooden horse, what could be inside?
+  nomeItem: Trojan Horse
+  descricao: 'A giant wooden horse, it certainly doesn''t have anything inside it.
 
-    Health: 40
 
-    Speed:
-    3
+    Health:
+    300
+
+    Speed: 2
+
+    Reward: 100
 
 '
   imagem: {fileID: 21300000, guid: a57bd0c05683e8f48ab2d5caea1c6aa2, type: 3}

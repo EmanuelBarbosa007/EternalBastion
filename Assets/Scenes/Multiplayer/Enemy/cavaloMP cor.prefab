@@ -648,7 +648,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShowTopMostFoldoutHeaderGroup: 1
-  baseHealth: 10
+  baseHealth: 15
   moneyOnDeath: 8
   healthMultiplierLvl2: 2
   healthBar: {fileID: 7641524679474851884}

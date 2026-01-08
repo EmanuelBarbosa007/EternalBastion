@@ -13,8 +13,7 @@ MonoBehaviour:
   m_Name: GoldMineL2
   m_EditorClassIdentifier: 
   nomeItem: Gold Mine (Level2)
-  descricao: 'a mine that produces a lot of gold constantly
-
-    20 coins in 10 seconds'
+  descricao: "This improved mine has found a gold reserve, we're rich!\n\nGenerates
+    20 coins each\n         10 seconds"
   imagem: {fileID: 21300000, guid: f9a2ada2eddf7f2429b8d904d81f9efb, type: 3}
   categoria: 0

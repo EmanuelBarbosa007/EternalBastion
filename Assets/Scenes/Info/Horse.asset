@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Horse
   m_EditorClassIdentifier: 
   nomeItem: Horse
-  descricao: 'HORSE
+  descricao: 'A wild horse that has been tamed and whose sole purpose now is to run
+    into castles.
 
-    Health: 7
+    Health: 15
 
-    Speed: 7'
+    Speed: 7
+
+    Reward: 8'
   imagem: {fileID: 21300000, guid: a40af37744423ac40ba37bc12bda9a78, type: 3}
   categoria: 1

@@ -13,9 +13,12 @@ MonoBehaviour:
   m_Name: Bomb
   m_EditorClassIdentifier: 
   nomeItem: Bomb
-  descricao: 'Kabooom!
+  descricao: 'A giant bomb that explodes on contact, killing everything around.
 
-    Damage: 5
+
+
+    Damage:
+    40
 
     Explosion Radius: 5'
   imagem: {fileID: 21300000, guid: 6fc4775bf102ba14ea6d702870dba21a, type: 3}

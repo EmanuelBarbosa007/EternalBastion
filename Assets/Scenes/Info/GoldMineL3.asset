@@ -13,9 +13,7 @@ MonoBehaviour:
   m_Name: GoldMineL3
   m_EditorClassIdentifier: 
   nomeItem: Gold Mine (Level3)
-  descricao: 'a mine that constantly produces too many gold bars
-
-    35 coins in
-    10 seconds'
+  descricao: "The gold keeps flowing in, we have more gold than ever before.\n\nGenerates
+    35 coins each\n         10 seconds"
   imagem: {fileID: 21300000, guid: 3234babe239e2d148b985fb7fddbacb9, type: 3}
   categoria: 0

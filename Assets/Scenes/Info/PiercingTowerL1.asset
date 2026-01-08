@@ -13,11 +13,13 @@ MonoBehaviour:
   m_Name: PiercingTowerL1
   m_EditorClassIdentifier: 
   nomeItem: Piercing Tower (Level1)
-  descricao: 'a tower whose projectiles pierce through enemies.
+  descricao: 'A tower whose projectiles are so sharp that they pierce through enemies.
 
-    Damage: 2
+    Damage:
+    2
 
-    Range:
-    23'
+    Fire Rate: 1 per second
+
+    Range: 23'
   imagem: {fileID: 21300000, guid: 52dd621fb6b10614aa09980694e3a5cc, type: 3}
   categoria: 0
