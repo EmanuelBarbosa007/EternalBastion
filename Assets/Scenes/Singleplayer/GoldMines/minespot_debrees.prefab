@@ -4929,7 +4929,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   goldMinePrefab: {fileID: 7995893847160752216, guid: b806753ec41b2214ea72267db7cfc485, type: 3}
-  buildCost: 75
+  buildCost: 100
   spawnHeightOffset: 0
   spawnYRotation: 180
   placementUI: {fileID: 0}
